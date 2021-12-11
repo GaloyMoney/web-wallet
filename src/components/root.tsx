@@ -1,9 +1,10 @@
-import Home from "./home"
+import appRoutes from "server/routes"
 
-const Root = () => {
+const Root = ({ initialData }: { initialData: InitialData }) => {
+  const Component = appRoutes[initialData.path].component
   return (
     <>
-      <Home />
+      <Component />
       <div className="footer">
         <div className="powered-by">
           Powerd By{" "}

@@ -31,13 +31,22 @@ if (config.isDev) {
   }
 }
 
-app.get("/", async (req, res) => {
+export const SupportedRoutes = ["/", "/login"] as const
+
+app.get("/*", async (req, res) => {
   try {
-    const vars = await serverRenderer()
-    res.render("index", vars)
+    const routePath = req.path
+    const checkedRoutePath = SupportedRoutes.find(
+      (supportedRoute) => supportedRoute === routePath,
+    )
+    if (!checkedRoutePath) {
+      return res.status(404)
+    }
+    const vars = await serverRenderer(checkedRoutePath)
+    return res.render("index", vars)
   } catch (err) {
     console.error(err)
-    res.status(500).send("Server error")
+    return res.status(500).send("Server error")
   }
 })
 

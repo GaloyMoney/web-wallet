@@ -811,6 +811,12 @@
   version "4.7.9"
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.7.9.tgz#1cfb6d60ef3822c589f18e70f8b12f9a28ce8724"
   integrity sha512-MUc6zSmU3tEVnkQ78q0peeEjKWPUADMlC/t++2bI8WnAG2tvYRPIgHG8lWkXwqc8MsUF6Z2MOf+Mh5sazOmhiQ==
+"@types/intl-tel-input@^17.0.4":
+  version "17.0.4"
+  resolved "https://registry.yarnpkg.com/@types/intl-tel-input/-/intl-tel-input-17.0.4.tgz#a7be083bd1989830e7e02f6d552a40428fd5ed7c"
+  integrity sha512-AIX0Azxs7fAkeI2wjAsMNE4Lfoa+/NqazWDPM4k4Vm8lhcId0BNMjzC/BACEGE0nAScc71+pznlKnTxBfW5HHA==
+  dependencies:
+    "@types/jquery" "*"
 
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0", "@types/istanbul-lib-coverage@^2.0.1":
   version "2.0.3"
@@ -838,6 +844,13 @@
   dependencies:
     jest-diff "^27.0.0"
     pretty-format "^27.0.0"
+
+"@types/jquery@*":
+  version "3.5.10"
+  resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-3.5.10.tgz#9da289f3ec452acd8f7f0375e9e2faad71ebdfe1"
+  integrity sha512-w2qT5DFikh5TXrW/aOaCvCP8g2MMAfPXo3oeHR9v7dRuAZhu38PUWEkYrL4e9VRTcgZE4yER21AHndgpq2QPTQ==
+  dependencies:
+    "@types/sizzle" "*"
 
 "@types/json-schema@*", "@types/json-schema@^7.0.8", "@types/json-schema@^7.0.9":
   version "7.0.9"
@@ -933,6 +946,11 @@
   dependencies:
     "@types/mime" "^1"
     "@types/node" "*"
+
+"@types/sizzle@*":
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/@types/sizzle/-/sizzle-2.3.3.tgz#ff5e2f1902969d305225a047c8a0fd5c915cebef"
+  integrity sha512-JYM8x9EGF163bEyhdJBpR2QX1R5naCJHC8ucJylJ3w9/CVBaskdQ8WqBf8MmQrd1kRvp/a4TS8HJ+bxzR7ZJYQ==
 
 "@types/stack-utils@^2.0.0":
   version "2.0.1"
@@ -3354,6 +3372,11 @@ interpret@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-2.2.0.tgz#1a78a0b5965c40a5416d007ad6f50ad27c417df9"
   integrity sha512-Ju0Bz/cEia55xDwUWEa8+olFpCiQoypjnQySseKtmjNrnps3P+xfpUmGr90T7yjlVJmOtybRvPXhKMbHr+fWnw==
+
+intl-tel-input@^17.0.15:
+  version "17.0.15"
+  resolved "https://registry.yarnpkg.com/intl-tel-input/-/intl-tel-input-17.0.15.tgz#460cc0ba258b9f10fc865426998ea61fcc5779d5"
+  integrity sha512-mhgx+JbF6f5AJoJXupcoX7Ocr6s6znnmATFI0YBUIDevFGRhlpSe+Iz/CmMuM4uFuzIr5dfBoaCvyFYtkaUczA==
 
 ip@^1.1.5:
   version "1.1.5"

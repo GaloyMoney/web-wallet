@@ -18,6 +18,10 @@ body {
   }
 }
 
+input[type="tel"] {
+  border: thin solid theme(colors.primary);
+}
+
 #root {
   height: 100%;
   width: 90%;
@@ -27,37 +31,52 @@ body {
   display: flex;
   flex-direction: column;
 
-  .home {
+  .main-container {
     flex: 92;
-    .header {
-      display: flex;
-      justify-content: space-between;
-      .balance {
-        .value {
-          display: flex;
-          justify-content: center;
-          .primary {
-            font-size: 1.25rem;
-            font-weight: bold;
-          }
-          .secondary {
-            color: theme(colors.secondary);
-            align-self: center;
-            margin: 0 0.3rem;
-          }
-        }
-      }
-    }
   }
 
   .footer {
     width: 100%;
     flex: 8;
     justify-self: flex-end;
-    .powered-by {
-      font-size: 0.85rem;
-      color: theme(colors.secondary);
-      text-align: center;
+  }
+}
+
+.powered-by {
+  font-size: 0.85rem;
+  color: theme(colors.secondary);
+  text-align: center;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  .balance {
+    .value {
+      display: flex;
+      justify-content: center;
+      .primary {
+        font-size: 1.25rem;
+        font-weight: bold;
+      }
+      .secondary {
+        color: theme(colors.secondary);
+        align-self: center;
+        margin: 0 0.3rem;
+      }
     }
+  }
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 25%;
+  .intro {
+    margin-bottom: 1rem;
+  }
+  * input {
+    width: 100%;
   }
 }

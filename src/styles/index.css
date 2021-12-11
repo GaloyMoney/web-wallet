@@ -2,6 +2,7 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "./main";
+@import "./intl-tel-input";
 /*! purgecss end ignore */
 
 @import "tailwindcss/utilities";

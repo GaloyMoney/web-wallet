@@ -1,6 +1,7 @@
+import history from "store/history"
 import { useContext } from "react"
 
-import GwwContext from "../context"
+import GwwContext from "../store"
 
 type Props = {
   to: RoutePath
@@ -14,6 +15,7 @@ const Link = ({ to, children }: Props) => {
       event.preventDefault()
     }
     dispatch({ type: "navigateTo", path: to })
+    history.push(to, { rootComponentPath: to })
   }
   return (
     <a href={to} onClick={navigate}>

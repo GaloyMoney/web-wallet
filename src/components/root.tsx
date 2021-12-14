@@ -1,7 +1,7 @@
-import { useContext, useReducer } from "react"
+import { useContext, useEffect, useReducer } from "react"
 
-import GwwContext from "../context"
-
+import GwwContext from "../store"
+import history from "store/history"
 import appRoutes, { SupportedRoutes } from "server/routes"
 
 const Root = () => {
@@ -45,6 +45,13 @@ const wwReducer = (state: GwwState, action: GwwAction): GwwState => {
 
 const RootProvider = ({ initialData }: { initialData: InitialData }) => {
   const [state, dispatch] = useReducer(wwReducer, { rootComponentPath: initialData.path })
+
+  useEffect(() => {
+    const unlisten = history.listen(({ location }) => {
+      dispatch({ type: "navigateTo", path: location.pathname })
+    })
+    return () => unlisten()
+  }, [])
 
   return (
     <GwwContext.Provider value={{ state, dispatch }}>

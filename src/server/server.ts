@@ -5,6 +5,7 @@ import serialize from "serialize-javascript"
 
 import config from "./config"
 import { serverRenderer } from "renderers/server"
+import { SupportedRoutes } from "./routes"
 
 const app = express()
 app.enable("trust proxy")
@@ -30,8 +31,6 @@ if (config.isDev) {
     console.error("Webpack generated assets file is missing")
   }
 }
-
-export const SupportedRoutes = ["/", "/login"] as const
 
 app.get("/*", async (req, res) => {
   try {

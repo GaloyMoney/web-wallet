@@ -173,7 +173,6 @@ module.exports = {
         memberSyntaxSortOrder: ["none", "single", "all", "multiple"],
       },
     ],
-    "sort-keys": "error",
     "sort-vars": "error",
     "spaced-comment": "error",
     "symbol-description": "error",

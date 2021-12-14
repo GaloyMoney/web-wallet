@@ -1,7 +1,24 @@
-import appRoutes from "server/routes"
+import { useContext, useReducer } from "react"
 
-const Root = ({ initialData }: { initialData: InitialData }) => {
-  const Component = appRoutes[initialData.path].component
+import GwwContext from "../context"
+
+import appRoutes, { SupportedRoutes } from "server/routes"
+
+const Root = () => {
+  const { state } = useContext<GwwContextType>(GwwContext)
+  if (!state.rootComponentPath) {
+    return null
+  }
+
+  const checkedRoutePath = SupportedRoutes.find(
+    (supportedRoute) => supportedRoute === state.rootComponentPath,
+  )
+
+  if (!checkedRoutePath) {
+    throw new Error("Invaild Route")
+  }
+
+  const Component = appRoutes[checkedRoutePath].component
   return (
     <>
       <Component />
@@ -17,4 +34,23 @@ const Root = ({ initialData }: { initialData: InitialData }) => {
   )
 }
 
-export default Root
+const wwReducer = (state: GwwState, action: GwwAction): GwwState => {
+  switch (action.type) {
+    case "navigateTo":
+      return { ...state, rootComponentPath: action.path }
+    default:
+      throw new Error()
+  }
+}
+
+const RootProvider = ({ initialData }: { initialData: InitialData }) => {
+  const [state, dispatch] = useReducer(wwReducer, { rootComponentPath: initialData.path })
+
+  return (
+    <GwwContext.Provider value={{ state, dispatch }}>
+      <Root />
+    </GwwContext.Provider>
+  )
+}
+
+export default RootProvider

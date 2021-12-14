@@ -1,4 +1,6 @@
-import appRoutes from "server/routes"
+import { useContext } from "react"
+
+import GwwContext from "../context"
 
 type Props = {
   to: RoutePath
@@ -6,12 +8,12 @@ type Props = {
 }
 
 const Link = ({ to, children }: Props) => {
+  const { dispatch } = useContext<GwwContextType>(GwwContext)
   const navigate: React.MouseEventHandler<HTMLAnchorElement> = (event) => {
     if (!event.ctrlKey && !event.metaKey) {
       event.preventDefault()
     }
-    const routeInfo = appRoutes[to]
-    console.info(routeInfo)
+    dispatch({ type: "navigateTo", path: to })
   }
   return (
     <a href={to} onClick={navigate}>

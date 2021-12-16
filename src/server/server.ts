@@ -53,6 +53,12 @@ app.post("/api/login", async (req, res) => {
   }
 })
 
+app.post("/api/logout", async (req, res) => {
+  req.session = req.session || {}
+  req.session.authToken = null
+  return res.send({ authToken: null })
+})
+
 app.get("/*", async (req, res) => {
   try {
     const routePath = req.path

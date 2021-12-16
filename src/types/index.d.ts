@@ -25,7 +25,7 @@ type GwwState = {
 }
 
 type GwwAction = {
-  type: "navigateTo"
+  type: "state" | "logout"
   [payloadKey: string]: string
 }
 

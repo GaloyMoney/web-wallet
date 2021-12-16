@@ -133,7 +133,6 @@ module.exports = {
     "no-shadow": "error",
     "no-template-curly-in-string": "error",
     "no-throw-literal": "error",
-    "no-undefined": "error",
     "no-unmodified-loop-condition": "error",
     "no-unneeded-ternary": "error",
     "no-unreachable-loop": "error",

@@ -41,8 +41,10 @@ const wwReducer = (state: GwwState, action: GwwAction): GwwState => {
   const { type, ...newState } = action
 
   switch (type) {
-    case "navigateTo":
+    case "state":
       return { ...state, ...newState }
+    case "logout":
+      return { ...state, authToken: undefined }
     default:
       throw new Error()
   }
@@ -53,7 +55,7 @@ const RootProvider = ({ initialState }: { initialState: InitialState }) => {
 
   useEffect(() => {
     const unlisten = history.listen(({ location }) => {
-      dispatch({ type: "navigateTo", path: location.pathname, ...location.state })
+      dispatch({ type: "state", path: location.pathname, ...location.state })
     })
     return () => unlisten()
   }, [])

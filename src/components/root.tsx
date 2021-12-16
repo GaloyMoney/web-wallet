@@ -48,8 +48,8 @@ const wwReducer = (state: GwwState, action: GwwAction): GwwState => {
   }
 }
 
-const RootProvider = ({ initialData }: { initialData: InitialData }) => {
-  const [state, dispatch] = useReducer(wwReducer, initialData)
+const RootProvider = ({ initialState }: { initialState: InitialState }) => {
+  const [state, dispatch] = useReducer(wwReducer, initialState)
 
   useEffect(() => {
     const unlisten = history.listen(({ location }) => {

@@ -1,3 +1,4 @@
+import fetch from "cross-fetch"
 import intlTelInput from "intl-tel-input"
 import { gql, useMutation } from "urql"
 import React, { useCallback, useRef, useState } from "react"
@@ -89,7 +90,17 @@ const AuthCode = ({ phoneNumber }: { phoneNumber: string }) => {
       return
     }
 
-    history.push("/", { authToken: data.userLogin.authToken })
+    const authToken = data?.userLogin?.authToken
+
+    fetch("/api/login", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "authorization": `Bearer ${authToken}`,
+      },
+    })
+
+    history.push("/", { authToken })
   }
 
   return (

@@ -2,19 +2,19 @@ type RoutePath = typeof import("../server/routes").SupportedRoutes[number]
 type RouteInfo = Record<string, string | (() => JSX.Element)>
 type AppRoutes = Record<RoutePath, RouteInfo>
 
-type InitialData = {
+type InitialState = {
   path: RoutePath
   authToken?: string
 }
 
 declare interface Window {
   __G_DATA: {
-    initialData: InitialData
+    initialState: InitialState
   }
 }
 
 type ServerRendererFunction = (path: RoutePath) => Promise<{
-  initialData: InitialData
+  initialState: InitialState
   initialMarkup: string
   pageData: RouteInfo
 }>

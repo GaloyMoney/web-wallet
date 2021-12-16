@@ -5,7 +5,6 @@ import Root from "components/root"
 
 export const serverRenderer = async (path: RoutePath) => {
   const initialData = {
-    appRoutes,
     path,
   }
 

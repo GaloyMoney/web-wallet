@@ -1,10 +1,10 @@
 import Balance from "./balance"
 import Link from "./link"
 
-const Header = () => {
+const Header = ({ balance }: { balance: number }) => {
   return (
     <div className="header">
-      <Balance />
+      <Balance balance={balance} />
       <Link to="/login">Login</Link>
     </div>
   )

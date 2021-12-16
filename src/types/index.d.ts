@@ -4,7 +4,7 @@ type AppRoutes = Record<RoutePath, RouteInfo>
 
 type InitialData = {
   path: RoutePath
-  appRoutes: AppRoutes
+  authToken?: string
 }
 
 declare interface Window {
@@ -20,7 +20,8 @@ type ServerRendererFunction = (path: RoutePath) => Promise<{
 }>
 
 type GwwState = {
-  rootComponentPath?: string
+  path?: string
+  authToken?: string
 }
 
 type GwwAction = {
@@ -31,4 +32,24 @@ type GwwAction = {
 type GwwContextType = {
   state: GwwState
   dispatch: React.Dispatch<GwwAction>
+}
+
+type GeetestValidationData = {
+  geetestChallenge: string
+  geetestSecCode: string
+  geetestValidate: string
+}
+
+type CaptchaRequestAuthCodeData = {
+  errors: unknown[]
+  success: boolean
+}
+
+type GeetestCaptchaReturn = {
+  geetestError: string | null
+  geetestValidationData: GeetestValidationData | null
+  loadingRegisterCaptcha: boolean
+  registerCaptcha: () => void
+  resetError: () => void
+  resetValidationData: () => void
 }

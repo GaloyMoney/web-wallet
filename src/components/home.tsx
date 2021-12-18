@@ -18,6 +18,7 @@ const QUERY_ME = gql`
     }
   }
 `
+
 const Home = () => {
   const { state } = useContext<GwwContextType>(GwwContext)
 

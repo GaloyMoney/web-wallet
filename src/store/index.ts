@@ -1,7 +1,7 @@
 import { createContext } from "react"
 
 const GwwContext = createContext<GwwContextType>({
-  state: {},
+  state: { path: "/" },
   dispatch: (_action: GwwAction) => {
     // Do nothing
   },

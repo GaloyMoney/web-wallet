@@ -2,6 +2,7 @@ import { useQuery } from "@apollo/client"
 
 import QUERY_ME from "store/graphql/query.me"
 import useAuthToken from "store/use-auth-token"
+import i18n from "translate"
 
 import Header from "./header"
 
@@ -10,6 +11,12 @@ const Home = () => {
 
   const { data } = useQuery(QUERY_ME, {
     variables: { hasToken },
+    onCompleted: (completed) => {
+      const langauge = completed?.me?.language
+      if (langauge && langauge !== "DEFAULT" && i18n.locale !== langauge) {
+        i18n.locale = langauge
+      }
+    },
   })
 
   const me = data?.me

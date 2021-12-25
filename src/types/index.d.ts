@@ -63,3 +63,8 @@ type UseAuthTokenFunction = () => {
   authToken: string | undefined
   hasToken: boolean
 }
+
+type OnFormattedValueChangeFunction = (arg: {
+  numberValue: number
+  formattedValue: string
+}) => void

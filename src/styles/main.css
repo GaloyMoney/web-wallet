@@ -47,6 +47,14 @@ input[type="tel"] {
   justify-content: space-around;
 }
 
+.amount-input {
+  display: flex;
+  justify-content: center;
+  input {
+    min-width: 250px;
+  }
+}
+
 #root {
   height: 100%;
   width: 90%;

@@ -16,6 +16,7 @@ body {
   a,
   .link {
     color: var(--color-links);
+    text-decoration: none;
   }
 }
 
@@ -30,6 +31,20 @@ input[type="tel"] {
 
 .sat-symbol {
   margin-right: 4px;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 2rem auto;
+}
+
+.links {
+  margin: 4rem auto;
+  display: flex;
+  font-size: 1.5rem;
+  justify-content: space-around;
 }
 
 #root {
@@ -62,6 +77,7 @@ input[type="tel"] {
   display: flex;
   justify-content: space-between;
   .balance {
+    cursor: pointer;
     .title {
       text-align: center;
       margin-bottom: 0.5rem;

@@ -1,3 +1,4 @@
+import { history } from "store"
 import { translate } from "translate"
 
 const SatSymbol = () => (
@@ -14,9 +15,13 @@ const satsFormatter = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 0,
 })
 
+const navigateToHome = () => {
+  history.push("/")
+}
+
 const Balance = ({ balance }: { balance: number }) => {
   return (
-    <div className="balance">
+    <div className="balance" onClick={navigateToHome}>
       <div className="title">{translate("CurrentBalance")}</div>
       <div className="value">
         <div className="primary">

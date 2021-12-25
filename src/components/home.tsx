@@ -1,8 +1,8 @@
 import { useQuery } from "@apollo/client"
 
+import i18n from "translate"
 import QUERY_ME from "store/graphql/query.me"
 import useAuthToken from "store/use-auth-token"
-import i18n from "translate"
 
 import Header from "./header"
 

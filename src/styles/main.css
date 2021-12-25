@@ -28,6 +28,10 @@ input[type="tel"] {
   margin: 1rem;
 }
 
+.sat-symbol {
+  margin-right: 4px;
+}
+
 #root {
   height: 100%;
   width: 90%;
@@ -58,17 +62,20 @@ input[type="tel"] {
   display: flex;
   justify-content: space-between;
   .balance {
+    .title {
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+
     .value {
-      display: flex;
-      justify-content: center;
+      color: var(--color-secondary);
       .primary {
-        font-size: 1.25rem;
-        font-weight: bold;
+        font-size: 1.2rem;
+        text-align: center;
       }
       .secondary {
-        color: var(--color-secondary);
-        align-self: center;
-        margin: 0 0.3rem;
+        margin-top: 0.2rem;
+        text-align: center;
       }
     }
   }

@@ -93,6 +93,7 @@ input[type="tel"] {
 
     .value {
       color: var(--color-secondary);
+      text-align: center;
       .primary {
         font-size: 1.2rem;
         text-align: center;

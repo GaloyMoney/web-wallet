@@ -1,5 +1,7 @@
 import { history } from "store"
+import { useMyUpdates } from "store/use-my-updates"
 import { translate } from "translate"
+import Spinner from "./spinner"
 
 const SatSymbol = () => (
   <i aria-hidden className="fak fa-satoshisymbol-solidtilt sat-symbol" />
@@ -20,15 +22,25 @@ const navigateToHome = () => {
 }
 
 const Balance = ({ balance }: { balance: number }) => {
+  const { satsToUsd } = useMyUpdates()
+
   return (
     <div className="balance" onClick={navigateToHome}>
       <div className="title">{translate("CurrentBalance")}</div>
       <div className="value">
-        <div className="primary">
-          <SatSymbol />
-          {satsFormatter.format(balance)}
-        </div>
-        <div className="secondary">&#8776; {usdFormatter.format(0)}</div>
+        {Number.isNaN(balance) ? (
+          <Spinner />
+        ) : (
+          <div className="primary">
+            <SatSymbol />
+            {satsFormatter.format(balance)}
+          </div>
+        )}
+        {satsToUsd && (
+          <div className="secondary">
+            &#8776; {usdFormatter.format(satsToUsd(balance))}
+          </div>
+        )}
       </div>
     </div>
   )

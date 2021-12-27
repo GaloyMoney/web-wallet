@@ -13,14 +13,24 @@ const PriceCacheStore = (client: ApolloClient<unknown>) => ({
     client.writeQuery({ query: CACHED_DATA, data: { satPriceInCents: newPrice } }),
 })
 
-export const useMyUpdates = (): UseMyUpdates => {
+const satPriceInCents = (update: PriceData) => {
+  if (!update) {
+    return NaN
+  }
+  const { base, offset } = update
+  return base / 10 ** offset
+}
+
+export const useMyUpdates = (initialPrice: PriceData): UseMyUpdates => {
   const intraLedgerUpdate = useRef<IntraLedgerUpdate | null>(null)
   const lnUpdate = useRef<LnUpdate | null>(null)
   const onChainUpdate = useRef<OnChainUpdate | null>(null)
 
   const client = useApolloClient()
   const priceCacheStore = PriceCacheStore(client)
-  const cachedPrice = useRef(priceCacheStore.read() ?? NaN)
+  const cachedPrice = useRef(
+    satPriceInCents(initialPrice) ?? priceCacheStore.read() ?? NaN,
+  )
 
   const updatePriceCache = (newPrice: number): void => {
     if (cachedPrice.current !== newPrice) {
@@ -34,8 +44,7 @@ export const useMyUpdates = (): UseMyUpdates => {
   if (data?.myUpdates?.update) {
     const { type } = data.myUpdates.update
     if (type === "Price") {
-      const { base, offset } = data.myUpdates.update
-      updatePriceCache(base / 10 ** offset)
+      updatePriceCache(satPriceInCents(data.myUpdates.update))
     }
     if (type === "IntraLedgerUpdate") {
       intraLedgerUpdate.current = data.myUpdates.update

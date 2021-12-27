@@ -102,3 +102,10 @@ type UseMyUpdates = {
 }
 
 type SpinnerSize = "small" | "big"
+
+type PriceData = {
+  formattedAmount: string
+  base: number
+  offset: number
+  currencyUnit: string
+}

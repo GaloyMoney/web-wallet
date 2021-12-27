@@ -21,8 +21,13 @@ const navigateToHome = () => {
   history.push("/")
 }
 
-const Balance = ({ balance }: { balance: number }) => {
-  const { satsToUsd } = useMyUpdates()
+type Props = {
+  balance: number
+  initialPrice: PriceData
+}
+
+const Balance = ({ balance, initialPrice }: Props) => {
+  const { satsToUsd } = useMyUpdates(initialPrice)
 
   return (
     <div className="balance" onClick={navigateToHome}>

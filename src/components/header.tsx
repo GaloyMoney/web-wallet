@@ -37,7 +37,7 @@ const Header = () => {
 
   return (
     <div className="header">
-      <Balance balance={balance} />
+      <Balance balance={balance} initialPrice={data?.btcPrice} />
       {hasToken ? <Logout /> : <Link to="/login">{translate("Login")}</Link>}
     </div>
   )

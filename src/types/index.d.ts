@@ -4,6 +4,13 @@ type RoutePath = typeof import("../server/routes").SupportedRoutes[number]
 type RouteInfo = Record<string, string | (() => JSX.Element)>
 type AppRoutes = Record<RoutePath, RouteInfo>
 
+type PriceData = {
+  formattedAmount: string
+  base: number
+  offset: number
+  currencyUnit: string
+}
+
 type InitialState = {
   path: RoutePath
   authToken?: string
@@ -102,10 +109,3 @@ type UseMyUpdates = {
 }
 
 type SpinnerSize = "small" | "big"
-
-type PriceData = {
-  formattedAmount: string
-  base: number
-  offset: number
-  currencyUnit: string
-}

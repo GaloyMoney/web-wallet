@@ -23,11 +23,10 @@ const navigateToHome = () => {
 
 type Props = {
   balance: number
-  initialPrice: PriceData
 }
 
-const MyBalance = ({ balance, initialPrice }: Props) => {
-  const { satsToUsd } = useMyUpdates(initialPrice)
+const MyBalance = ({ balance }: Props) => {
+  const { satsToUsd } = useMyUpdates()
 
   return (
     <div className="balance" onClick={navigateToHome}>
@@ -51,7 +50,7 @@ const MyBalance = ({ balance, initialPrice }: Props) => {
   )
 }
 
-const Balance = ({ balance, initialPrice }: Props) => {
+const Balance = ({ balance }: Props) => {
   const { authToken } = useAppState()
 
   if (!authToken) {
@@ -68,7 +67,7 @@ const Balance = ({ balance, initialPrice }: Props) => {
     )
   }
 
-  return <MyBalance balance={balance} initialPrice={initialPrice} />
+  return <MyBalance balance={balance} />
 }
 
 export default Balance

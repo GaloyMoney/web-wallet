@@ -1,21 +1,8 @@
-import { history, useAppState } from "store"
+import { history, useAppState, satsFormatter, usdFormatter } from "store"
 import { useMyUpdates } from "store/use-my-updates"
 import { translate } from "translate"
+import SatSymbol from "./sat-symbol"
 import Spinner from "./spinner"
-
-const SatSymbol = () => (
-  <i aria-hidden className="fak fa-satoshisymbol-solidtilt sat-symbol" />
-)
-
-const usdFormatter = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  maximumFractionDigits: 2,
-})
-
-const satsFormatter = new Intl.NumberFormat("en-US", {
-  maximumFractionDigits: 0,
-})
 
 const navigateToHome = () => {
   history.push("/")

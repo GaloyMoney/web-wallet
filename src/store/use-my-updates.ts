@@ -31,7 +31,7 @@ export const useMyUpdates = (): UseMyUpdates => {
   const priceCacheStore = PriceCacheStore(client)
   const { btcPrice } = useMainQuery()
 
-  const cachedPrice = useRef(satPriceInCents(btcPrice) ?? priceCacheStore.read() ?? NaN)
+  const cachedPrice = useRef(priceCacheStore.read() ?? NaN)
 
   const updatePriceCache = (newPrice: number): void => {
     if (cachedPrice.current !== newPrice) {
@@ -41,6 +41,10 @@ export const useMyUpdates = (): UseMyUpdates => {
   }
 
   const { data } = useSubscription(SUBSCRIPTION_MY_UPDATES)
+
+  if (Number.isNaN(cachedPrice.current) && btcPrice) {
+    updatePriceCache(satPriceInCents(btcPrice))
+  }
 
   if (data?.myUpdates?.update) {
     const { type } = data.myUpdates.update

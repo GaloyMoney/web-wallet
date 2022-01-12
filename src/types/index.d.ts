@@ -99,3 +99,17 @@ type UseMyUpdates = {
 }
 
 type SpinnerSize = "small" | "big"
+
+type InvoiceInput = {
+  currency: "USD" | "SATS"
+
+  // undefined in input is used to indicate their changing state
+  amount?: number | ""
+  destination?: string
+  memo?: string
+
+  satAmount?: number // from price conversion
+  valid?: boolean // from parsing
+  fixedAmount?: boolean // if the invoice has amount
+  paymentRequset?: string // if payment is lightning
+}

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
 
 import config from "store/config"
-import { satsFormatter, usdFormatter } from "store"
+import { satsFormatter, usdFormatter, useAppDispatcher } from "store"
 import { useMyUpdates } from "store/use-my-updates"
 import { translate } from "translate"
 
@@ -15,23 +15,9 @@ import { parsePaymentDestination } from "galoy-client/src"
 import useMainQuery from "store/use-main-query"
 import SendAction from "./send-action"
 
-type InvoiceInput = {
-  currency: "USD" | "SATS"
-
-  // undefined in input is used to indicate their changing state
-  amount?: number | ""
-  destination?: string
-  memo?: string
-
-  satAmount?: number // from price conversion
-  valid?: boolean // from parsing
-  fixedAmount?: boolean // if the invoice has amount
-  paymentRequset?: string // if payment is lightning
-}
-
 const Send = () => {
+  const dispatch = useAppDispatcher()
   const { pubKey } = useMainQuery()
-
   const { satsToUsd, usdToSats } = useMyUpdates()
 
   const [input, setInput] = useState<InvoiceInput>({
@@ -181,17 +167,15 @@ const Send = () => {
     )
   }, [convertedValues])
 
+  const resetSendScreen = () => {
+    dispatch({ type: "reset-current-screen" })
+  }
+
   const inputValue = input.amount === undefined ? "" : input.amount.toString()
   const showSpinner =
     input.amount === undefined ||
     input.destination === undefined ||
     input.memo === undefined
-
-  const buttonDisplay = input.valid ? (
-    <SendAction paymentRequest={input.paymentRequset as string} memo={input.memo} />
-  ) : (
-    <button disabled>Enter amount and destination</button>
-  )
 
   return (
     <div className="send">
@@ -238,7 +222,11 @@ const Send = () => {
       </div>
       {conversionDisplay && <div className="amount-converted">{conversionDisplay}</div>}
       <div className="action-container center-display">
-        {showSpinner ? <Spinner size="big" /> : buttonDisplay}
+        {showSpinner ? (
+          <Spinner size="big" />
+        ) : (
+          <SendAction {...input} reset={resetSendScreen} />
+        )}
       </div>
     </div>
   )

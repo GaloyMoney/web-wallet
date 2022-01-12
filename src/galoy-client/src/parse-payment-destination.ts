@@ -61,9 +61,8 @@ export const parsePaymentDestination = ({
     .split(":")
     .map((value) => value.toLocaleLowerCase())
 
-  if (protocol === "https") {
-    const username = data.split("/").at(-1)
-    // TODO: validate username
+  if (protocol === "https" || protocol.match(/(?!^(1|3|bc1|lnbc1))^[0-9a-z_]{3,50}$/iu)) {
+    const username = protocol === "https" ? data.split("/").at(-1) : protocol
     return {
       valid: true,
       paymentType: "intraledger",

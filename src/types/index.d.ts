@@ -109,7 +109,11 @@ type InvoiceInput = {
   memo?: string
 
   satAmount?: number // from price conversion
+
   valid?: boolean // from parsing
+  paymentType?: "lightning" | "onchain" | "intraledger" | "lnurl"
+
   fixedAmount?: boolean // if the invoice has amount
   paymentRequset?: string // if payment is lightning
+  reciepientWalletId?: string // if payment is intraledger
 }

@@ -1,19 +1,18 @@
-import * as bolt11 from "bolt11"
+import bolt11 from "bolt11"
 import url from "url"
 import { networks, address } from "bitcoinjs-lib"
 
 import { getDescription, getDestination } from "./bolt11"
 
 export type Network = "bitcoin" | "testnet" | "regtest"
-export type PaymentType = "lightning" | "onchain" | "username" | "lnurl"
+export type PaymentType = "lightning" | "onchain" | "intraledger" | "lnurl"
 export interface ValidPaymentReponse {
   valid: boolean
   errorMessage?: string | undefined
-  invoice?: string | undefined // for lightning
+  paymentRequest?: string | undefined // for lightning
   address?: string | undefined // for bitcoin
   lnurl?: string | undefined // for lnurl
   amount?: number | undefined
-  amountless?: boolean | undefined
   memo?: string | undefined
   paymentType?: PaymentType
   sameNode?: boolean | undefined
@@ -58,106 +57,50 @@ export const parsePaymentDestination = ({
   }
 
   // input might start with 'lightning:', 'bitcoin:'
-  let [protocol, data] = destination.split(":")
-  let paymentType: PaymentType | undefined = undefined
-  let lnurl: string | undefined = undefined
+  const [protocol, data] = destination
+    .split(":")
+    .map((value) => value.toLocaleLowerCase())
 
-  if (protocol.toLowerCase() === "bitcoin") {
-    paymentType = "onchain"
-  } else if (protocol.toLowerCase() === "lightning") {
-    paymentType = "lightning"
-    // some apps encode lightning invoices in UPPERCASE
-    data = data.toLowerCase()
-  } else if (
-    (protocol && protocol.toLowerCase().startsWith("lnurl")) ||
-    (data && data.toLowerCase().startsWith("lnurl"))
-  ) {
-    paymentType = "lnurl"
-    lnurl = protocol || data
+  if (protocol === "https") {
+    const username = data.split("/").at(-1)
+    // TODO: validate username
+    return {
+      valid: true,
+      paymentType: "intraledger",
+      username,
+    }
+  }
 
-    // no protocol. let's see if this could have an address directly
-  } else if (protocol.toLowerCase().startsWith("ln")) {
-    // possibly a lightning address?
-    paymentType = "lightning"
+  const destinationText = data ?? protocol
 
-    if (network === "testnet" && protocol.toLowerCase().startsWith("lnbc")) {
+  if (destinationText.startsWith("lnurl")) {
+    return {
+      valid: true,
+      paymentType: "lnurl",
+      lnurl: destinationText,
+    }
+  }
+
+  if (protocol === "lightning" || destinationText.startsWith("ln")) {
+    if (network === "testnet" && protocol.startsWith("lnbc")) {
       return {
         valid: false,
-        paymentType,
+        paymentType: "lightning",
         errorMessage: "This is a mainnet invoice. The wallet is on testnet",
       }
     }
 
-    if (network === "bitcoin" && protocol.toLowerCase().startsWith("lntb")) {
+    if (network === "bitcoin" && protocol.startsWith("lntb")) {
       return {
         valid: false,
-        paymentType,
+        paymentType: "lightning",
         errorMessage: "This is a testnet invoice. The wallet is on mainnet",
       }
     }
 
-    // some apps encode lightning invoices in UPPERCASE
-    data = protocol.toLowerCase()
-  } else if (protocol.toLowerCase() === "https") {
-    const domain = "//ln.bitcoinbeach.com/"
-    if (data.startsWith(domain)) {
-      return {
-        valid: true,
-        paymentType: "username",
-        username: data.substring(domain.length),
-      }
-    }
-  } else {
-    // no schema
-    data = protocol
-  }
-
-  if (paymentType === "onchain" || paymentType === undefined) {
-    try {
-      const decodedData = url.parse(data, true)
-      let path = decodedData.pathname // using url node library. the address is exposed as the "host" here
-      if (!path) {
-        throw new Error("Missing pathname in decoded data")
-      }
-      // some apps encode bech32 addresses in UPPERCASE
-      const lowerCasePath = path.toLowerCase()
-      if (
-        lowerCasePath.startsWith("bc1") ||
-        lowerCasePath.startsWith("tb1") ||
-        lowerCasePath.startsWith("bcrt1")
-      ) {
-        path = lowerCasePath
-      }
-
-      let amount: number | undefined = undefined
-
-      try {
-        if (!decodedData?.query?.amount || Array.isArray(decodedData?.query?.amount)) {
-          throw new Error("Invaild amount in decoded data")
-        }
-        amount = parseAmount(decodedData.query.amount)
-      } catch (err) {
-        console.error(`can't decode amount ${err}`)
-      }
-
-      // will throw if address is not valid
-      address.toOutputScript(path, networks[network])
-      paymentType = "onchain"
-      return {
-        valid: true,
-        paymentType,
-        address: path,
-        amount,
-        amountless: !amount,
-      }
-    } catch (err) {
-      console.error(`issue with payment ${err}`)
-      return { valid: false }
-    }
-  } else if (paymentType === "lightning") {
     let payReq: bolt11.PaymentRequestObject | undefined = undefined
     try {
-      payReq = bolt11.decode(data)
+      payReq = bolt11.decode(destinationText)
     } catch (err) {
       console.error(err)
       return { valid: false }
@@ -167,33 +110,72 @@ export const parsePaymentDestination = ({
     const amount =
       payReq.satoshis || payReq.millisatoshis
         ? payReq.satoshis ?? Number(payReq.millisatoshis) / 1000
-        : NaN
+        : undefined
 
     if (lightningInvoiceHasExpired(payReq)) {
-      return { valid: false, errorMessage: "invoice has expired", paymentType }
+      return {
+        valid: false,
+        errorMessage: "invoice has expired",
+        paymentType: "lightning",
+      }
     }
 
     const memo = getDescription(payReq)
     return {
       valid: true,
-      invoice: data,
+      paymentRequest: destinationText,
       amount,
       memo,
-      paymentType,
+      paymentType: "lightning",
       sameNode,
     }
   }
 
-  if (paymentType === "lnurl") {
+  // No payment type detected, assume a bitcoin onchain address
+
+  try {
+    const decodedData = url.parse(destinationText, true)
+    let path = decodedData.pathname // using url node library. the address is exposed as the "host" here
+    if (!path) {
+      throw new Error("Missing pathname in decoded destination")
+    }
+    // some apps encode bech32 addresses in UPPERCASE
+    const lowerCasePath = path.toLowerCase()
+    if (
+      lowerCasePath.startsWith("bc1") ||
+      lowerCasePath.startsWith("tb1") ||
+      lowerCasePath.startsWith("bcrt1")
+    ) {
+      path = lowerCasePath
+    }
+
+    let amount: number | undefined = undefined
+
+    try {
+      amount = decodedData?.query?.amount
+        ? parseAmount(decodedData.query.amount as string)
+        : undefined
+    } catch (err) {
+      console.error(`can't decode amount ${err}`)
+      return {
+        valid: false,
+        errorMessage: "Invalid amount in destination",
+      }
+    }
+
+    // will throw if address is not valid
+    address.toOutputScript(path, networks[network])
     return {
       valid: true,
-      lnurl,
-      amountless: false,
+      paymentType: "onchain",
+      address: path,
+      amount,
     }
-  }
-
-  return {
-    valid: false,
-    errorMessage: "We are unable to detect an invoice or payment address",
+  } catch (err) {
+    console.error(`issue with payment ${err}`)
+    return {
+      valid: false,
+      errorMessage: "We are unable to detect an invoice or payment address",
+    }
   }
 }

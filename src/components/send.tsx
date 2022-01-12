@@ -1,26 +1,244 @@
-import { useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 
+import config from "store/config"
+import { satsFormatter, usdFormatter } from "store"
+import { useMyUpdates } from "store/use-my-updates"
 import { translate } from "translate"
 
 import FormattedNumberInput, { OnNumberValueChange } from "./formatted-number-input"
 import Header from "./header"
+import SatSymbol from "./sat-symbol"
+import Spinner from "./spinner"
+import DebouncedTextarea, { OnTextValueChange } from "./debounced-textarea"
+import DebouncedInput from "./debounced-input"
+import { parsePaymentDestination } from "galoy-client/src"
+import useMainQuery from "store/use-main-query"
+import SendAction from "./send-action"
+
+type InvoiceInput = {
+  currency: "USD" | "SATS"
+
+  // undefined in input is used to indicate their changing state
+  amount?: number | ""
+  destination?: string
+  memo?: string
+
+  satAmount?: number // from price conversion
+  valid?: boolean // from parsing
+  fixedAmount?: boolean // if the invoice has amount
+  paymentRequset?: string // if payment is lightning
+}
 
 const Send = () => {
-  const [amount, setAmount] = useState<number | "">("")
-  const handleAmountUpdate: OnNumberValueChange = (numberValue) => {
-    setAmount(numberValue)
-  }
+  const { pubKey } = useMainQuery()
+
+  const { satsToUsd, usdToSats } = useMyUpdates()
+
+  const [input, setInput] = useState<InvoiceInput>({
+    currency: "USD",
+    amount: "",
+    destination: "",
+    memo: "",
+  })
+
+  useEffect(() => {
+    if (usdToSats && input.currency === "USD" && typeof input.amount === "number") {
+      setInput((currInput) => ({
+        ...currInput,
+        satAmount: Math.round(usdToSats(input.amount as number)),
+      }))
+    }
+  }, [input.amount, input.currency, usdToSats])
+
+  useEffect(() => {
+    if (input.currency === "SATS" && typeof input.amount === "number") {
+      setInput((currInput) => ({
+        ...currInput,
+        satAmount: input.amount as number,
+      }))
+    }
+  }, [input.amount, input.currency])
+
+  useEffect(() => {
+    if (input.destination !== undefined) {
+      const parsedDestination = parsePaymentDestination({
+        destination: input.destination,
+        network: config.network,
+        pubKey,
+      })
+      const fixedAmount = parsedDestination.amount !== undefined
+
+      setInput((currInput) => ({
+        ...currInput,
+        valid: parsedDestination.valid,
+
+        fixedAmount,
+        amount: fixedAmount ? parsedDestination.amount : currInput.amount,
+        currency: fixedAmount ? "SATS" : currInput.currency,
+
+        paymentRequset: parsedDestination.paymentRequest,
+      }))
+    }
+  }, [input.destination, pubKey])
+
+  const handleAmountUpdate: OnNumberValueChange = useCallback(() => {
+    setInput((currInput) => ({ ...currInput, amount: undefined }))
+  }, [])
+
+  const handleDebouncedAmountUpdate: OnNumberValueChange = useCallback(
+    (debouncedAmount) => {
+      setInput((currInput) => ({ ...currInput, amount: debouncedAmount }))
+    },
+    [],
+  )
+
+  const handleMemoUpdate: OnTextValueChange = useCallback(() => {
+    setInput((currInput) => ({ ...currInput, memo: undefined }))
+  }, [])
+
+  const handleDebouncedMemoUpdate: OnTextValueChange = useCallback((debouncedMemo) => {
+    setInput((currInput) => ({ ...currInput, memo: debouncedMemo }))
+  }, [])
+
+  const handleDestinationUpdate: OnTextValueChange = useCallback(() => {
+    setInput((currInput) => ({ ...currInput, destination: undefined }))
+  }, [])
+
+  const handleDebouncedDestinationUpdate: OnTextValueChange = useCallback(
+    (debouncedDestination) => {
+      setInput((currInput) => ({ ...currInput, destination: debouncedDestination }))
+    },
+    [],
+  )
+
+  const toggleCurrency = useCallback(() => {
+    if (!satsToUsd) {
+      // Handle Price Error
+      return
+    }
+    setInput((currInput) => {
+      const newCurrency = currInput.currency === "SATS" ? "USD" : "SATS"
+      let newAmount: number | "" = ""
+
+      if (currInput.currency === "SATS" && currInput.amount) {
+        newAmount = satsToUsd(currInput.amount)
+      }
+
+      if (currInput.currency === "USD" && currInput.satAmount) {
+        newAmount = currInput.satAmount
+      }
+
+      return {
+        ...currInput,
+        currency: newCurrency,
+        amount: newAmount,
+      }
+    })
+  }, [satsToUsd])
+
+  const convertedValues = useMemo(() => {
+    if (!usdToSats || !satsToUsd || !input.amount) {
+      return null
+    }
+
+    if (input.currency === "SATS") {
+      return {
+        usd: satsToUsd(input.amount),
+      }
+    }
+
+    const satsForConversion = input.satAmount || usdToSats(input.amount)
+
+    return {
+      sats: satsForConversion,
+      usd: satsToUsd(satsForConversion),
+    }
+  }, [input.amount, input.currency, input.satAmount, satsToUsd, usdToSats])
+
+  const conversionDisplay = useMemo(() => {
+    if (!convertedValues) {
+      return null
+    }
+
+    if (!convertedValues.sats) {
+      return (
+        <div className="converted-usd">
+          &#8776; {usdFormatter.format(convertedValues.usd)}
+        </div>
+      )
+    }
+
+    return (
+      <>
+        <div className="converted-sats">
+          <SatSymbol />
+          {satsFormatter.format(convertedValues.sats)}
+        </div>
+        <div className="converted-usd small">
+          &#8776; {usdFormatter.format(convertedValues.usd)}
+        </div>
+      </>
+    )
+  }, [convertedValues])
+
+  const inputValue = input.amount === undefined ? "" : input.amount.toString()
+  const showSpinner =
+    input.amount === undefined ||
+    input.destination === undefined ||
+    input.memo === undefined
+
+  const buttonDisplay = input.valid ? (
+    <SendAction paymentRequest={input.paymentRequset as string} memo={input.memo} />
+  ) : (
+    <button disabled>Enter amount and destination</button>
+  )
+
   return (
     <div className="send">
       <Header />
-      <div className="page-title">{translate("Send Bitcoin")}</div>
-
-      <div className="amount-input">
+      <div className="page-title">{translate("Send Bitcoin")}</div>{" "}
+      <div className="amount-input center-display">
+        <div className="currency-label">
+          {input.currency === "SATS" ? <SatSymbol /> : "$"}
+        </div>
         <FormattedNumberInput
-          key={"wip"}
-          value={amount.toString()}
+          key={input.currency}
+          value={inputValue}
           onChange={handleAmountUpdate}
+          onDebouncedChange={handleDebouncedAmountUpdate}
+          disabled={input.fixedAmount}
+          autoComplete="off"
+          placeholder={translate("Set value to send in %{currency}", {
+            currency: input.currency,
+          })}
         />
+        {!input.fixedAmount && (
+          <div className="toggle-currency link" onClick={toggleCurrency}>
+            &#8645;
+          </div>
+        )}
+      </div>
+      <div className="destination-input center-display">
+        <DebouncedInput
+          onChange={handleDestinationUpdate}
+          onDebouncedChange={handleDebouncedDestinationUpdate}
+          name="destination"
+          autoComplete="off"
+          placeholder={translate("username or invoice")}
+        />
+      </div>
+      <div className="note-input center-display">
+        <DebouncedTextarea
+          onChange={handleMemoUpdate}
+          onDebouncedChange={handleDebouncedMemoUpdate}
+          name="memo"
+          rows={3}
+          placeholder={translate("Set a note for the receiver here (optional)")}
+        />
+      </div>
+      {conversionDisplay && <div className="amount-converted">{conversionDisplay}</div>}
+      <div className="action-container center-display">
+        {showSpinner ? <Spinner size="big" /> : buttonDisplay}
       </div>
     </div>
   )

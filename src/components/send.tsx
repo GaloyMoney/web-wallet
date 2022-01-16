@@ -61,6 +61,7 @@ const Send = () => {
 
         const newInputState: Partial<InvoiceInput> = {
           valid: parsedDestination.valid,
+          errorMessage: parsedDestination.errorMessage,
           paymentType: parsedDestination.paymentType,
           fixedAmount: parsedDestination.amount !== undefined,
           paymentRequset: parsedDestination.paymentRequest,

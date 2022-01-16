@@ -111,6 +111,7 @@ type InvoiceInput = {
   satAmount?: number // from price conversion
 
   valid?: boolean // from parsing
+  errorMessage?: string
   paymentType?: "lightning" | "onchain" | "intraledger" | "lnurl"
 
   fixedAmount?: boolean // if the invoice has amount

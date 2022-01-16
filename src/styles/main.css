@@ -127,7 +127,11 @@ input[type="tel"] {
 .error-fallback {
   display: block;
   margin: 20% auto;
+  padding: 5%;
   text-align: center;
+  pre {
+    white-space: pre-wrap;
+  }
 }
 
 .separator {

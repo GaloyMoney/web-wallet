@@ -148,6 +148,10 @@ const SendIntraLedger = (props: SendActionProps) => {
 }
 
 const SendAction = (props: SendActionProps) => {
+  if (props.errorMessage) {
+    return <div className="error">{props.errorMessage}</div>
+  }
+
   const validInput =
     props.valid &&
     (props.fixedAmount || typeof props.amount === "number") &&

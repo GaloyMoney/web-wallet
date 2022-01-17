@@ -68,9 +68,9 @@ const Send = () => {
         }
 
         if (parsedDestination.paymentType === "intraledger") {
-          // Validate username (and get their default wallet id)
+          // Validate account handle (and get the default wallet id for account)
           const { data, error } = await userDefaultWalletIdQuery({
-            username: parsedDestination.username,
+            username: parsedDestination.handle,
           })
           if (error) {
             // TODO: show error in UI

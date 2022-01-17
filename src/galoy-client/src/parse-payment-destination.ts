@@ -9,14 +9,16 @@ export type PaymentType = "lightning" | "onchain" | "intraledger" | "lnurl"
 export interface ValidPaymentReponse {
   valid: boolean
   errorMessage?: string | undefined
+
   paymentRequest?: string | undefined // for lightning
   address?: string | undefined // for bitcoin
   lnurl?: string | undefined // for lnurl
+  handle?: string | undefined // for intraledger
+
   amount?: number | undefined
   memo?: string | undefined
   paymentType?: PaymentType
   sameNode?: boolean | undefined
-  username?: string | undefined
 }
 
 export const lightningInvoiceHasExpired = (
@@ -47,8 +49,6 @@ type ParsePaymentDestinationArgs = {
   pubKey: string
 }
 
-const usernameRegex = /(?!^(1|3|bc1|lnbc1))^[0-9a-z_]{3,50}$/iu
-
 export const parsePaymentDestination = ({
   destination,
   network,
@@ -65,15 +65,6 @@ export const parsePaymentDestination = ({
 
   const destinationText = data ?? protocol
 
-  if (protocol === "https" || protocol.match(usernameRegex)) {
-    const username = protocol === "https" ? data.split("/").at(-1) : protocol
-    return {
-      valid: true,
-      paymentType: "intraledger",
-      username,
-    }
-  }
-
   if (destinationText.startsWith("lnurl")) {
     return {
       valid: true,
@@ -82,7 +73,7 @@ export const parsePaymentDestination = ({
     }
   }
 
-  if (protocol === "lightning" || destinationText.startsWith("ln")) {
+  if (protocol === "lightning" || destinationText.match(/^ln(bc|tb)/iu)) {
     if (
       (network === "mainnet" && !protocol.startsWith("lnbc")) ||
       (network === "testnet" && !protocol.startsWith("lntb")) ||
@@ -128,46 +119,52 @@ export const parsePaymentDestination = ({
     }
   }
 
-  // No payment type detected, assume a bitcoin onchain address
-
-  try {
-    const decodedData = url.parse(destinationText, true)
-    // using url node library. the address is exposed as the "host" here
-    // some apps encode addresses in UPPERCASE
-    const path = decodedData?.pathname?.toLocaleLowerCase()
-    if (!path) {
-      throw new Error("No address detected in decoded destination")
-    }
-
-    // TODO: should we do this check?
-    // (path.startsWith("bc1") || path.startsWith("tb1") || path.startsWith("bcrt1"))
-
-    let amount: number | undefined = undefined
+  if (protocol === "onchain" || destinationText.match(/^(1|3|bc1|tb1|bcrt1)/iu)) {
     try {
-      amount = decodedData?.query?.amount
-        ? parseAmount(decodedData.query.amount as string)
-        : undefined
+      const decodedData = url.parse(destinationText, true)
+
+      // some apps encode addresses in UPPERCASE
+      const path = decodedData?.pathname?.toLocaleLowerCase()
+      if (!path) {
+        throw new Error("No address detected in decoded destination")
+      }
+
+      let amount: number | undefined = undefined
+      try {
+        amount = decodedData?.query?.amount
+          ? parseAmount(decodedData.query.amount as string)
+          : undefined
+      } catch (err) {
+        console.error(`can't decode amount ${err}`)
+        return {
+          valid: false,
+          errorMessage: "Invalid amount in destination",
+        }
+      }
+
+      // will throw if address is not valid
+      address.toOutputScript(path, networks[network === "mainnet" ? "bitcoin" : network])
+      return {
+        valid: true,
+        paymentType: "onchain",
+        address: path,
+        amount,
+      }
     } catch (err) {
-      console.error(`can't decode amount ${err}`)
+      console.error(`issue with payment destination: ${err}`)
       return {
         valid: false,
-        errorMessage: "Invalid amount in destination",
+        errorMessage: "Invalid bitcoin address",
       }
     }
+  }
 
-    // will throw if address is not valid
-    address.toOutputScript(path, networks[network === "mainnet" ? "bitcoin" : network])
-    return {
-      valid: true,
-      paymentType: "onchain",
-      address: path,
-      amount,
-    }
-  } catch (err) {
-    console.error(`issue with payment destination: ${err}`)
-    return {
-      valid: false,
-      errorMessage: "We are unable to detect an invoice or payment address",
-    }
+  // No payment type detected, assume intraledger
+
+  const handle = protocol.match(/^(http|\/\/)/iu) ? data.split("/").at(-1) : protocol
+  return {
+    valid: true,
+    paymentType: "intraledger",
+    handle,
   }
 }

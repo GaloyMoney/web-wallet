@@ -142,6 +142,24 @@ input[type="tel"] {
   height: 100%;
 }
 
+.tabs {
+  max-width: 400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  .tab {
+    border: thin solid var(--color-gray);
+    padding: 0.5rem;
+    width: 50%;
+    text-align: center;
+  }
+  .active {
+    background-color: var(--color-active-bg);
+    font-weight: bold;
+  }
+}
+
 #main-container {
   height: 100%;
   width: 90%;
@@ -210,12 +228,12 @@ input[type="tel"] {
   }
 }
 
-.invoice-payment-request {
+.payment-destination-code {
   color: var(--color-gray);
   font-size: 0.75rem;
 }
 
-.click-or-scan {
+.copy-message {
   font-size: 0.8rem;
   margin-top: 1rem;
 }

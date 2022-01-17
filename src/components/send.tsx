@@ -72,8 +72,9 @@ const Send = () => {
           const { data, error } = await userDefaultWalletIdQuery({
             username: parsedDestination.handle,
           })
+
           if (error) {
-            // TODO: show error in UI
+            newInputState.errorMessage = error?.message || "Invaild username"
             console.error(error)
           } else {
             newInputState.reciepientWalletId = data?.userDefaultWalletId

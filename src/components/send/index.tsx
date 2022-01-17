@@ -5,12 +5,12 @@ import { satsFormatter, usdFormatter, useAppDispatcher } from "store"
 import { useMyUpdates } from "store/use-my-updates"
 import { translate } from "translate"
 
-import FormattedNumberInput, { OnNumberValueChange } from "./formatted-number-input"
-import Header from "./header"
-import SatSymbol from "./sat-symbol"
-import Spinner from "./spinner"
-import DebouncedTextarea, { OnTextValueChange } from "./debounced-textarea"
-import DebouncedInput from "./debounced-input"
+import FormattedNumberInput, { OnNumberValueChange } from "../formatted-number-input"
+import Header from "../header"
+import SatSymbol from "../sat-symbol"
+import Spinner from "../spinner"
+import DebouncedTextarea, { OnTextValueChange } from "../debounced-textarea"
+import DebouncedInput from "../debounced-input"
 import { parsePaymentDestination } from "galoy-client/src"
 import useMainQuery from "store/use-main-query"
 import SendAction from "./send-action"
@@ -63,6 +63,7 @@ const Send = () => {
           valid: parsedDestination.valid,
           errorMessage: parsedDestination.errorMessage,
           paymentType: parsedDestination.paymentType,
+          sameNode: parsedDestination.sameNode,
           fixedAmount: parsedDestination.amount !== undefined,
           paymentRequset: parsedDestination.paymentRequest,
           address: parsedDestination.address,

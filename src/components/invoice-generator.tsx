@@ -53,9 +53,10 @@ const AmountInvoiceGenerator = ({
 
   const timerIds = useRef<number[]>([])
 
-  const [createInvoice, { loading, error, data }] = useMutation<{
-    lnInvoiceCreate: GraphQL.LnInvoicePayload
-  }>(MUTATION_LN_INVOICE_CREATE, {
+  const [createInvoice, { loading, error, data }] = useMutation<
+    { lnInvoiceCreate: GraphQL.LnInvoicePayload },
+    { input: GraphQL.LnInvoiceCreateInput }
+  >(MUTATION_LN_INVOICE_CREATE, {
     onError: console.error,
     onCompleted: () => setInvoiceStatus("new"),
   })
@@ -136,9 +137,10 @@ const NoAmountInvoiceGenerator = ({ btcWalletId, regenerate, memo }: NoInvoicePr
 
   const timerIds = useRef<number[]>([])
 
-  const [createInvoice, { loading, error, data }] = useMutation<{
-    lnNoAmountInvoiceCreate: GraphQL.LnNoAmountInvoicePayload
-  }>(MUTATION_LN_NO_AMOUNT_INVOICE_CREATE, {
+  const [createInvoice, { loading, error, data }] = useMutation<
+    { lnNoAmountInvoiceCreate: GraphQL.LnNoAmountInvoicePayload },
+    { input: GraphQL.LnNoAmountInvoiceCreateInput }
+  >(MUTATION_LN_NO_AMOUNT_INVOICE_CREATE, {
     onError: console.error,
     onCompleted: () => setInvoiceStatus("new"),
   })

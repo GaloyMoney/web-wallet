@@ -114,8 +114,14 @@ type InvoiceInput = {
   errorMessage?: string
   paymentType?: "lightning" | "onchain" | "intraledger" | "lnurl"
 
+  sameNode?: boolean
   fixedAmount?: boolean // if the invoice has amount
   paymentRequset?: string // if payment is lightning
   address?: string // if payment is onchain
   reciepientWalletId?: string // if payment is intraledger
+}
+
+type SendActionProps = InvoiceInput & {
+  btcWalletId: string
+  reset: () => void
 }

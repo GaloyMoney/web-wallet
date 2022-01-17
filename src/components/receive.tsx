@@ -35,9 +35,10 @@ const Receive = () => {
     memo: "",
   })
 
-  const [generateBtcAddress, { loading, error, data }] = useMutation<{
-    onChainAddressCurrent: GraphQL.OnChainAddressPayload
-  }>(ON_CHAIN_AODDRESS_CURRENT, {
+  const [generateBtcAddress, { loading, error, data }] = useMutation<
+    { onChainAddressCurrent: GraphQL.OnChainAddressPayload },
+    { input: GraphQL.OnChainAddressCreateInput }
+  >(ON_CHAIN_AODDRESS_CURRENT, {
     onError: console.error,
   })
 

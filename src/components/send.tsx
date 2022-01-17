@@ -19,7 +19,7 @@ import useDelayedQuery from "store/use-delayed-query"
 
 const Send = () => {
   const dispatch = useAppDispatcher()
-  const { pubKey } = useMainQuery()
+  const { pubKey, btcWalletId } = useMainQuery()
   const { satsToUsd, usdToSats } = useMyUpdates()
 
   const [input, setInput] = useState<InvoiceInput>({
@@ -65,6 +65,7 @@ const Send = () => {
           paymentType: parsedDestination.paymentType,
           fixedAmount: parsedDestination.amount !== undefined,
           paymentRequset: parsedDestination.paymentRequest,
+          address: parsedDestination.address,
         }
 
         if (parsedDestination.paymentType === "intraledger") {
@@ -251,7 +252,7 @@ const Send = () => {
         {showSpinner ? (
           <Spinner size="big" />
         ) : (
-          <SendAction {...input} reset={resetSendScreen} />
+          <SendAction {...input} btcWalletId={btcWalletId} reset={resetSendScreen} />
         )}
       </div>
     </div>

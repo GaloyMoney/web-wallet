@@ -32,7 +32,7 @@ app.use(
 app.use(
   cookieSession({
     name: "session",
-    keys: [config.sessionKeys],
+    keys: [config.sessionKeys as string],
     secure: !config.isDev,
     maxAge: 7 * 24 * 60 * 60 * 1000,
   }),
@@ -59,6 +59,6 @@ if (config.isDev) {
 app.use("/api", apiRouter)
 app.use("/", ssrRouter)
 
-app.listen(config.port, config.host, () => {
+app.listen(config.port as number, config.host as string, () => {
   console.info(`Running on ${config.host}:${config.port}...`)
 })

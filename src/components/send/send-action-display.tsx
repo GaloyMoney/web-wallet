@@ -58,7 +58,7 @@ const SendActionDisplay = ({
         </div>
       ) : (
         <>
-          <FeeDisplay satAmount={feeSatAmount} />
+          {feeSatAmount ?? <FeeDisplay satAmount={feeSatAmount} />}
           <button onClick={handleSend} disabled={loading}>
             Send {loading && <Spinner size="small" />}
           </button>

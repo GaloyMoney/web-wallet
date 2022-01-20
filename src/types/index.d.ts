@@ -73,31 +73,13 @@ type CachedData = {
   satPriceInCents: number
 }
 
-type IntraLedgerUpdate = {
-  txNotificationType: string
-  amount: number
-  usdPerSat: number
-}
-
-type LnUpdate = {
-  paymentHash: string
-  status: string
-}
-
-type OnChainUpdate = {
-  txNotificationType: string
-  txHash: string
-  amount: number
-  usdPerSat: number
-}
-
 type UseMyUpdates = {
   satsToUsd: ((sats: number) => number) | null
   usdToSats: ((usd: number) => number) | null
   currentBalance: number | null
-  intraLedgerUpdate: IntraLedgerUpdate | null
-  lnUpdate: LnUpdate | null
-  onChainUpdate: OnChainUpdate | null
+  intraLedgerUpdate: GraphQL.IntraLedgerUpdate | null
+  lnUpdate: GraphQL.LnUpdate | null
+  onChainUpdate: GraphQL.OnChainUpdate | null
 }
 
 type SpinnerSize = "small" | "big"

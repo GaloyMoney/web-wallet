@@ -12,41 +12,42 @@ type Scalars = {
   Int: number;
   Float: number;
   /** Identifier of an account api key */
-  AccountApiKeyLabel: any;
+  AccountApiKeyLabel: string;
   /** An authentication code valid for a single use */
-  AuthToken: any;
+  AuthToken: string;
   /** An alias name that a user can set for a wallet (with which they have transactions) */
-  ContactAlias: any;
+  ContactAlias: string;
   /** Hex-encoded string of 32 bytes */
-  Hex32Bytes: any;
-  Language: any;
+  Hex32Bytes: string;
+  Language: string;
+  LnPaymentPreImage: string;
   /** BOLT11 lightning invoice payment request with the amount included */
-  LnPaymentRequest: any;
-  LnPaymentSecret: any;
+  LnPaymentRequest: string;
+  LnPaymentSecret: string;
   /** Text field in a lightning payment transaction */
-  Memo: any;
+  Memo: string;
   /** An address for an on-chain bitcoin destination */
-  OnChainAddress: any;
-  OnChainTxHash: any;
+  OnChainAddress: string;
+  OnChainTxHash: string;
   /** An authentication code valid for a single use */
-  OneTimeAuthCode: any;
-  PaymentHash: any;
+  OneTimeAuthCode: string;
+  PaymentHash: string;
   /** Phone number which includes country code */
-  Phone: any;
+  Phone: string;
   /** Non-fractional signed whole numeric value between -(2^53) + 1 and 2^53 - 1 */
-  SafeInt: any;
+  SafeInt: number;
   /** (Positive) Satoshi amount (i.g. quiz earning) */
-  SatAmount: any;
+  SatAmount: number;
   /** An amount (of a currency) that can be negative (i.g. in a transaction) */
-  SignedAmount: any;
+  SignedAmount: number;
   /** (Positive) Number of blocks in which the transaction is expected to be confirmed */
-  TargetConfirmations: any;
+  TargetConfirmations: number;
   /** Timestamp field, serialized as Unix time (the number of seconds since the Unix epoch) */
-  Timestamp: any;
+  Timestamp: number;
   /** Unique identifier of a user */
-  Username: any;
+  Username: string;
   /** Unique identifier of a wallet */
-  WalletId: any;
+  WalletId: string;
 };
 
 type Account = {
@@ -112,6 +113,13 @@ type BtcWalletTransactionsArgs = {
   last?: InputMaybe<Scalars['Int']>;
 };
 
+type BuildInformation = {
+  __typename?: 'BuildInformation';
+  buildTime?: Maybe<Scalars['Timestamp']>;
+  commitHash?: Maybe<Scalars['String']>;
+  helmRevision?: Maybe<Scalars['Int']>;
+};
+
 type CaptchaCreateChallengePayload = {
   __typename?: 'CaptchaCreateChallengePayload';
   errors: Array<Error>;
@@ -135,6 +143,7 @@ type CaptchaRequestAuthCodeInput = {
 
 type ConsumerAccount = Account & {
   __typename?: 'ConsumerAccount';
+  /** return CSV stream, base64 encoded, of the list of transactions in the wallet */
   csvTransactions: Scalars['String'];
   defaultWalletId: Scalars['WalletId'];
   id: Scalars['ID'];
@@ -168,6 +177,7 @@ type ExchangeCurrencyUnit =
 /** Provides global settings for the application which might have an impact for the user. */
 type Globals = {
   __typename?: 'Globals';
+  buildInformation: BuildInformation;
   /**
    * A list of public keys for the running lightning nodes.
    * This can be used to know if an invoice belongs to one of our nodes.
@@ -218,6 +228,7 @@ type IntraLedgerUpdate = {
   amount: Scalars['SatAmount'];
   txNotificationType: TxNotificationType;
   usdPerSat: Scalars['Float'];
+  walletId: Scalars['WalletId'];
 };
 
 type InvoicePaymentStatus =
@@ -312,6 +323,7 @@ type LnUpdate = {
   __typename?: 'LnUpdate';
   paymentHash: Scalars['PaymentHash'];
   status: InvoicePaymentStatus;
+  walletId: Scalars['WalletId'];
 };
 
 type MapInfo = {
@@ -356,11 +368,13 @@ type Mutation = {
   twoFADelete: SuccessPayload;
   twoFAGenerate: TwoFaGeneratePayload;
   twoFASave: SuccessPayload;
+  /** @deprecated will be moved to AccountContact */
   userContactUpdateAlias: UserContactUpdateAliasPayload;
   userLogin: AuthTokenPayload;
   userQuizQuestionUpdateCompleted: UserQuizQuestionUpdateCompletedPayload;
   userRequestAuthCode: SuccessPayload;
   userUpdateLanguage: UserUpdateLanguagePayload;
+  /** @deprecated Username will be moved to @Handle in Accounts. Also SetUsername should be used instead of UpdateUsername to reflect the idempotency of Handles */
   userUpdateUsername: UserUpdateUsernamePayload;
 };
 
@@ -537,6 +551,7 @@ type OnChainUpdate = {
   txHash: Scalars['OnChainTxHash'];
   txNotificationType: TxNotificationType;
   usdPerSat: Scalars['Float'];
+  walletId: Scalars['WalletId'];
 };
 
 /** Information about pagination in a connection. */
@@ -561,7 +576,7 @@ type PaymentError = Error & {
 
 type PaymentErrorCode =
   | 'ACCOUNT_LOCKED'
-  | 'INSUFFICENT_BALANCE'
+  | 'INSUFFICIENT_BALANCE'
   | 'INVOICE_PAID'
   | 'LIMIT_EXCEEDED'
   | 'NO_LIQUIDITY'
@@ -618,6 +633,7 @@ type PricePoint = {
 type Query = {
   __typename?: 'Query';
   accountApiKeys?: Maybe<Array<Maybe<AccountApiKeyHashed>>>;
+  btcPrice?: Maybe<Price>;
   btcPriceList?: Maybe<Array<Maybe<PricePoint>>>;
   businessMapMarkers?: Maybe<Array<Maybe<MapMarker>>>;
   globals?: Maybe<Globals>;
@@ -676,7 +692,9 @@ type SettlementViaIntraLedger = {
 
 type SettlementViaLn = {
   __typename?: 'SettlementViaLn';
+  /** @deprecated Shifting property to 'preImage' to improve granularity of the LnPaymentSecret type */
   paymentSecret?: Maybe<Scalars['LnPaymentSecret']>;
+  preImage?: Maybe<Scalars['LnPaymentPreImage']>;
 };
 
 type SettlementViaOnChain = {
@@ -798,6 +816,7 @@ type User = {
   /**
    * Get full list of contacts.
    * Can include the transactions associated with each contact.
+   * @deprecated will be moved to account
    */
   contacts: Array<UserContact>;
   createdAt: Scalars['Timestamp'];
@@ -813,7 +832,10 @@ type User = {
   /** List the quiz questions the user may have completed. */
   quizQuestions: Array<UserQuizQuestion>;
   twoFAEnabled?: Maybe<Scalars['Boolean']>;
-  /** Optional immutable user friendly identifier. */
+  /**
+   * Optional immutable user friendly identifier.
+   * @deprecated will be moved to @Handle in Account and Wallet
+   */
   username?: Maybe<Scalars['Username']>;
 };
 
@@ -906,6 +928,10 @@ type UserUpdateUsernamePayload = {
 type Wallet = {
   balance: Scalars['SignedAmount'];
   id: Scalars['ID'];
+  /**
+   * Transactions are ordered anti-chronogically,
+   * ie: the newest transaction will be first
+   */
   transactions?: Maybe<TransactionConnection>;
   walletCurrency: WalletCurrency;
 };
@@ -921,18 +947,115 @@ type WalletTransactionsArgs = {
 type WalletCurrency =
   | 'BTC';
 
+type CaptchaCreateChallengeMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+type CaptchaCreateChallengeMutation = { __typename?: 'Mutation', captchaCreateChallenge: { __typename?: 'CaptchaCreateChallengePayload', errors: Array<{ __typename?: 'InputError', message: string } | { __typename?: 'PaymentError', message: string }>, result?: { __typename?: 'CaptchaCreateChallengeResult', id: string, challengeCode: string, newCaptcha: boolean, failbackMode: boolean } | null | undefined } };
+
+type CaptchaRequestAuthCodeMutationVariables = Exact<{
+  input: CaptchaRequestAuthCodeInput;
+}>;
+
+
+type CaptchaRequestAuthCodeMutation = { __typename?: 'Mutation', captchaRequestAuthCode: { __typename?: 'SuccessPayload', success?: boolean | null | undefined, errors: Array<{ __typename?: 'InputError', message: string } | { __typename?: 'PaymentError', message: string }> } };
+
+type IntraLedgerPaymentSendMutationVariables = Exact<{
+  input: IntraLedgerPaymentSendInput;
+}>;
+
+
+type IntraLedgerPaymentSendMutation = { __typename?: 'Mutation', intraLedgerPaymentSend: { __typename?: 'PaymentSendPayload', status?: PaymentSendResult | null | undefined, errors: Array<{ __typename?: 'InputError', message: string } | { __typename?: 'PaymentError', message: string }> } };
+
+type LnInvoiceCreateMutationVariables = Exact<{
+  input: LnInvoiceCreateInput;
+}>;
+
+
+type LnInvoiceCreateMutation = { __typename?: 'Mutation', lnInvoiceCreate: { __typename?: 'LnInvoicePayload', errors: Array<{ __typename?: 'InputError', message: string } | { __typename?: 'PaymentError', message: string }>, invoice?: { __typename?: 'LnInvoice', paymentRequest: string, paymentHash: string } | null | undefined } };
+
+type LnInvoiceFeeProbeMutationVariables = Exact<{
+  input: LnInvoiceFeeProbeInput;
+}>;
+
+
+type LnInvoiceFeeProbeMutation = { __typename?: 'Mutation', lnInvoiceFeeProbe: { __typename?: 'SatAmountPayload', amount?: number | null | undefined, errors: Array<{ __typename?: 'InputError', message: string } | { __typename?: 'PaymentError', message: string }> } };
+
+type LnInvoicePaymentSendMutationVariables = Exact<{
+  input: LnInvoicePaymentInput;
+}>;
+
+
+type LnInvoicePaymentSendMutation = { __typename?: 'Mutation', lnInvoicePaymentSend: { __typename?: 'PaymentSendPayload', status?: PaymentSendResult | null | undefined, errors: Array<{ __typename?: 'InputError', message: string } | { __typename?: 'PaymentError', message: string }> } };
+
+type LnNoAmountInvoiceCreateMutationVariables = Exact<{
+  input: LnNoAmountInvoiceCreateInput;
+}>;
+
+
+type LnNoAmountInvoiceCreateMutation = { __typename?: 'Mutation', lnNoAmountInvoiceCreate: { __typename?: 'LnNoAmountInvoicePayload', errors: Array<{ __typename?: 'InputError', message: string } | { __typename?: 'PaymentError', message: string }>, invoice?: { __typename?: 'LnNoAmountInvoice', paymentRequest: string, paymentHash: string } | null | undefined } };
+
+type LnNoAmountInvoiceFeeProbeMutationVariables = Exact<{
+  input: LnNoAmountInvoiceFeeProbeInput;
+}>;
+
+
+type LnNoAmountInvoiceFeeProbeMutation = { __typename?: 'Mutation', lnNoAmountInvoiceFeeProbe: { __typename?: 'SatAmountPayload', amount?: number | null | undefined, errors: Array<{ __typename?: 'InputError', message: string } | { __typename?: 'PaymentError', message: string }> } };
+
+type LnNoAmountInvoicePaymentSendMutationVariables = Exact<{
+  input: LnNoAmountInvoicePaymentInput;
+}>;
+
+
+type LnNoAmountInvoicePaymentSendMutation = { __typename?: 'Mutation', lnNoAmountInvoicePaymentSend: { __typename?: 'PaymentSendPayload', status?: PaymentSendResult | null | undefined, errors: Array<{ __typename?: 'InputError', message: string } | { __typename?: 'PaymentError', message: string }> } };
+
+type OnChainPaymentSendMutationVariables = Exact<{
+  input: OnChainPaymentSendInput;
+}>;
+
+
+type OnChainPaymentSendMutation = { __typename?: 'Mutation', onChainPaymentSend: { __typename?: 'PaymentSendPayload', status?: PaymentSendResult | null | undefined, errors: Array<{ __typename?: 'InputError', message: string } | { __typename?: 'PaymentError', message: string }> } };
+
 type UserLoginMutationVariables = Exact<{
   input: UserLoginInput;
 }>;
 
 
-type UserLoginMutation = { __typename?: 'Mutation', userLogin: { __typename?: 'AuthTokenPayload', authToken?: any | null | undefined, errors: Array<{ __typename?: 'InputError', message: string } | { __typename?: 'PaymentError', message: string }> } };
+type UserLoginMutation = { __typename?: 'Mutation', userLogin: { __typename?: 'AuthTokenPayload', authToken?: string | null | undefined, errors: Array<{ __typename?: 'InputError', message: string } | { __typename?: 'PaymentError', message: string }> } };
 
 type MeQueryVariables = Exact<{
   hasToken: Scalars['Boolean'];
 }>;
 
 
-type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: string, username?: any | null | undefined, language: any, defaultAccount: { __typename?: 'ConsumerAccount', id: string, wallets: Array<{ __typename?: 'BTCWallet', id: string, balance: any }> } } | null | undefined };
+type MeQuery = { __typename?: 'Query', globals?: { __typename?: 'Globals', nodesIds: Array<string> } | null | undefined, btcPrice?: { __typename?: 'Price', base: number, offset: number, currencyUnit: ExchangeCurrencyUnit, formattedAmount: string } | null | undefined, me?: { __typename?: 'User', id: string, username?: string | null | undefined, language: string, defaultAccount: { __typename?: 'ConsumerAccount', id: string, wallets: Array<{ __typename?: 'BTCWallet', id: string, balance: number }> } } | null | undefined };
+
+type OnChainAddressCurrentMutationVariables = Exact<{
+  input: OnChainAddressCurrentInput;
+}>;
+
+
+type OnChainAddressCurrentMutation = { __typename?: 'Mutation', onChainAddressCurrent: { __typename?: 'OnChainAddressPayload', address?: string | null | undefined, errors: Array<{ __typename?: 'InputError', message: string } | { __typename?: 'PaymentError', message: string }> } };
+
+type OnChainTxFeeQueryVariables = Exact<{
+  walletId: Scalars['WalletId'];
+  address: Scalars['OnChainAddress'];
+  amount: Scalars['SatAmount'];
+  targetConfirmations?: InputMaybe<Scalars['TargetConfirmations']>;
+}>;
+
+
+type OnChainTxFeeQuery = { __typename?: 'Query', onChainTxFee: { __typename?: 'OnChainTxFee', amount: number, targetConfirmations: number } };
+
+type UserDefaultWalletIdQueryVariables = Exact<{
+  username: Scalars['Username'];
+}>;
+
+
+type UserDefaultWalletIdQuery = { __typename?: 'Query', userDefaultWalletId: string };
+
+type MyUpdatesSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+type MyUpdatesSubscription = { __typename?: 'Subscription', myUpdates: { __typename?: 'MyUpdatesPayload', errors: Array<{ __typename?: 'InputError', message: string } | { __typename?: 'PaymentError', message: string }>, me?: { __typename?: 'User', id: string, defaultAccount: { __typename?: 'ConsumerAccount', id: string, wallets: Array<{ __typename?: 'BTCWallet', id: string, walletCurrency: WalletCurrency, balance: number }> } } | null | undefined, update?: { __typename?: 'IntraLedgerUpdate', txNotificationType: TxNotificationType, amount: number, usdPerSat: number, type: 'IntraLedgerUpdate' } | { __typename?: 'LnUpdate', paymentHash: string, status: InvoicePaymentStatus, type: 'LnUpdate' } | { __typename?: 'OnChainUpdate', txNotificationType: TxNotificationType, txHash: string, amount: number, usdPerSat: number, type: 'OnChainUpdate' } | { __typename?: 'Price', base: number, offset: number, currencyUnit: ExchangeCurrencyUnit, formattedAmount: string, type: 'Price' } | null | undefined } };
 
 }

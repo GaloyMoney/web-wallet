@@ -1,9 +1,14 @@
-import { useSubscription, useApolloClient, ApolloClient } from "@apollo/client"
+import { useSubscription, useApolloClient, ApolloClient, gql } from "@apollo/client"
 import { useMemo, useRef } from "react"
 
-import CACHED_DATA from "store/graphql/query.cached-data"
 import SUBSCRIPTION_MY_UPDATES from "./graphql/subscription.my-updates"
 import useMainQuery from "./use-main-query"
+
+const CACHED_DATA = gql`
+  query cachedData {
+    satPriceInCents @client
+  }
+`
 
 const PriceCacheStore = (client: ApolloClient<unknown>) => ({
   read: () => {
@@ -23,9 +28,9 @@ const satPriceInCents = (update: PriceData | undefined) => {
 }
 
 export const useMyUpdates = (): UseMyUpdates => {
-  const intraLedgerUpdate = useRef<IntraLedgerUpdate | null>(null)
-  const lnUpdate = useRef<LnUpdate | null>(null)
-  const onChainUpdate = useRef<OnChainUpdate | null>(null)
+  const intraLedgerUpdate = useRef<GraphQL.IntraLedgerUpdate | null>(null)
+  const lnUpdate = useRef<GraphQL.LnUpdate | null>(null)
+  const onChainUpdate = useRef<GraphQL.OnChainUpdate | null>(null)
 
   const client = useApolloClient()
   const priceCacheStore = PriceCacheStore(client)

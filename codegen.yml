@@ -6,6 +6,28 @@ generates:
     config:
       enumsAsTypes: true
       noExport: true
+      scalars:
+        AccountApiKeyLabel: "string"
+        AuthToken: "string"
+        ContactAlias: "string"
+        Hex32Bytes: "string"
+        Language: "string"
+        LnPaymentPreImage: "string"
+        LnPaymentRequest: "string"
+        LnPaymentSecret: "string"
+        Memo: "string"
+        OnChainAddress: "string"
+        OnChainTxHash: "string"
+        OneTimeAuthCode: "string"
+        PaymentHash: "string"
+        Phone: "string"
+        SafeInt: "number"
+        SatAmount: "number"
+        SignedAmount: "number"
+        TargetConfirmations: "number"
+        Timestamp: "number"
+        Username: "string"
+        WalletId: "string"
     plugins:
       - add:
           content: "declare namespace GraphQL {"

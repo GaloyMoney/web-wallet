@@ -32,7 +32,7 @@ export const SendLnInvoiceAction = (props: SendActionProps) => {
     })
   }, [propeForFee, props.btcWalletId, props.paymentRequset, props.sameNode])
 
-  const feeSatAmount = feeData?.lnInvoiceFeeProbe?.amount
+  const feeSatAmount = feeData?.lnInvoiceFeeProbe?.amount ?? undefined
 
   const handleSend = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()

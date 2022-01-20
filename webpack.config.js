@@ -74,8 +74,8 @@ const config = {
       "process.env": JSON.stringify(process.env),
     }),
     new MiniCssExtractPlugin({
-      filename: isDev ? "[name].css" : "[name].[hash].css",
-      chunkFilename: isDev ? "[id].css" : "[id].[hash].css",
+      filename: isDev ? "[name].css" : "[name].[fullhash].css",
+      chunkFilename: isDev ? "[id].css" : "[id].[fullhash].css",
     }),
     function (compiler) {
       compiler.hooks.done.tap("gvars", (stats) => {

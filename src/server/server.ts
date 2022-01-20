@@ -18,7 +18,6 @@ app.set("view engine", "ejs")
 app.use(
   helmet({
     contentSecurityPolicy: {
-      useDefaults: true,
       directives: {
         defaultSrc: ["'self'"],
         scriptSrc: ["'self'", "'unsafe-inline'", "https:"],
@@ -26,6 +25,7 @@ app.use(
         imgSrc: ["'self'", "data:", "https:"],
       },
     },
+    crossOriginEmbedderPolicy: false,
   }),
 )
 

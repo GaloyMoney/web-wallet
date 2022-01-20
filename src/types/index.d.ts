@@ -77,9 +77,9 @@ type UseMyUpdates = {
   satsToUsd: ((sats: number) => number) | null
   usdToSats: ((usd: number) => number) | null
   currentBalance: number | null
-  intraLedgerUpdate: GraphQL.IntraLedgerUpdate | null
-  lnUpdate: GraphQL.LnUpdate | null
-  onChainUpdate: GraphQL.OnChainUpdate | null
+  intraLedgerUpdate: import("@galoymoney/client").GaloyGQL.IntraLedgerUpdate | null
+  lnUpdate: import("@galoymoney/client").GaloyGQL.LnUpdate | null
+  onChainUpdate: import("@galoymoney/client").GaloyGQL.OnChainUpdate | null
 }
 
 type SpinnerSize = "small" | "big"
@@ -108,4 +108,17 @@ type InvoiceInput = {
 type SendActionProps = InvoiceInput & {
   btcWalletId: string
   reset: () => void
+}
+
+type SendOnChainActionProps = SendActionProps & {
+  address: string
+  satAmount: number
+}
+
+type SendLnActionProps = SendActionProps & {
+  paymentRequset: string
+}
+
+type SendLnNoAmountActionProps = SendLnActionProps & {
+  satAmount: number
 }

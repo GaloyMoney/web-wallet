@@ -53,6 +53,7 @@ const PhoneNumber = ({ onSuccess }: PhoneNumberProps) => {
           ref={phoneRef}
           type="tel"
           name="phone"
+          className="phone"
           autoFocus
           onChange={() => setErrorMessage("")}
         />
@@ -109,6 +110,7 @@ const AuthCode = ({ phoneNumber }: AuthCodeProps) => {
         <input
           type="number"
           name="authCode"
+          className="auth-code"
           autoFocus
           autoComplete="off"
           pattern="[0-9]{6}"

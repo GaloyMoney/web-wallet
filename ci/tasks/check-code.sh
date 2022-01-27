@@ -9,4 +9,4 @@ unpack_deps
 
 pushd repo
 
-yarn check:code
+yarn code:check

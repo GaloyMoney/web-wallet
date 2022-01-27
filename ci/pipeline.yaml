@@ -20,6 +20,7 @@ groups:
   - name: web-wallet
     jobs:
       - check-code
+      - test
       - build-edge-image
       - bump-image-in-chart
       - install-deps
@@ -127,6 +128,24 @@ jobs:
             - name: repo
           run:
             path: pipeline-tasks/ci/tasks/check-code.sh
+
+  - name: test
+    serial: true
+    plan:
+      - in_parallel:
+          - { get: repo, trigger: true }
+          - { get: pipeline-tasks }
+          - { get: bundled-deps, trigger: true }
+      - task: test
+        config:
+          platform: linux
+          image_resource: #@ task_image_config()
+          inputs:
+            - name: bundled-deps
+            - name: pipeline-tasks
+            - name: repo
+          run:
+            path: pipeline-tasks/ci/tasks/test.sh
 
   - name: install-deps
     plan:

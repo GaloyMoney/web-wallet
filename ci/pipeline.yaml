@@ -16,6 +16,16 @@ source:
   repository: #@ pipeline_image()
 #@ end
 
+#@ def slack_failure_notification():
+#@ fail_url = "<$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME| :face_with_symbols_on_mouth: $BUILD_JOB_NAME> failed!"
+put: slack
+params:
+  channel: #@ data.values.slack_channel
+  username: #@ data.values.slack_username
+  icon_url: https://cl.ly/2F421Y300u07/concourse-logo-blue-transparent.png
+  text: #@ fail_url
+#@ end
+
 groups:
   - name: web-wallet
     jobs:
@@ -128,6 +138,7 @@ jobs:
             - name: repo
           run:
             path: pipeline-tasks/ci/tasks/check-code.sh
+    on_failure: #@ slack_failure_notification()
 
   - name: test
     serial: true
@@ -146,6 +157,7 @@ jobs:
             - name: repo
           run:
             path: pipeline-tasks/ci/tasks/test.sh
+    on_failure: #@ slack_failure_notification()
 
   - name: install-deps
     plan:
@@ -168,6 +180,7 @@ jobs:
       - put: bundled-deps
         params:
           file: bundled-deps/bundled-deps-*.tgz
+    on_failure: #@ slack_failure_notification()
 
 resources:
   - name: repo
@@ -232,8 +245,18 @@ resources:
       json_key: #@ data.values.staging_inception_creds
       regexp: web-wallet-artifacts/deps/bundled-deps-v(.*)-.*.tgz
 
+  - name: slack
+    type: slack-notification
+    source:
+      url: #@ data.values.slack_webhook_url
+
 resource_types:
   - name: gcs-resource
     type: docker-image
     source:
       repository: frodenas/gcs-resource
+
+  - name: slack-notification
+    type: docker-image
+    source:
+      repository: cfcommunity/slack-notification-resource

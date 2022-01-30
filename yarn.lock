@@ -3068,11 +3068,6 @@ html-escaper@^2.0.0:
   resolved "https://registry.yarnpkg.com/html-escaper/-/html-escaper-2.0.2.tgz#dfd60027da36a36dfcbe236262c00a5822681453"
   integrity sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==
 
-html5-qrcode@^2.1.6:
-  version "2.1.6"
-  resolved "https://registry.yarnpkg.com/html5-qrcode/-/html5-qrcode-2.1.6.tgz#6433696a87a327082b146af5fed127e29ea794db"
-  integrity sha512-KyOamaxKOZmNp/3y7DAz8uuigNhTeQfyCPTlcuyNEQuKYPZPP3ghm6HFr/f7gmcDBwewcGTvv3jRvsCODEDt7w==
-
 http-errors@1.8.1:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/http-errors/-/http-errors-1.8.1.tgz#7c3f28577cbc8a207388455dbd62295ed07bd68c"
@@ -4792,13 +4787,13 @@ raw-body@2.4.2:
     unpipe "1.0.0"
 
 react-dom@^18.0.0-rc.0-next-529dc3ce8-20220124:
-  version "18.0.0-rc.0-next-fe905f152-20220107"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.0.0-rc.0-next-fe905f152-20220107.tgz#22714f7c6e006e4728f87972df2774818022dcaa"
-  integrity sha512-tl+6q+8h9Vj7r4iI1jYQfLp4oHLC+f7tenqlYBw9eOyJ/SXJXzZ0Mp7QG1LYkK+oapO3vlj5I7ddnbnf8bcDJQ==
+  version "18.0.0-rc.0-next-529dc3ce8-20220124"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.0.0-rc.0-next-529dc3ce8-20220124.tgz#0d6bb1bb8a3f128d25370b60d83383905959e186"
+  integrity sha512-ULItqv9p8eLtExTHuvFZuAiMYzZRiODoxNpmu4Tn13gkB7XW9QOAC0RSkh4kP+KTRj0NNpkX67JRN1QkOJyD2w==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
-    scheduler "0.21.0-rc.0-next-fe905f152-20220107"
+    scheduler "0.21.0-rc.0-next-529dc3ce8-20220124"
 
 react-error-boundary@^3.1.4:
   version "3.1.4"
@@ -4826,9 +4821,9 @@ react-qrcode-logo@^2.5.0:
     qrcode-generator "^1.4.1"
 
 react@^18.0.0-rc.0-next-529dc3ce8-20220124:
-  version "18.0.0-rc.0-next-fe905f152-20220107"
-  resolved "https://registry.yarnpkg.com/react/-/react-18.0.0-rc.0-next-fe905f152-20220107.tgz#0dbc93be2b5ff5df4a353c74bbabfc97e47d8098"
-  integrity sha512-eePjzo6pCiwk9iDRYG0Hn5F0p9e7dlLGIys/eeLUCxByHP90rsXg/H/842S6ggBgarcfvRtDu8cAU7kxfLC4MA==
+  version "18.0.0-rc.0-next-529dc3ce8-20220124"
+  resolved "https://registry.yarnpkg.com/react/-/react-18.0.0-rc.0-next-529dc3ce8-20220124.tgz#871254a00f0fae1b40f41cfb04b521f90d31205c"
+  integrity sha512-48qZJPjgeC27twT2lh3J2JX0SmjS0GIKVcjGDTCgmdSCSbuWpXBQXYWh0DNn5g/696krSJRgt893tMmcUQ45qw==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
@@ -5025,10 +5020,10 @@ saxes@^5.0.1:
   dependencies:
     xmlchars "^2.2.0"
 
-scheduler@0.21.0-rc.0-next-fe905f152-20220107:
-  version "0.21.0-rc.0-next-fe905f152-20220107"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.21.0-rc.0-next-fe905f152-20220107.tgz#410f6df2f39d5543b00f98fbad7de6c9b374df89"
-  integrity sha512-+sY0WajWdMjoxbmHM8P6P1FKGw8sSVKKG/HthqTFQFPxVGbKLmV1BiFPaVF9gOyQWqmnLYSXJMN+4Bs5ZygsTw==
+scheduler@0.21.0-rc.0-next-529dc3ce8-20220124:
+  version "0.21.0-rc.0-next-529dc3ce8-20220124"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.21.0-rc.0-next-529dc3ce8-20220124.tgz#cecdf13a293efeb1f41bdfb35f17d2c5f59ef665"
+  integrity sha512-K2mur7PGzYpNJEAblbz5g7+0X0xaSPBNVLfAbSCZo56n4DliHoF4YJ7CQZu43MMv7lTQtSGCkFshuP92ZWRNGw==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"

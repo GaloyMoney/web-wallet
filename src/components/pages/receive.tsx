@@ -1,6 +1,6 @@
-import { useMutation } from "@apollo/client"
+import { useCallback, useEffect, useMemo, useState } from "react"
 
-import { GaloyGQL, mutations, translate } from "@galoymoney/client"
+import { translate, useMutation } from "@galoymoney/client"
 import {
   DebouncedTextarea,
   FormattedNumberInput,
@@ -10,11 +10,9 @@ import {
   Spinner,
 } from "@galoymoney/react"
 
-import { useCallback, useEffect, useMemo, useState } from "react"
-
-import { satsFormatter, usdFormatter } from "store"
-import useMainQuery from "store/use-main-query"
-import { useMyUpdates } from "store/use-my-updates"
+import { satsFormatter, usdFormatter } from "../../store"
+import useMainQuery from "../../hooks/use-main-query"
+import useMyUpdates from "../../hooks/use-my-updates"
 
 import InvoiceGenerator from "../receive/invoice-generator"
 import Header from "../header"
@@ -31,7 +29,6 @@ type InvoiceInputState = {
 
 const Receive = () => {
   const { btcWalletId } = useMainQuery()
-
   const { satsToUsd, usdToSats } = useMyUpdates()
 
   const [input, setInput] = useState<InvoiceInputState>({
@@ -41,12 +38,8 @@ const Receive = () => {
     memo: "",
   })
 
-  const [generateBtcAddress, { loading, error, data }] = useMutation<
-    { onChainAddressCurrent: GaloyGQL.OnChainAddressPayload },
-    { input: GaloyGQL.OnChainAddressCreateInput }
-  >(mutations.onChainAddressCurrent, {
-    onError: console.error,
-  })
+  const [generateBtcAddress, { loading, errorsMessage, data }] =
+    useMutation.onChainAddressCurrent()
 
   const shouldUpdateSatsForInvoice =
     Number.isNaN(input.satsForInvoice) &&
@@ -76,18 +69,15 @@ const Receive = () => {
       // Layer switched to onchain, generate a btc address
       generateBtcAddress({
         variables: {
-          input: {
-            walletId: btcWalletId,
-          },
+          input: { walletId: btcWalletId },
         },
       })
     }
   }, [btcWalletId, generateBtcAddress, input.layer])
 
-  const onChainAddressErrrors = data?.onChainAddressCurrent?.errors
-
-  if (error || (onChainAddressErrrors && onChainAddressErrrors?.length > 0)) {
-    console.error(error || onChainAddressErrrors)
+  if (errorsMessage) {
+    console.debug("[BTC address error]:", errorsMessage)
+    throw new Error("Unable to get BTC address for wallet")
   }
 
   const btcAddress = data?.onChainAddressCurrent?.address ?? undefined
@@ -122,7 +112,7 @@ const Receive = () => {
       let newAmount: number | "" = ""
 
       if (currInput.currency === "SATS" && currInput.amount) {
-        newAmount = satsToUsd(currInput.amount)
+        newAmount = Math.round(satsToUsd(currInput.amount * 100)) / 100
       }
 
       if (currInput.currency === "USD" && currInput.satsForInvoice) {

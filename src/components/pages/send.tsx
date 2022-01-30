@@ -263,12 +263,12 @@ const Send = () => {
       return <ButtonLink to="/login">{translate("Login to send")}</ButtonLink>
     }
 
-    const pendingInput =
+    const inputPending =
       input.amount === undefined ||
       input.destination === undefined ||
       input.memo === undefined
 
-    const pendingSatAmount =
+    const satAmountPending =
       typeof input.amount === "number" && input.satAmount === undefined
 
     if (input.satAmount && input.satAmount > btcWalletBalance) {
@@ -279,7 +279,7 @@ const Send = () => {
       return <div className="error">{errorMessage}</div>
     }
 
-    const showSpinner = pendingInput || pendingSatAmount || userDefaultWalletIdLoading
+    const showSpinner = inputPending || satAmountPending || userDefaultWalletIdLoading
 
     if (showSpinner) {
       return <Spinner size="big" />

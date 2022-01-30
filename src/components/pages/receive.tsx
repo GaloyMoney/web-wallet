@@ -21,9 +21,8 @@ import { ButtonLink } from "../link"
 type InvoiceInputState = {
   layer: "lightning" | "onchain"
   currency: "USD" | "SATS"
-  amount: number | ""
-  debouncedAmount?: number | ""
-  memo: string
+  amount?: number | ""
+  memo?: string
   satsForInvoice?: number
 }
 
@@ -43,26 +42,26 @@ const Receive = () => {
 
   const shouldUpdateSatsForInvoice =
     Number.isNaN(input.satsForInvoice) &&
-    typeof input.debouncedAmount === "number" &&
-    !Number.isNaN(input.debouncedAmount)
+    typeof input.amount === "number" &&
+    !Number.isNaN(input.amount)
 
   useEffect(() => {
     if (usdToSats && input.currency === "USD" && shouldUpdateSatsForInvoice) {
       setInput((currInput) => ({
         ...currInput,
-        satsForInvoice: Math.round(usdToSats(input.debouncedAmount as number)),
+        satsForInvoice: Math.round(usdToSats(input.amount as number)),
       }))
     }
-  }, [input.currency, input.debouncedAmount, shouldUpdateSatsForInvoice, usdToSats])
+  }, [input.currency, input.amount, shouldUpdateSatsForInvoice, usdToSats])
 
   useEffect(() => {
     if (input.currency === "SATS" && shouldUpdateSatsForInvoice) {
       setInput((currInput) => ({
         ...currInput,
-        satsForInvoice: input.debouncedAmount as number,
+        satsForInvoice: input.amount as number,
       }))
     }
-  }, [input.currency, input.debouncedAmount, shouldUpdateSatsForInvoice])
+  }, [input.currency, input.amount, shouldUpdateSatsForInvoice])
 
   useEffect(() => {
     if (input.layer === "onchain" && btcWalletId) {
@@ -82,21 +81,17 @@ const Receive = () => {
 
   const btcAddress = data?.onChainAddressCurrent?.address ?? undefined
 
-  const handleAmountUpdate: OnNumberValueChange = useCallback((numberValue) => {
-    setInput((currInput) => ({
-      ...currInput,
-      amount: numberValue,
-      satsForInvoice: NaN,
-      debouncedAmount: NaN,
-    }))
+  const handleAmountUpdate: OnNumberValueChange = useCallback(() => {
+    setInput((currInput) => ({ ...currInput, amount: undefined, satsForInvoice: NaN }))
   }, [])
 
-  const handleDebouncedAmountUpdate: OnNumberValueChange = useCallback(
-    (debouncedAmount) => {
-      setInput((currInput) => ({ ...currInput, debouncedAmount }))
-    },
-    [],
-  )
+  const handleMemoUpdate: OnTextValueChange = useCallback(() => {
+    setInput((currInput) => ({ ...currInput, memo: undefined, satsForInvoice: NaN }))
+  }, [])
+
+  const handleDebouncedAmountUpdate: OnNumberValueChange = useCallback((amount) => {
+    setInput((currInput) => ({ ...currInput, amount }))
+  }, [])
 
   const handleDebouncedMemoUpdate: OnTextValueChange = useCallback((debouncedMemo) => {
     setInput((currInput) => ({ ...currInput, memo: debouncedMemo }))
@@ -123,7 +118,7 @@ const Receive = () => {
         ...currInput,
         currency: newCurrency,
         amount: newAmount,
-        debouncedAmount: newAmount,
+        satsForInvoice: NaN,
       }
     })
   }, [satsToUsd])
@@ -189,9 +184,13 @@ const Receive = () => {
       return <ButtonLink to="/login">{translate("Login to send")}</ButtonLink>
     }
 
-    const showInvoiceSpinner = Number.isNaN(input.debouncedAmount) || loading
+    const inputPending = input.amount === undefined || input.memo === undefined
+    const showInvoiceSpinner = loading || inputPending
     const showInvoice =
-      input.satsForInvoice !== undefined && !Number.isNaN(input.satsForInvoice)
+      !inputPending &&
+      input.satsForInvoice !== undefined &&
+      !Number.isNaN(input.satsForInvoice)
+
     return (
       <>
         {showInvoiceSpinner && <Spinner size="big" />}
@@ -201,9 +200,9 @@ const Receive = () => {
             btcWalletId={btcWalletId}
             btcAddress={btcAddress}
             regenerate={regenerateInvoice}
-            amount={input.amount}
+            amount={input.amount as number}
             currency={input.currency}
-            memo={input.memo}
+            memo={input.memo as string}
             satAmount={input.satsForInvoice as number}
             convertedUsdAmount={convertedValues?.usd || NaN}
           />
@@ -211,8 +210,6 @@ const Receive = () => {
       </>
     )
   }
-
-  const inputValue = Number.isNaN(input.amount) ? "" : input.amount.toString()
 
   return (
     <div className="receive">
@@ -239,7 +236,6 @@ const Receive = () => {
           </div>
           <FormattedNumberInput
             key={input.currency}
-            value={inputValue}
             onChange={handleAmountUpdate}
             onDebouncedChange={handleDebouncedAmountUpdate}
             placeholder={translate("Set invoice value in %{currency}", {
@@ -252,6 +248,7 @@ const Receive = () => {
         </div>
         <div className="note-input center-display">
           <DebouncedTextarea
+            onChange={handleMemoUpdate}
             onDebouncedChange={handleDebouncedMemoUpdate}
             name="memo"
             rows={3}

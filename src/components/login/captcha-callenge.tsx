@@ -1,6 +1,8 @@
-import { translate, useMutation } from "@galoymoney/client"
 import { memo, useCallback, useEffect, useState } from "react"
-import { Spinner } from "../../../../galoy-react/src/components/spinner"
+
+import { translate, useMutation } from "@galoymoney/client"
+import { Spinner } from "@galoymoney/react"
+
 import AuthCode from "./auth-code"
 
 type CaptchaChallengeProps = {

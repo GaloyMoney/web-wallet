@@ -5,8 +5,8 @@ import copy from "copy-to-clipboard"
 import { GaloyGQL, translate } from "@galoymoney/client"
 import { SuccessCheckmark } from "@galoymoney/react"
 
-import { useMyUpdates } from "store/use-my-updates"
-import { satsToBTC, useAppDispatcher } from "store"
+import { useMyUpdates } from "../../store/use-my-updates"
+import { satsToBTC, useAppDispatcher } from "../../store"
 
 type LightningInvoiceProps = {
   invoice: GaloyGQL.LnInvoice | GaloyGQL.LnNoAmountInvoice

@@ -1,7 +1,7 @@
 import { translate } from "@galoymoney/client"
 
-import useAuthToken from "store/use-auth-token"
-import useMainQuery from "store/use-main-query"
+import useAuthToken from "../store/use-auth-token"
+import useMainQuery from "../store/use-main-query"
 
 import Balance from "./balance"
 import Link from "./link"

@@ -3,7 +3,7 @@ import { ErrorBoundary } from "react-error-boundary"
 
 import { Spinner } from "@galoymoney/react"
 
-import appRoutes, { SupportedRoutes } from "server/routes"
+import appRoutes, { SupportedRoutes } from "../server/routes"
 import ErrorFallback from "./error-fallback"
 
 type Props = { path: RoutePath }

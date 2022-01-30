@@ -4,9 +4,9 @@ import { useMutation } from "@apollo/client"
 import { GaloyGQL, mutations, translate } from "@galoymoney/client"
 import { PhoneNumberInput, Spinner } from "@galoymoney/react"
 
-import config from "store/config"
-import { history, useRequest } from "store"
-import { errorsText } from "store/graphql"
+import config from "../store/config"
+import { history, useRequest } from "../store"
+import { errorsText } from "../store/graphql"
 
 type AuthCodeProps = { phoneNumber: string }
 

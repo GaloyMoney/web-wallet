@@ -2,8 +2,8 @@ import { MouseEvent } from "react"
 
 import { SatSymbol, Spinner, SuccessCheckmark } from "@galoymoney/react"
 
-import { satsFormatter, usdFormatter } from "store"
-import { useMyUpdates } from "store/use-my-updates"
+import { satsFormatter, usdFormatter } from "../../store"
+import { useMyUpdates } from "../../store/use-my-updates"
 import { GaloyGQL } from "@galoymoney/client"
 
 const FeeDisplay = ({ satAmount }: { satAmount: number | undefined }) => {

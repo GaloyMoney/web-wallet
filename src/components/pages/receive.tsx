@@ -12,9 +12,9 @@ import {
 
 import { useCallback, useEffect, useMemo, useState } from "react"
 
-import { satsFormatter, usdFormatter } from "store"
-import useMainQuery from "store/use-main-query"
-import { useMyUpdates } from "store/use-my-updates"
+import { satsFormatter, usdFormatter } from "../../store"
+import useMainQuery from "../../store/use-main-query"
+import { useMyUpdates } from "../../store/use-my-updates"
 
 import InvoiceGenerator from "../receive/invoice-generator"
 import Header from "../header"

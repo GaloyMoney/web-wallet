@@ -1,10 +1,10 @@
 import * as ReactDOM from "react-dom"
 
-import Root from "components/root"
+import Root from "../components/root"
 
 import "../styles/index.css"
 import { ErrorBoundary } from "react-error-boundary"
-import ErrorFallback from "components/error-fallback"
+import ErrorFallback from "../components/error-fallback"
 
 const container = document.getElementById("root")
 

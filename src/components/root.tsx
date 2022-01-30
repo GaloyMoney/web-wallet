@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useReducer } from "react"
 import { ApolloClient, ApolloProvider } from "@apollo/client"
 
-import { createApolloClient, GwwContext, history, postRequest } from "store"
-import mainReducer from "store/reducer"
+import { createApolloClient, GwwContext, history, postRequest } from "../store"
+import mainReducer from "../store/reducer"
 import { setLocale } from "@galoymoney/client"
 
 import RootComponent from "../components/root-component"

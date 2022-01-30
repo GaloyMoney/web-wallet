@@ -3,7 +3,7 @@ import { MouseEvent, useEffect } from "react"
 
 import SendActionDisplay from "./send-action-display"
 import { GaloyGQL, mutations } from "@galoymoney/client"
-import { errorsText } from "store/graphql"
+import { errorsText } from "../../store/graphql"
 
 export const SendLnInvoiceAction = (props: SendLnActionProps) => {
   const [sendPayment, { loading, error, data }] = useMutation<

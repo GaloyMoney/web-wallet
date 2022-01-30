@@ -1,8 +1,8 @@
 import { translate } from "@galoymoney/client"
 import { SatSymbol, Spinner } from "@galoymoney/react"
 
-import { history, useAppState, satsFormatter, usdFormatter } from "store"
-import { useMyUpdates } from "store/use-my-updates"
+import { history, useAppState, satsFormatter, usdFormatter } from "../store"
+import { useMyUpdates } from "../store/use-my-updates"
 
 const navigateToHome = () => {
   history.push("/")

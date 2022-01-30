@@ -3,8 +3,8 @@ import { useMutation } from "@apollo/client"
 
 import { GaloyGQL, mutations, translate } from "@galoymoney/client"
 
-import { usdFormatter } from "store"
-import { errorsText } from "store/graphql"
+import { usdFormatter } from "../../store"
+import { errorsText } from "../../store/graphql"
 
 import { LightningInvoice, OnChainInvoice } from "./invoice"
 import { Spinner } from "@galoymoney/react"

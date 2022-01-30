@@ -3,9 +3,9 @@ import { renderToStringWithData } from "@apollo/client/react/ssr"
 
 import config from "../store/config"
 import client from "../server/graphql"
-import appRoutes from "server/routes"
+import appRoutes from "../server/routes"
 
-import { SSRRoot } from "components/root"
+import { SSRRoot } from "../components/root"
 
 export const serverRenderer =
   (req: Request) =>

@@ -1,4 +1,4 @@
-import { history } from "store"
+import { history } from "../store"
 
 type Props = {
   to: RoutePath

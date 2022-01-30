@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client"
 
-import useAuthToken from "store/use-auth-token"
+import useAuthToken from "../store/use-auth-token"
 import { GaloyGQL, queries, setLocale } from "@galoymoney/client"
 
 const useMainQuery = () => {

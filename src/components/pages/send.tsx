@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
 
-import config from "store/config"
-import { satsFormatter, usdFormatter, useAppDispatcher } from "store"
-import { useMyUpdates } from "store/use-my-updates"
+import config from "../../store/config"
+import { satsFormatter, usdFormatter, useAppDispatcher } from "../../store"
+import { useMyUpdates } from "../../store/use-my-updates"
 
 import {
   GaloyGQL,
@@ -22,11 +22,11 @@ import {
   OnNumberValueChange,
 } from "@galoymoney/react"
 
-import useMainQuery from "store/use-main-query"
+import useMainQuery from "../../store/use-main-query"
 import Scan from "../send/scan"
 import Header from "../header"
-import { ButtonLink } from "components/link"
-import SendAction from "components/send/send-action"
+import { ButtonLink } from "../../components/link"
+import SendAction from "../../components/send/send-action"
 
 const Send = () => {
   const dispatch = useAppDispatcher()

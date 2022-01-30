@@ -1,7 +1,7 @@
 import { Request } from "express"
 import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client"
 
-import config from "store/config"
+import config from "../store/config"
 
 const client = (req: Request) => {
   const authToken = req.session?.authToken

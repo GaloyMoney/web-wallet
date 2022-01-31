@@ -1,9 +1,9 @@
 import { MouseEvent } from "react"
 
 import { GaloyGQL, translate } from "@galoymoney/client"
-import { SatSymbol, Spinner, SuccessCheckmark } from "@galoymoney/react"
+import { SatFormat, Spinner, SuccessCheckmark } from "@galoymoney/react"
 
-import { satsFormatter, usdFormatter } from "../../store"
+import { usdFormatter } from "../../store"
 import useMyUpdates from "../../hooks/use-my-updates"
 
 const FeeDisplay = ({ satAmount }: { satAmount: number | undefined }) => {
@@ -15,8 +15,7 @@ const FeeDisplay = ({ satAmount }: { satAmount: number | undefined }) => {
     <div className="fee-amount">
       <div className="label">Fee</div>
       <div className="content">
-        <SatSymbol />
-        {satsFormatter.format(satAmount)}
+        <SatFormat amount={satAmount} />
         {satsToUsd && satAmount > 0 && (
           <div className="fee-usd-amount small">
             &#8776; {usdFormatter.format(satsToUsd(satAmount))}

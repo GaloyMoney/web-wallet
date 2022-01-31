@@ -1,9 +1,9 @@
 import { translate } from "@galoymoney/client"
-import { SatSymbol, Spinner } from "@galoymoney/react"
+import { SatFormat, SatSymbol, Spinner } from "@galoymoney/react"
 
 import useMyUpdates from "../hooks/use-my-updates"
 
-import { history, useAppState, satsFormatter, usdFormatter } from "../store"
+import { history, useAppState, usdFormatter } from "../store"
 
 const navigateToHome = () => {
   history.push("/")
@@ -25,8 +25,7 @@ const MyBalance = ({ balance }: Props) => {
         ) : (
           <>
             <div className="primary">
-              <SatSymbol />
-              {satsFormatter.format(balance)}
+              <SatFormat amount={balance} />
             </div>
             {satsToUsd && (
               <div className="secondary">

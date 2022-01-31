@@ -15,10 +15,11 @@ import {
   Spinner,
   OnNumberValueChange,
   QRCodeDetecor,
+  SatFormat,
 } from "@galoymoney/react"
 
 import config from "../../store/config"
-import { satsFormatter, usdFormatter, useAppDispatcher } from "../../store"
+import { usdFormatter, useAppDispatcher } from "../../store"
 import useMainQuery from "../../hooks/use-main-query"
 import useMyUpdates from "../../hooks/use-my-updates"
 
@@ -223,8 +224,7 @@ const Send = () => {
     return (
       <>
         <div className="converted-sats">
-          <SatSymbol />
-          {satsFormatter.format(convertedValues.sats)}
+          <SatFormat amount={convertedValues.sats} />
         </div>
         <div className="converted-usd small">
           &#8776; {usdFormatter.format(convertedValues.usd)}

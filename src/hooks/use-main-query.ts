@@ -6,7 +6,8 @@ const useMainQuery = () => {
   const { hasToken } = useAuthToken()
 
   const { data } = useQuery.main({
-    variables: { hasToken },
+    variables: { hasToken, recentTransactions: 5 },
+    fetchPolicy: "cache-and-network",
     onCompleted: (completed) => {
       setLocale(completed?.me?.language)
     },

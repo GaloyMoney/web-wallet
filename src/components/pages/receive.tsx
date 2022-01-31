@@ -6,11 +6,12 @@ import {
   FormattedNumberInput,
   OnNumberValueChange,
   OnTextValueChange,
+  SatFormat,
   SatSymbol,
   Spinner,
 } from "@galoymoney/react"
 
-import { satsFormatter, usdFormatter } from "../../store"
+import { usdFormatter } from "../../store"
 import useMainQuery from "../../hooks/use-main-query"
 import useMyUpdates from "../../hooks/use-my-updates"
 
@@ -172,8 +173,7 @@ const Receive = () => {
     return (
       <>
         <div className="converted-sats">
-          <SatSymbol />
-          {satsFormatter.format(convertedValues.sats)}
+          <SatFormat amount={convertedValues.sats} />
         </div>
         <div className="converted-usd small">
           &#8776; {usdFormatter.format(convertedValues.usd)}

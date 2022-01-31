@@ -28,7 +28,7 @@ import SendAction from "../send/send-action"
 
 const Send = () => {
   const dispatch = useAppDispatcher()
-  const { pubKey, btcWalletId, btcWalletBalance } = useMainQuery()
+  const { pubKey, btcWalletId, btcWalletBalance, username } = useMainQuery()
   const { satsToUsd, usdToSats } = useMyUpdates()
 
   const [input, setInput] = useState<InvoiceInput>({
@@ -48,7 +48,6 @@ const Send = () => {
       setInput((currInput) => ({
         ...currInput,
         satAmount: newSatAmount,
-        errorMessage: undefined,
       }))
     }
   }, [input.amount, input.currency, usdToSats])
@@ -58,7 +57,6 @@ const Send = () => {
       setInput((currInput) => ({
         ...currInput,
         satAmount: input.amount as number,
-        errorMessage: undefined,
       }))
     }
   }, [input.amount, input.currency])
@@ -77,15 +75,19 @@ const Send = () => {
 
       // FIXME: Move userDefaultWalletIdQuery to galoy-client
       if (btcWalletId && parsedDestination.paymentType === "intraledger") {
-        // Validate account handle (and get the default wallet id for account)
-        const { data, errorsMessage } = await userDefaultWalletIdQuery({
-          username: parsedDestination.handle as string,
-        })
-
-        if (errorsMessage) {
-          newInputState.errorMessage = errorsMessage
+        if (parsedDestination.handle === username) {
+          newInputState.errorMessage = translate("You can't send to yourself")
         } else {
-          newInputState.recipientWalletId = data?.userDefaultWalletId
+          // Validate account handle (and get the default wallet id for account)
+          const { data, errorsMessage } = await userDefaultWalletIdQuery({
+            username: parsedDestination.handle as string,
+          })
+
+          if (errorsMessage) {
+            newInputState.errorMessage = errorsMessage
+          } else {
+            newInputState.recipientWalletId = data?.userDefaultWalletId
+          }
         }
       }
 
@@ -109,7 +111,7 @@ const Send = () => {
         currency: newInputState.fixedAmount ? "SATS" : currInput.currency,
       }))
     },
-    [btcWalletId, userDefaultWalletIdQuery],
+    [btcWalletId, userDefaultWalletIdQuery, username],
   )
 
   useEffect(() => {

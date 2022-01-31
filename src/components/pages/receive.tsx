@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
 
-import { translate, useMutation } from "@galoymoney/client"
+import { formatUsd, translate, useMutation } from "@galoymoney/client"
 import {
   DebouncedTextarea,
   FormattedNumberInput,
@@ -11,7 +11,6 @@ import {
   Spinner,
 } from "@galoymoney/react"
 
-import { usdFormatter } from "../../store"
 import useMainQuery from "../../hooks/use-main-query"
 import useMyUpdates from "../../hooks/use-my-updates"
 
@@ -163,11 +162,7 @@ const Receive = () => {
     }
 
     if (!convertedValues.sats) {
-      return (
-        <div className="converted-usd">
-          &#8776; {usdFormatter.format(convertedValues.usd)}
-        </div>
-      )
+      return <div className="converted-usd">&#8776; {formatUsd(convertedValues.usd)}</div>
     }
 
     return (
@@ -176,7 +171,7 @@ const Receive = () => {
           <SatFormat amount={convertedValues.sats} />
         </div>
         <div className="converted-usd small">
-          &#8776; {usdFormatter.format(convertedValues.usd)}
+          &#8776; {formatUsd(convertedValues.usd)}
         </div>
       </>
     )

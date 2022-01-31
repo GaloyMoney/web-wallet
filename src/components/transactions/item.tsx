@@ -1,6 +1,5 @@
-import { formatTimeAgo, GaloyGQL } from "@galoymoney/client"
+import { formatRelativeTime, formatUsd, GaloyGQL } from "@galoymoney/client"
 import { SatFormat } from "@galoymoney/react"
-import { usdFormatter } from "../../store"
 
 type Props = {
   transaction: GaloyGQL.Transaction
@@ -36,7 +35,7 @@ const TransactionItem = ({ transaction }: Props) => {
   const isReceive = transaction.direction === "RECEIVE"
   const isPending = transaction.status === "PENDING"
   const description = descriptionDisplay(transaction)
-  const dateDisplay = formatTimeAgo(transaction.createdAt)
+  const dateDisplay = formatRelativeTime(transaction.createdAt)
   const usdAmount = computeUsdAmount(transaction)
 
   return (
@@ -59,7 +58,7 @@ const TransactionItem = ({ transaction }: Props) => {
         <div>
           <SatFormat amount={transaction.settlementAmount} />
         </div>
-        <div className="converted-usd">{usdFormatter.format(usdAmount)}</div>
+        <div className="converted-usd">{formatUsd(usdAmount)}</div>
       </div>
     </div>
   )

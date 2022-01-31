@@ -5,6 +5,7 @@ import {
   translate,
   ValidPaymentReponse,
   useDelayedQuery,
+  formatUsd,
 } from "@galoymoney/client"
 import {
   FormattedNumberInput,
@@ -19,7 +20,7 @@ import {
 } from "@galoymoney/react"
 
 import config from "../../store/config"
-import { usdFormatter, useAppDispatcher } from "../../store"
+import { useAppDispatcher } from "../../store"
 import useMainQuery from "../../hooks/use-main-query"
 import useMyUpdates from "../../hooks/use-my-updates"
 
@@ -214,11 +215,7 @@ const Send = () => {
     }
 
     if (!convertedValues.sats) {
-      return (
-        <div className="converted-usd">
-          &#8776; {usdFormatter.format(convertedValues.usd)}
-        </div>
-      )
+      return <div className="converted-usd">&#8776; {formatUsd(convertedValues.usd)}</div>
     }
 
     return (
@@ -227,7 +224,7 @@ const Send = () => {
           <SatFormat amount={convertedValues.sats} />
         </div>
         <div className="converted-usd small">
-          &#8776; {usdFormatter.format(convertedValues.usd)}
+          &#8776; {formatUsd(convertedValues.usd)}
         </div>
       </>
     )

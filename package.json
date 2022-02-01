@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@galoymoney/client": "^0.0.15",
-    "@galoymoney/react": "^0.0.12",
+    "@galoymoney/react": "^0.0.13",
     "@testing-library/jest-dom": "^5.16.0",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
@@ -54,7 +54,7 @@
     "mini-css-extract-plugin": "^2.5.2",
     "morgan": "^1.10.0",
     "normalize.css": "^8.0.1",
-    "postcss": "^8.4.5",
+    "postcss": "^8.4.6",
     "postcss-import": "^14.0.2",
     "postcss-loader": "^6.2.1",
     "postcss-nested": "^5.0.6",

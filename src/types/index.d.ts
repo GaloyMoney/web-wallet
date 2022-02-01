@@ -57,7 +57,6 @@ type UseMyUpdates = {
 }
 
 type InvoiceInput = {
-  id: number // used to reset input components
   currency: "USD" | "SATS"
 
   // undefined in input is used to indicate their changing state

@@ -1,5 +1,6 @@
 import express from "express"
 
+import { registerSignupRoute } from "../kratos/routes"
 import { serverRenderer } from "../renderers/server"
 import { SupportedRoutes } from "./routes"
 
@@ -10,6 +11,8 @@ ssrRouter.get("/logout", async (req, res) => {
   req.session.galoyJwtToken = null
   return res.redirect("/")
 })
+
+registerSignupRoute(ssrRouter)
 
 ssrRouter.get("/*", async (req, res) => {
   try {

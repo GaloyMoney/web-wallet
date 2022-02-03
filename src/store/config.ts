@@ -11,7 +11,8 @@ if (!isBrowser) {
     "GRAPHQL_SUBSCRIPTION_URI",
     "AUTH_ENDPOINT",
     "AUTH_BASE_URL",
-    "KRATOS_ENDPOINT",
+    "KRATOS_API_BASE_URL",
+    "KRATOS_BROWSER_URL",
   ]
 
   requiredEnvVars.forEach((envVar) => {

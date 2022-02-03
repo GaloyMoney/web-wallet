@@ -609,6 +609,20 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@ory/client@^0.0.1-alpha.49":
+  version "0.0.1-alpha.49"
+  resolved "https://registry.yarnpkg.com/@ory/client/-/client-0.0.1-alpha.49.tgz#7f11dee90d4e180dba49931a14244ba763389d1d"
+  integrity sha512-dov5ZTqLksKqh6DboAiDge1lDqB367Zs8s8tRREK3ddqRvwhn37S03E2xnHM4dpZgRmzDsXsPiUCCNPyj/ZxjQ==
+  dependencies:
+    axios "^0.21.1"
+
+"@ory/kratos-client@^0.8.2-alpha.1":
+  version "0.8.2-alpha.1"
+  resolved "https://registry.yarnpkg.com/@ory/kratos-client/-/kratos-client-0.8.2-alpha.1.tgz#35d9fba198c768bb7e1a39587494d1e2b3fe4780"
+  integrity sha512-Mh5MiZb0nLt1+SvhgbOLVSSzksgunX5PC2kQX8D8viGwa7yfp3l4gt73NHo0P66t91Vmou3yryyxJGA6HKx9Zw==
+  dependencies:
+    axios "^0.21.1"
+
 "@sinonjs/commons@^1.7.0":
   version "1.8.3"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.8.3.tgz#3802ddd21a50a949b6721ddd72da36e67e7f1b2d"
@@ -1470,7 +1484,7 @@ awilix@^4.2.7:
     camel-case "^4.1.2"
     glob "^7.1.6"
 
-axios@^0.21.0:
+axios@^0.21.0, axios@^0.21.1:
   version "0.21.4"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.4.tgz#c67b90dc0568e5c1cf2b0b858c43ba28e2eda575"
   integrity sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==

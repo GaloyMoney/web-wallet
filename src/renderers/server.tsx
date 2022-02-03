@@ -30,8 +30,13 @@ export const serverRenderer =
       const initialMarkup = await renderToStringWithData(App)
       const ssrData = galoyClient.extract()
 
-      const { supportEmail, graphqlUri, graphqlSubscriptionUri, network, authEndpoint } =
-        config
+      const {
+        supportEmail,
+        graphqlUri,
+        graphqlSubscriptionUri,
+        authEndpoint,
+        signupEmailEndpoint,
+      } = config
 
       return Promise.resolve({
         GwwState,
@@ -39,8 +44,8 @@ export const serverRenderer =
           supportEmail,
           graphqlUri,
           graphqlSubscriptionUri,
-          network,
           authEndpoint,
+          signupEmailEndpoint,
         },
         initialMarkup,
         ssrData,

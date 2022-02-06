@@ -2,10 +2,6 @@ import { translate } from "@galoymoney/client"
 import useMainQuery from "../../hooks/use-main-query"
 import TransactionItem from "./item"
 
-// type Props = {
-//   edges: Array<GaloyGQL.TransactionEdge>
-// }
-
 const TransactionList = () => {
   const { transactionsEdges } = useMainQuery()
 
@@ -23,7 +19,7 @@ const TransactionList = () => {
         if (!node) {
           return null
         }
-        return <TransactionItem key={node.id} transaction={node} />
+        return <TransactionItem key={node.id} tx={node} />
       })}
     </div>
   )

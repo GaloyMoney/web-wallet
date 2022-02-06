@@ -127,6 +127,7 @@ body {
 }
 
 .home {
+  min-height: 90%;
   .header-nav {
     margin-top: 3rem;
   }
@@ -249,12 +250,9 @@ body {
 
 #footer {
   width: 100%;
-  position: fixed;
-  bottom: 0;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding-top: 4rem;
+  padding-bottom: 2rem;
   background-color: var(--color-bg);
-  z-index: 1;
 }
 
 .powered-by {
@@ -442,14 +440,18 @@ body {
 .transaction-list {
   margin: 1rem auto;
   width: 95%;
-  max-width: 600px;
+  max-width: 750px;
   .transaction-item {
-    display: flex;
     padding: 0.5rem;
+    margin: 0.75rem;
     background-color: white;
     border: thin solid var(--color-borders);
-    margin: 0.75rem;
+  }
+
+  .transaction-summary {
+    display: flex;
     align-items: center;
+    cursor: pointer;
     div {
       flex: 1;
       padding-left: 0.5rem;
@@ -471,6 +473,25 @@ body {
       color: var(--color-secondary);
     }
   }
+
+  .transaction-details {
+    margin-top: 0.75rem;
+    padding-top: 0.5rem;
+    border-top: thin dashed var(--color-borders);
+    font-size: 90%;
+    div {
+      display: flex;
+      margin: 0.15rem;
+    }
+    .label {
+      font-weight: bold;
+      width: 125px;
+    }
+    .value {
+      overflow-wrap: anywhere;
+    }
+  }
+
   .direction-receive {
     .icon,
     .amount {

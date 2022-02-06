@@ -7,7 +7,6 @@ const useMainQuery = () => {
 
   const { data } = useQuery.main({
     variables: { hasToken, recentTransactions: 5 },
-    fetchPolicy: "cache-and-network",
     onCompleted: (completed) => {
       setLocale(completed?.me?.language)
     },

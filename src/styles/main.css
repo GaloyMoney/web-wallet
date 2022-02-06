@@ -127,7 +127,6 @@ body {
 }
 
 .home {
-  min-height: 90%;
   .header-nav {
     margin-top: 3rem;
   }
@@ -485,9 +484,11 @@ body {
     }
     .label {
       font-weight: bold;
-      width: 125px;
+      flex: 0;
+      min-width: 125px;
     }
     .value {
+      flex: 3;
       overflow-wrap: anywhere;
     }
   }
@@ -510,4 +511,9 @@ body {
       color: var(--color-secondary);
     }
   }
+}
+
+.load-more {
+  text-align: center;
+  margin-top: 1rem;
 }

@@ -22,6 +22,9 @@ body {
     color: var(--color-links);
     text-decoration: none;
     cursor: pointer;
+    i {
+      margin-right: 0.45rem;
+    }
   }
 
   input::-webkit-outer-spin-button,
@@ -115,9 +118,6 @@ body {
     width: 75%;
     max-width: 225px;
     text-align: center;
-    i {
-      margin-right: 0.75rem;
-    }
   }
   .active {
     background-color: var(--color-active-bg);

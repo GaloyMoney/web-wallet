@@ -17,9 +17,11 @@ const TransactionList = () => {
 
   // The source of truth for listing the transactions
   // The data gets "cached" here and more pages are appended when they're fetched
-  const transactionsRef = useRef<GaloyGQL.TransactionConnection>(
-    transactions ?? EMPTY_CONNECTION,
-  )
+  const transactionsRef = useRef<GaloyGQL.TransactionConnection>(EMPTY_CONNECTION)
+
+  if (!transactionsRef.current.edges && transactions) {
+    transactionsRef.current = transactions
+  }
 
   const fetchNextTransactionsPage = async () => {
     const { pageInfo } = transactionsRef.current

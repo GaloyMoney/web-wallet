@@ -2,12 +2,11 @@ import Home from "../components/pages/home"
 import Login from "../components/pages/login"
 import Send from "../components/pages/send"
 import Receive from "../components/pages/receive"
-
-export const SupportedRoutes = ["/", "/login", "/scan", "/send", "/receive"] as const
+import Contacts from "../components/contacts"
 
 // Note: The component property is skipped by the serialize function
 // It's only used on the front-end
-const appRoutes: AppRoutes = {
+const appRoutes = {
   "/": {
     component: Home,
     title: "Galoy Web Wallet",
@@ -28,6 +27,19 @@ const appRoutes: AppRoutes = {
     component: Receive,
     title: "Receive Bitcoin",
   },
+  "/contacts": {
+    component: Contacts,
+    title: "Contacts",
+  },
+}
+
+export type SupportedRoutes = keyof typeof appRoutes
+
+export const checkRoute = (path: string): RoutePath | Error => {
+  if (appRoutes[path as never]) {
+    return path as RoutePath
+  }
+  return new Error("Invaild route path")
 }
 
 export default appRoutes

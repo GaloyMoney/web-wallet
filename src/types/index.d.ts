@@ -14,7 +14,7 @@ type OnChainUpdate = import("@galoymoney/client").GaloyGQL.OnChainUpdate
 type AtLeast<T, K extends keyof T> = Partial<T> & Pick<T, K>
 
 // Server and state
-type RoutePath = typeof import("../server/routes").SupportedRoutes[number]
+type RoutePath = import("../server/routes").SupportedRoutes
 type RouteInfo = Record<string, string | (() => JSX.Element | null)>
 type AppRoutes = Record<RoutePath, RouteInfo>
 

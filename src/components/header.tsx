@@ -8,7 +8,7 @@ import Link from "./link"
 import Logout from "./logout"
 
 type Props = {
-  page?: "send-bitcoin" | "receive-bitcoin" | "home"
+  page?: "send-bitcoin" | "receive-bitcoin" | "home" | "contacts"
 }
 
 const Header = ({ page }: Props) => {

@@ -1,18 +1,15 @@
 import React, {
   useMemo,
-  createContext,
+  useState,
+  useEffect,
   ReactNode,
 } from 'react'
 import { useErrorHandler } from "react-error-boundary"
 
 import { GaloyClient, GaloyProvider, postRequest } from "@galoymoney/client"
 import { createClient } from "../store"
-
-interface Context {
-  galoyJwtToken?: string
-}
-
-export const AuthContext = createContext<Context>({})
+import { getPersistedSession , AuthSession } from "../store/auth-session"
+import { AuthContext } from "../store/use-auth-context"
 
 interface AuthContextProps {
   children: ReactNode
@@ -21,6 +18,14 @@ interface AuthContextProps {
 }
 
 export const AuthProvider = ({ children, galoyClient, authToken }: AuthContextProps) => {
+  const [authSession] = useState<
+    AuthSession
+>(getPersistedSession(authToken))
+
+  // useEffect(() => {
+  //   const session = getPersistedSession(authToken)
+  // }, [authToken])
+
   const handleError = useErrorHandler()
   const client = useMemo(
     () => {
@@ -55,6 +60,8 @@ export const AuthProvider = ({ children, galoyClient, authToken }: AuthContextPr
   
   return (
     <AuthContext.Provider value={{
+      galoyJwtToken: authSession?.galoyJwtToken,
+      isAuthenticated: Boolean(authSession?.galoyJwtToken),
       }}>
       <GaloyProvider client={client}>
         {children}

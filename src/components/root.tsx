@@ -2,7 +2,7 @@ import { useReducer } from "react"
 
 import { GaloyClient, setLocale } from "@galoymoney/client"
 
-import { GwwContext} from "../store"
+import { GwwContext } from "../store"
 import mainReducer from "../store/reducer"
 
 import { AuthProvider } from "../components/auth-provider"

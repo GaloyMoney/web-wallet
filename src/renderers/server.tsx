@@ -23,7 +23,9 @@ export const serverRenderer =
         authToken: galoyJwtToken,
         headers: req.headers,
       })
-      const App = <SSRRoot client={galoyClient} GwwState={GwwState} galoyJwtToken={galoyJwtToken} />
+      const App = (
+        <SSRRoot client={galoyClient} GwwState={GwwState} galoyJwtToken={galoyJwtToken} />
+      )
 
       const initialMarkup = await renderToStringWithData(App)
       const ssrData = galoyClient.extract()

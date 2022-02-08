@@ -1,4 +1,4 @@
-import { Suspense , useEffect} from "react"
+import { Suspense, useEffect } from "react"
 import { ErrorBoundary } from "react-error-boundary"
 
 import { Spinner } from "@galoymoney/react"

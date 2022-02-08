@@ -21,7 +21,7 @@ const AuthCode = ({ phoneNumber }: Props) => {
       setErrorMessage(data.message)
       return
     }
-    history.push("/", { authToken: data?.authToken })
+    history.push("/", { galoyJwtToken: data?.galoyJwtToken })
   }
 
   const handleAuthCodeSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {

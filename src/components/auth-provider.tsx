@@ -1,14 +1,13 @@
 import React, {
   useMemo,
   useState,
-  useEffect,
   ReactNode,
 } from 'react'
 import { useErrorHandler } from "react-error-boundary"
 
-import { GaloyClient, GaloyProvider, postRequest } from "@galoymoney/client"
+import { GaloyClient, GaloyProvider, postRequest , useResetClient } from "@galoymoney/client"
 import { createClient } from "../store"
-import { getPersistedSession , AuthSession } from "../store/auth-session"
+import { getPersistedSession,persistSession, clearSession} from "../store/auth-session"
 import { AuthContext } from "../store/use-auth-context"
 
 interface AuthContextProps {
@@ -18,13 +17,9 @@ interface AuthContextProps {
 }
 
 export const AuthProvider = ({ children, galoyClient, galoyJwtToken }: AuthContextProps) => {
-  const [authSession] = useState<
+  const [authSession, setAuthSession] = useState<
     AuthSession
 >(getPersistedSession(galoyJwtToken))
-
-  // useEffect(() => {
-  //   const session = getPersistedSession(authToken)
-  // }, [authToken])
 
   const handleError = useErrorHandler()
   const client = useMemo(
@@ -34,7 +29,7 @@ export const AuthProvider = ({ children, galoyClient, galoyJwtToken }: AuthConte
         return galoyClient
       }
       return createClient({
-        authToken: galoyJwtToken,
+        authToken: authSession?.galoyJwtToken,
         onError: ({ graphQLErrors, networkError }) => {
           if (graphQLErrors) {
             console.debug("[GraphQL errors]:", graphQLErrors)
@@ -45,7 +40,7 @@ export const AuthProvider = ({ children, galoyClient, galoyJwtToken }: AuthConte
               "result" in networkError &&
               networkError.result.errors?.[0]?.code === "INVALID_AUTHENTICATION"
             ) {
-              postRequest(galoyJwtToken)("/api/logout").then(
+              postRequest(authSession?.galoyJwtToken)("/api/logout").then(
                 () => (document.location = "/"),
               )
             } else {
@@ -55,13 +50,24 @@ export const AuthProvider = ({ children, galoyClient, galoyJwtToken }: AuthConte
         },
       })
     },
-    [handleError, galoyClient, galoyJwtToken],
+    [handleError, galoyClient, authSession],
   )
-  
+
+  const setAuth = (session: AuthSession) => {
+    if (session) {
+      persistSession(session)
+    } else {
+      clearSession()
+    }
+
+    setAuthSession(session)
+  }
+
   return (
     <AuthContext.Provider value={{
       galoyJwtToken: authSession?.galoyJwtToken,
       isAuthenticated: Boolean(authSession?.galoyJwtToken),
+      setAuthSession: setAuth,
       }}>
       <GaloyProvider client={client}>
         {children}

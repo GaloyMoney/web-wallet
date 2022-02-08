@@ -34,9 +34,14 @@ type GwwContextType = {
   dispatch: React.Dispatch<GwwAction>
 }
 
+type AuthSession = {
+  galoyJwtToken: string
+} | null
+
 type AuthContextType = {
   galoyJwtToken?: string
   isAuthenticated: boolean
+  setAuthSession: (session: AuthSession) => void
 }
 
 type ServerRendererFunction = (path: RoutePath) => Promise<{

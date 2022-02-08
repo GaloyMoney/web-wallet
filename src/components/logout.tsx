@@ -10,7 +10,7 @@ const Logout = () => {
     event.preventDefault()
     await request.post("/api/logout")
     resetClient()
-    history.push("/", { authToken: undefined })
+    history.push("/", { galoyJwtToken: undefined })
   }
 
   return (

@@ -14,13 +14,13 @@ import { AuthContext } from "../store/use-auth-context"
 interface AuthContextProps {
   children: ReactNode
   galoyClient?: GaloyClient<unknown>
-  authToken?: string
+  galoyJwtToken?: string
 }
 
-export const AuthProvider = ({ children, galoyClient, authToken }: AuthContextProps) => {
+export const AuthProvider = ({ children, galoyClient, galoyJwtToken }: AuthContextProps) => {
   const [authSession] = useState<
     AuthSession
->(getPersistedSession(authToken))
+>(getPersistedSession(galoyJwtToken))
 
   // useEffect(() => {
   //   const session = getPersistedSession(authToken)
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children, galoyClient, authToken }: AuthContextPr
         return galoyClient
       }
       return createClient({
-        authToken,
+        authToken: galoyJwtToken,
         onError: ({ graphQLErrors, networkError }) => {
           if (graphQLErrors) {
             console.debug("[GraphQL errors]:", graphQLErrors)
@@ -45,7 +45,7 @@ export const AuthProvider = ({ children, galoyClient, authToken }: AuthContextPr
               "result" in networkError &&
               networkError.result.errors?.[0]?.code === "INVALID_AUTHENTICATION"
             ) {
-              postRequest(authToken)("/api/logout").then(
+              postRequest(galoyJwtToken)("/api/logout").then(
                 () => (document.location = "/"),
               )
             } else {
@@ -55,7 +55,7 @@ export const AuthProvider = ({ children, galoyClient, authToken }: AuthContextPr
         },
       })
     },
-    [handleError, galoyClient, authToken],
+    [handleError, galoyClient, galoyJwtToken],
   )
   
   return (

@@ -27,18 +27,18 @@ const Root = ({ GwwState }: RootProps) => {
 
 type SSRootProps = {
   client: GaloyClient<unknown>
-  authToken?: string
+  galoyJwtToken?: string
   GwwState: GwwState
 }
 
-export const SSRRoot = ({ client, GwwState, authToken }: SSRootProps) => {
+export const SSRRoot = ({ client, GwwState, galoyJwtToken }: SSRootProps) => {
   const [state, dispatch] = useReducer(mainReducer, GwwState, (initState) => {
     setLocale(initState.defaultLanguage)
     return initState
   })
 
   return (
-    <AuthProvider galoyClient={client} authToken={authToken}>
+    <AuthProvider galoyClient={client} galoyJwtToken={galoyJwtToken}>
       <GwwContext.Provider value={{ state, dispatch }}>
         <RootComponent path={state.path} />
       </GwwContext.Provider>

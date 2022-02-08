@@ -6,10 +6,10 @@ export type AuthSession = {
 
 const galoySessionName = "galoy-session"
 
-export const getPersistedSession = (authToken: string | undefined): AuthSession => {
-  if (authToken) {
+export const getPersistedSession = (galoyJwtToken: string | undefined): AuthSession => {
+  if (galoyJwtToken) {
     return {
-      galoyJwtToken: authToken,
+      galoyJwtToken,
     }
   } else if (config.isBrowser) {
     const session = window.localStorage.getItem(galoySessionName)

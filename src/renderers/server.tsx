@@ -16,7 +16,6 @@ export const serverRenderer =
       const GwwState: GwwState = {
         path,
         key: 0,
-        authToken,
         defaultLanguage: req.acceptsLanguages()?.[0],
       }
 
@@ -24,7 +23,7 @@ export const serverRenderer =
         authToken,
         headers: req.headers,
       })
-      const App = <SSRRoot client={galoyClient} GwwState={GwwState} />
+      const App = <SSRRoot client={galoyClient} GwwState={GwwState} authToken={authToken} />
 
       const initialMarkup = await renderToStringWithData(App)
       const ssrData = galoyClient.extract()

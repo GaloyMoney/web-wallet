@@ -1,8 +1,8 @@
-import { useEffect, useReducer } from "react"
+import { useReducer } from "react"
 
 import { GaloyClient, setLocale } from "@galoymoney/client"
 
-import { GwwContext, history } from "../store"
+import { GwwContext} from "../store"
 import mainReducer from "../store/reducer"
 
 import { AuthProvider } from "../components/auth-provider"
@@ -16,19 +16,8 @@ const Root = ({ GwwState }: RootProps) => {
     return initState
   })
 
-  useEffect(() => {
-    const unlisten = history.listen(({ location }) => {
-      dispatch({
-        type: "update",
-        path: location.pathname,
-        ...(location.state as Record<string, unknown> | null),
-      })
-    })
-    return () => unlisten()
-  }, [state?.authToken])
-
   return (
-    <AuthProvider authToken={state?.authToken}>
+    <AuthProvider>
       <GwwContext.Provider value={{ state, dispatch }}>
         <RootComponent path={state.path} key={state.key} />
       </GwwContext.Provider>
@@ -38,17 +27,18 @@ const Root = ({ GwwState }: RootProps) => {
 
 type SSRootProps = {
   client: GaloyClient<unknown>
+  authToken?: string
   GwwState: GwwState
 }
 
-export const SSRRoot = ({ client, GwwState }: SSRootProps) => {
+export const SSRRoot = ({ client, GwwState, authToken }: SSRootProps) => {
   const [state, dispatch] = useReducer(mainReducer, GwwState, (initState) => {
     setLocale(initState.defaultLanguage)
     return initState
   })
 
   return (
-    <AuthProvider galoyClient={client}>
+    <AuthProvider galoyClient={client} authToken={authToken}>
       <GwwContext.Provider value={{ state, dispatch }}>
         <RootComponent path={state.path} />
       </GwwContext.Provider>

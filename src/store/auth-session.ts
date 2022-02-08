@@ -1,10 +1,22 @@
 import config from "../store/config"
 
-export type AuthSession = {
-  galoyJwtToken: string
-} | null
-
 const galoySessionName = "galoy-session"
+
+export const clearSession = () => {
+  if (config.isBrowser) {
+    window.localStorage.removeItem(galoySessionName)
+  }
+}
+
+export const persistSession = (session: AuthSession) => {
+  if (config.isBrowser) {
+    if (session) {
+      localStorage.setItem(galoySessionName, JSON.stringify(session))
+    } else {
+      clearSession()
+    }
+  }
+}
 
 export const getPersistedSession = (galoyJwtToken: string | undefined): AuthSession => {
   if (galoyJwtToken) {
@@ -18,9 +30,4 @@ export const getPersistedSession = (galoyJwtToken: string | undefined): AuthSess
     }
   }
   return null
-}
-export const clearSession = () => {
-  if (config.isBrowser) {
-    window.localStorage.removeItem(galoySessionName)
-  }
 }

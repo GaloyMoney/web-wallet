@@ -8,12 +8,24 @@
 #@   return data.values.docker_registry + "/web-wallet"
 #@ end
 
+#@ def release_pipeline_image():
+#@   return data.values.docker_registry + "/release-pipeline"
+#@ end
+
 #@ def task_image_config():
 type: registry-image
 source:
   username: #@ data.values.docker_registry_user
   password: #@ data.values.docker_registry_password
   repository: #@ pipeline_image()
+#@ end
+
+#@ def release_task_image_config():
+type: registry-image
+source:
+  username: #@ data.values.docker_registry_user
+  password: #@ data.values.docker_registry_password
+  repository: #@ release_pipeline_image()
 #@ end
 
 #@ def slack_failure_notification():
@@ -112,6 +124,52 @@ jobs:
         params:
           image: image/image.tar
 
+  - name: release
+    serial: true
+    plan:
+    - in_parallel:
+      - get: repo
+        trigger: true
+        passed:
+          - build-edge-image
+          - test
+          - check-code
+      - get: edge-image
+        passed: [ build-edge-image ]
+        params:
+          format: oci
+      - get: pipeline-tasks
+      - get: version
+      - get: charts-repo
+    - task: prep-release
+      config:
+        platform: linux
+        image_resource: #@ release_task_image_config()
+        inputs:
+        - name: repo
+        - name: pipeline-tasks
+        - name: edge-image
+        - name: version
+        - name: charts-repo
+        outputs:
+        - name: version
+        - name: artifacts
+        run:
+          path: pipeline-tasks/ci/tasks/vendor/prep-release-src.sh
+    - in_parallel:
+      - put: versioned-image
+        params:
+          image: edge-image/image.tar
+          additional_tags: artifacts/gh-release-tag
+      - put: gh-release
+        params:
+          name: artifacts/gh-release-name
+          tag: artifacts/gh-release-tag
+          body: artifacts/gh-release-notes.md
+      - put: version
+        params:
+          file: version/version
+
   - name: bump-image-in-chart
     plan:
       - in_parallel:
@@ -193,6 +251,23 @@ resources:
       branch: #@ data.values.git_branch
       private_key: #@ data.values.github_private_key
 
+  - name: version
+    type: semver
+    source:
+      initial_version: 0.0.0
+      driver: git
+      file: version
+      uri: #@ data.values.git_uri
+      branch: #@ data.values.git_version_branch
+      private_key: #@ data.values.github_private_key
+
+  - name: gh-release
+    type: github-release
+    source:
+      owner: #@ data.values.gh_org
+      repository: #@ data.values.gh_repository
+      access_token: #@ data.values.github_token
+
   - name: charts-repo-bot-branch
     type: git
     source:
@@ -211,6 +286,13 @@ resources:
     type: registry-image
     source:
       tag: edge
+      username: #@ data.values.docker_registry_user
+      password: #@ data.values.docker_registry_password
+      repository: #@ web_wallet_image()
+
+  - name: versioned-image
+    type: registry-image
+    source:
       username: #@ data.values.docker_registry_user
       password: #@ data.values.docker_registry_password
       repository: #@ web_wallet_image()

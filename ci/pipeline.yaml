@@ -32,10 +32,49 @@ groups:
       - check-code
       - test
       - build-edge-image
+      - release
       - bump-image-in-chart
       - install-deps
 
 jobs:
+  - name: check-code
+    serial: true
+    plan:
+      - in_parallel:
+          - { get: repo, trigger: true }
+          - { get: pipeline-tasks }
+          - { get: bundled-deps, trigger: true }
+      - task: check-code
+        config:
+          platform: linux
+          image_resource: #@ task_image_config()
+          inputs:
+            - name: bundled-deps
+            - name: pipeline-tasks
+            - name: repo
+          run:
+            path: pipeline-tasks/ci/tasks/check-code.sh
+    on_failure: #@ slack_failure_notification()
+
+  - name: test
+    serial: true
+    plan:
+      - in_parallel:
+          - { get: repo, trigger: true }
+          - { get: pipeline-tasks }
+          - { get: bundled-deps, trigger: true }
+      - task: test
+        config:
+          platform: linux
+          image_resource: #@ task_image_config()
+          inputs:
+            - name: bundled-deps
+            - name: pipeline-tasks
+            - name: repo
+          run:
+            path: pipeline-tasks/ci/tasks/test.sh
+    on_failure: #@ slack_failure_notification()
+
   - name: build-edge-image
     serial: true
     plan:
@@ -77,13 +116,13 @@ jobs:
     plan:
       - in_parallel:
           - get: edge-image
-            trigger: true
-            passed: [build-edge-image]
+            passed: [ release ]
             params: { skip_download: true }
           - get: repo
             trigger: true
-            passed:
-              - build-edge-image
+            passed: [ release ]
+          - get: version
+            passed: [ release ]
           - get: charts-repo
             params: { skip_download: true }
           - get: pipeline-tasks
@@ -96,6 +135,7 @@ jobs:
             - name: edge-image
             - name: pipeline-tasks
             - name: charts-repo
+            - name: version
           outputs:
             - name: charts-repo
           params:
@@ -120,44 +160,6 @@ jobs:
             BOT_BRANCH: #@ data.values.git_charts_bot_branch
           run:
             path: pipeline-tasks/ci/tasks/open-charts-pr.sh
-
-  - name: check-code
-    serial: true
-    plan:
-      - in_parallel:
-          - { get: repo, trigger: true }
-          - { get: pipeline-tasks }
-          - { get: bundled-deps, trigger: true }
-      - task: check-code
-        config:
-          platform: linux
-          image_resource: #@ task_image_config()
-          inputs:
-            - name: bundled-deps
-            - name: pipeline-tasks
-            - name: repo
-          run:
-            path: pipeline-tasks/ci/tasks/check-code.sh
-    on_failure: #@ slack_failure_notification()
-
-  - name: test
-    serial: true
-    plan:
-      - in_parallel:
-          - { get: repo, trigger: true }
-          - { get: pipeline-tasks }
-          - { get: bundled-deps, trigger: true }
-      - task: test
-        config:
-          platform: linux
-          image_resource: #@ task_image_config()
-          inputs:
-            - name: bundled-deps
-            - name: pipeline-tasks
-            - name: repo
-          run:
-            path: pipeline-tasks/ci/tasks/test.sh
-    on_failure: #@ slack_failure_notification()
 
   - name: install-deps
     plan:
@@ -216,7 +218,7 @@ resources:
   - name: pipeline-tasks
     type: git
     source:
-      paths: [ci/tasks/*, Makefile]
+      paths: [ci/tasks/*, ci/config/*, Makefile]
       uri: #@ data.values.git_uri
       branch: #@ data.values.git_branch
       private_key: #@ data.values.github_private_key

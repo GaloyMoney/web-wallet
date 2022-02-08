@@ -1,47 +1,20 @@
-import { useEffect, useMemo, useReducer } from "react"
-import { useErrorHandler } from "react-error-boundary"
+import { useEffect, useReducer } from "react"
 
-import { GaloyClient, GaloyProvider, postRequest, setLocale } from "@galoymoney/client"
+import { GaloyClient, setLocale } from "@galoymoney/client"
 
-import { createClient, GwwContext, history } from "../store"
+import { GwwContext, history } from "../store"
 import mainReducer from "../store/reducer"
 
+import { AuthProvider } from "../components/auth-provider"
 import RootComponent from "../components/root-component"
 
 type RootProps = { GwwState: GwwState }
 
 const Root = ({ GwwState }: RootProps) => {
-  const handleError = useErrorHandler()
   const [state, dispatch] = useReducer(mainReducer, GwwState, (initState) => {
     setLocale(initState.defaultLanguage)
     return initState
   })
-
-  const galoyClient = useMemo(
-    () =>
-      createClient({
-        authToken: state?.authToken,
-        onError: ({ graphQLErrors, networkError }) => {
-          if (graphQLErrors) {
-            console.debug("[GraphQL errors]:", graphQLErrors)
-          }
-          if (networkError) {
-            console.debug("[Network error]:", networkError)
-            if (
-              "result" in networkError &&
-              networkError.result.errors?.[0]?.code === "INVALID_AUTHENTICATION"
-            ) {
-              postRequest(state.authToken)("/api/logout").then(
-                () => (document.location = "/"),
-              )
-            } else {
-              handleError(networkError)
-            }
-          }
-        },
-      }),
-    [handleError, state?.authToken],
-  )
 
   useEffect(() => {
     const unlisten = history.listen(({ location }) => {
@@ -55,11 +28,11 @@ const Root = ({ GwwState }: RootProps) => {
   }, [state?.authToken])
 
   return (
-    <GaloyProvider client={galoyClient}>
+    <AuthProvider authToken={state?.authToken}>
       <GwwContext.Provider value={{ state, dispatch }}>
         <RootComponent path={state.path} key={state.key} />
       </GwwContext.Provider>
-    </GaloyProvider>
+    </AuthProvider>
   )
 }
 
@@ -75,11 +48,11 @@ export const SSRRoot = ({ client, GwwState }: SSRootProps) => {
   })
 
   return (
-    <GaloyProvider client={client}>
+    <AuthProvider galoyClient={client}>
       <GwwContext.Provider value={{ state, dispatch }}>
         <RootComponent path={state.path} />
       </GwwContext.Provider>
-    </GaloyProvider>
+    </AuthProvider>
   )
 }
 

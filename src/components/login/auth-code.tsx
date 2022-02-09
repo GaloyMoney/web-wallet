@@ -26,9 +26,7 @@ const AuthCode = ({ phoneNumber }: Props) => {
 
     const session = { galoyJwtToken: data?.galoyJwtToken }
     setAuthSession(session.galoyJwtToken ? session : null)
-    setTimeout(() => {
-      history.push("/", { galoyJwtToken: data?.galoyJwtToken })
-    }, 100)
+    history.push("/", { galoyJwtToken: data?.galoyJwtToken })
   }
 
   const handleAuthCodeSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {

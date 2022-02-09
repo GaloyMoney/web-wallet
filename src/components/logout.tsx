@@ -13,9 +13,7 @@ const Logout = () => {
     await request.post("/api/logout")
     resetClient()
     setAuthSession(null)
-    setTimeout(() => {
-      history.push("/", { galoyJwtToken: undefined })
-    })
+    history.push("/", { galoyJwtToken: undefined })
   }
 
   return (

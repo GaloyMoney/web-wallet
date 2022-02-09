@@ -66,7 +66,7 @@ const TransactionList = () => {
       ) : (
         pageInfo.hasNextPage && (
           <div className="load-more link" onClick={fetchNextTransactionsPage}>
-            Load More
+            {translate("Load more transactions")}
           </div>
         )
       )}

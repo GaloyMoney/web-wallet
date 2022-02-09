@@ -3,6 +3,7 @@ import Login from "../components/pages/login"
 import Send from "../components/pages/send"
 import Receive from "../components/pages/receive"
 import Contacts from "../components/contacts"
+import Transactions from "../components/pages/transactions"
 
 // Note: The component property is skipped by the serialize function
 // It's only used on the front-end
@@ -31,6 +32,10 @@ const appRoutes = {
     component: Contacts,
     title: "Contacts",
   },
+  "/transactions": {
+    component: Transactions,
+    title: "Transactions with Contact",
+  },
 }
 
 export type SupportedRoutes = keyof typeof appRoutes
@@ -42,4 +47,12 @@ export const checkRoute = (path: string): RoutePath | Error => {
   return new Error("Invaild route path")
 }
 
-export default appRoutes
+type AppRoutes = Record<
+  RoutePath,
+  {
+    component: (props: Record<string, unknown>) => JSX.Element
+    title: string
+  }
+>
+
+export default appRoutes as unknown as AppRoutes

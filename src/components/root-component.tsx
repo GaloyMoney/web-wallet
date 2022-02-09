@@ -7,15 +7,19 @@ import appRoutes, { checkRoute } from "../server/routes"
 
 import ErrorFallback from "./error-fallback"
 
-type Props = { path: RoutePath }
+type Props = {
+  path: RoutePath
+  [name: string]: unknown
+}
 
-const RootComponent = ({ path }: Props) => {
+const RootComponent = ({ path, ...props }: Props) => {
   const checkedRoutePath = checkRoute(path)
   if (checkedRoutePath instanceof Error) {
     throw checkedRoutePath
   }
 
   const Component = appRoutes[checkedRoutePath].component
+
   return (
     <Suspense
       fallback={
@@ -26,7 +30,7 @@ const RootComponent = ({ path }: Props) => {
     >
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <div id="main-container">
-          <Component />
+          <Component {...props} />
         </div>
       </ErrorBoundary>
     </Suspense>

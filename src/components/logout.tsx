@@ -19,7 +19,7 @@ const Logout = () => {
   return (
     <a href="/logout" onClick={handleLogout}>
       <i aria-hidden className="fas fa-sign-out-alt" />
-      {translate("Logout")}
+      <span className="name">{translate("Logout")}</span>
     </a>
   )
 }

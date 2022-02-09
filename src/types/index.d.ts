@@ -60,6 +60,8 @@ declare interface Window {
       graphqlSubscriptionUri: string
       network: Network
       authEndpoint: string
+      kratosFeatureFlag: boolean
+      registerViaEmailEndpoint: string
     }
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -137,3 +139,18 @@ type TransactionDetailProps = {
   description: string
   usdAmount: number
 }
+
+type KratosFlowData = { registrationData?: SelfServiceRegistrationFlow }
+
+type HandleRegisterResponse =
+  | {
+      redirect: string
+    }
+  | KratosFlowData
+
+type AuthRoutePath = typeof import("../server/routes").SupportedAuthRoutes[number]
+type AuthRouteInfo = Record<
+  string,
+  string | (({ kratosData: KratosFlowData }) => JSX.Element | null)
+>
+type AuthRoutes = Record<AuthRoutePath, AuthRouteInfo>

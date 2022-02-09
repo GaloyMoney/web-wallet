@@ -45,16 +45,4 @@ apiRouter.post("/logout", async (req, res) => {
   return res.send({ galoyJwtToken: null })
 })
 
-apiRouter.post("/signup/email", async (req, res) => {
-  try {
-    console.log("AHSOTENAHOSTEN", req.body)
-    return res.send({})
-  } catch (err) {
-    console.error(err)
-    return res
-      .status(500)
-      .send({ error: err instanceof Error ? err.message : "Something went wrong" })
-  }
-})
-
 export default apiRouter

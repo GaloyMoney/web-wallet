@@ -49,7 +49,8 @@ const config = isBrowser
       graphqlUri: window.__G_DATA.GwwConfig.graphqlUri,
       graphqlSubscriptionUri: window.__G_DATA.GwwConfig.graphqlSubscriptionUri,
       authEndpoint: window.__G_DATA.GwwConfig.authEndpoint,
-      signupEmailEndpoint: window.__G_DATA.GwwConfig.signupEmailEndpoint,
+      registerViaEmailEndpoint: window.__G_DATA.GwwConfig.registerViaEmailEndpoint,
+      kratosFeatureFlag: window.__G_DATA.GwwConfig.kratosFeatureFlag,
       sessionKeys: "",
     }
   : {
@@ -65,7 +66,8 @@ const config = isBrowser
       graphqlSubscriptionUri: process.env.GRAPHQL_SUBSCRIPTION_URI as string,
 
       authEndpoint: process.env.AUTH_ENDPOINT as string,
-      signupEmailEndpoint: `${process.env.AUTH_BASE_URL as string}/signup/email`,
+      kratosFeatureFlag: Boolean(process.env.KRATOS_FEATURE_FLAG || false),
+      registerViaEmailEndpoint: `${process.env.AUTH_BASE_URL as string}/signup/email`,
     }
 
 export default config

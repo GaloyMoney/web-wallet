@@ -35,7 +35,7 @@ export const serverRenderer =
         graphqlUri,
         graphqlSubscriptionUri,
         authEndpoint,
-        signupEmailEndpoint,
+        registerViaEmailEndpoint,
       } = config
 
       return Promise.resolve({
@@ -45,7 +45,7 @@ export const serverRenderer =
           graphqlUri,
           graphqlSubscriptionUri,
           authEndpoint,
-          signupEmailEndpoint,
+          registerViaEmailEndpoint,
         },
         initialMarkup,
         ssrData,

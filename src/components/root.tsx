@@ -1,8 +1,8 @@
-import { useReducer } from "react"
+import { useEffect, useReducer } from "react"
 
 import { GaloyClient, setLocale } from "@galoymoney/client"
 
-import { GwwContext } from "../store"
+import { GwwContext, history } from "../store"
 import mainReducer from "../store/reducer"
 
 import { AuthProvider } from "../components/auth-provider"
@@ -15,6 +15,17 @@ const Root = ({ GwwState }: RootProps) => {
     setLocale(initState.defaultLanguage)
     return initState
   })
+
+  useEffect(() => {
+    const unlisten = history.listen(({ location }) => {
+      dispatch({
+        type: "update",
+        path: location.pathname,
+        ...(location.state as Record<string, unknown> | null),
+      })
+    })
+    return () => unlisten()
+  }, [dispatch])
 
   return (
     <AuthProvider>

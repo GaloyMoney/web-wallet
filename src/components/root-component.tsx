@@ -1,4 +1,4 @@
-import { kratosFeatureFlag } from "../kratos"
+import kratosFeatureFlag from "../store/config"
 import { Suspense } from "react"
 import { ErrorBoundary } from "react-error-boundary"
 

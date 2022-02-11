@@ -2,7 +2,8 @@ import express from "express"
 
 import { serverRenderer } from "../renderers/server"
 import { checkRoute } from "./routes"
-import { kratosFeatureFlag, handleRegister } from "../kratos"
+import { handleRegister } from "../kratos"
+import kratosFeatureFlag from "../store/config"
 
 const ssrRouter = express.Router({ caseSensitive: true })
 

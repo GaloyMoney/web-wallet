@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react"
-import kratosFeatureFlag from "../../store/config"
+import config from "../../store/config"
 
 import { translate } from "@galoymoney/client"
 import { PhoneNumberInput } from "@galoymoney/react"
@@ -27,7 +27,7 @@ const Login = () => {
         onInvalidNumber={handleInvalidNumber}
       />
       {errorMessage && <div className="error">{errorMessage}</div>}
-      {kratosFeatureFlag && (
+      {config.kratosFeatureFlag && (
         <Link to="/register/email">
           <i aria-hidden className="fas fa-sign-in-alt" />
           <span className="register">{"register via email"}</span>

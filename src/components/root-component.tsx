@@ -50,7 +50,7 @@ const RootComponent = ({ path, flowData, ...props }: Props) => {
         >
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <div id="main-container">
-              <Component flowData={flowData} />
+              <Component flowData={flowData} {...props} />
             </div>
           </ErrorBoundary>
         </Suspense>

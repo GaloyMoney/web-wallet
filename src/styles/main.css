@@ -648,7 +648,8 @@ a svg {
       margin-left: 1rem;
       margin-right: 1rem;
     }
-    .icon i {
+    .icon i,
+    .action i {
       font-size: 2rem;
     }
     .name {

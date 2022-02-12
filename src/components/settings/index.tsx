@@ -14,7 +14,7 @@ const languageLabels = {
 } as const
 
 const Settings = () => {
-  const { language } = useMainQuery()
+  const { username, language } = useMainQuery()
   const { defaultLanguage } = useAppState()
 
   const [updateLanguage, { loading, errorsMessage }] = useMutation.userUpdateLanguage({
@@ -36,6 +36,19 @@ const Settings = () => {
       {errorsMessage && <ErrorMessage message={errorsMessage} />}
 
       <div className="list">
+        <div className="setting">
+          <div className="icon">
+            <Icon name="person" />
+          </div>
+          <div className="name">
+            {translate("Username")}
+            <div className="sub">{username}</div>
+          </div>
+          <div className="action">
+            <Icon name="lock" />
+          </div>
+        </div>
+
         <div className="setting">
           <div className="icon">
             <Icon name="language" />

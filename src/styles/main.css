@@ -76,7 +76,7 @@ body {
   button,
   .button {
     display: inline-block;
-    padding: 6px 12px;
+    padding: 0.5rem 1rem;
     border: thin solid var(--color-borders);
     border-radius: 0.25rem;
     text-decoration: none;

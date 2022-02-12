@@ -3,7 +3,11 @@ import { Icon } from "@galoymoney/react"
 
 import useMainQuery from "../../hooks/use-main-query"
 
-const UsernameSetting = () => {
+type Props = {
+  guestView: boolean
+}
+
+const UsernameSetting = ({ guestView }: Props) => {
   const { username } = useMainQuery()
 
   return (
@@ -13,7 +17,7 @@ const UsernameSetting = () => {
       </div>
       <div className="name">
         {translate("Username")}
-        <div className="sub">{username}</div>
+        <div className="sub">{guestView ? "(not logged in)" : username}</div>
       </div>
       <div className="action">
         <Icon name="lock" />

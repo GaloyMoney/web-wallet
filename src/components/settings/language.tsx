@@ -12,7 +12,11 @@ const languageLabels = {
   "es-SV": "Spanish",
 } as const
 
-const LanguageSetting = () => {
+type Props = {
+  guestView: boolean
+}
+
+const LanguageSetting = ({ guestView }: Props) => {
   const { language } = useMainQuery()
   const { defaultLanguage } = useAppState()
 
@@ -41,7 +45,7 @@ const LanguageSetting = () => {
           name="language"
           value={language}
           onChange={handleLanguageChange}
-          disabled={loading}
+          disabled={guestView || loading}
         >
           {Object.entries(languageLabels).map(([key, label]) => {
             return (

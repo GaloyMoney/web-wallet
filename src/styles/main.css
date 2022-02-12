@@ -484,7 +484,7 @@ a svg {
   }
 }
 
-.no-transactions {
+.no-data {
   text-align: center;
   border: thin solid var(--color-borders);
   padding: 1rem;
@@ -586,6 +586,7 @@ a svg {
     padding: 3em 1.5em;
     font-size: 1.1em;
     min-width: 175px;
+    z-index: 1;
     a {
       display: flex;
       margin: 1rem;

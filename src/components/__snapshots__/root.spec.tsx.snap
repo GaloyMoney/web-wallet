@@ -97,16 +97,9 @@ exports[`Root renders Contacts and matches snapshot 1`] = `
         Contacts
       </div>
       <div
-        class="list"
+        class="no-data"
       >
-        <div
-          class="spinner"
-        >
-          <i
-            aria-hidden="true"
-            class="fas fa-spinner fa-spin fa-5x"
-          />
-        </div>
+        No Contacts
       </div>
     </div>
   </div>
@@ -8007,7 +8000,9 @@ exports[`Root renders Settings and matches snapshot 1`] = `
             Username
             <div
               class="sub"
-            />
+            >
+              (not logged in)
+            </div>
           </div>
           <div
             class="action"
@@ -8043,6 +8038,7 @@ exports[`Root renders Settings and matches snapshot 1`] = `
             class="action"
           >
             <select
+              disabled=""
               name="language"
             >
               <option

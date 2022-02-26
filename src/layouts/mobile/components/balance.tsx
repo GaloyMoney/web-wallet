@@ -1,4 +1,4 @@
-import { formatUsd, translate } from "@galoymoney/client"
+import { formatUsd } from "@galoymoney/client"
 import { SatFormat, SatSymbol, Spinner } from "@galoymoney/react"
 
 import useMyUpdates from "hooks/use-my-updates"
@@ -18,7 +18,6 @@ const Balance: FCT = ({ balance }) => {
   if (!isAuthenticated) {
     return (
       <div className="balance" onClick={navigateToHome}>
-        <div className="title">{translate("Current Balance")}</div>
         <div className="value">
           <div className="primary">
             <SatSymbol />0
@@ -31,7 +30,6 @@ const Balance: FCT = ({ balance }) => {
 
   return (
     <div className="balance" onClick={navigateToHome}>
-      <div className="title">{translate("Current Balance")}</div>
       <div className="value">
         {Number.isNaN(balance) ? (
           <Spinner />

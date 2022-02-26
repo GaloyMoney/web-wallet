@@ -1,7 +1,11 @@
 import { translate } from "@galoymoney/client"
-import SendIntraLedgerAction from "./send-intra-ledger-action"
-import { SendLnInvoiceAction, SendLnNoAmountInvoiceAction } from "./send-ln-action"
-import SendOnChainAction from "./send-onchain-action"
+
+import SendIntraLedgerAction from "components/send/send-intra-ledger-action"
+import {
+  SendLnInvoiceAction,
+  SendLnNoAmountInvoiceAction,
+} from "components/send/send-ln-action"
+import SendOnChainAction from "components/send/send-onchain-action"
 
 type FCT = React.FC<SendActionProps>
 

@@ -3,7 +3,7 @@ import { MouseEvent } from "react"
 import { formatUsd, GaloyGQL, translate } from "@galoymoney/client"
 import { SatFormat, Spinner, SuccessCheckmark } from "@galoymoney/react"
 
-import useMyUpdates from "../../hooks/use-my-updates"
+import useMyUpdates from "hooks/use-my-updates"
 
 type FeeDisplayFCT = React.FC<{ satAmount: number | undefined }>
 

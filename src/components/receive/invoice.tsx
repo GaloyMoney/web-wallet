@@ -5,8 +5,8 @@ import copy from "copy-to-clipboard"
 import { GaloyGQL, satsToBTC, translate } from "@galoymoney/client"
 import { SuccessCheckmark } from "@galoymoney/react"
 
-import { useAppDispatcher } from "../../store"
-import useMyUpdates from "../../hooks/use-my-updates"
+import { useAppDispatcher } from "store/index"
+import useMyUpdates from "hooks/use-my-updates"
 
 type LightningInvoiceFCT = React.FC<{
   invoice: Pick<GaloyGQL.LnInvoice, "paymentHash" | "paymentRequest">

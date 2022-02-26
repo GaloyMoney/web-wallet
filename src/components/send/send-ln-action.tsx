@@ -2,7 +2,7 @@ import { MouseEvent, useEffect } from "react"
 
 import { useMutation } from "@galoymoney/client"
 
-import SendActionDisplay from "./send-action-display"
+import SendActionDisplay from "components/send/send-action-display"
 
 type SendLnActionFCT = React.FC<SendLnActionProps>
 

@@ -3,8 +3,8 @@ import { useState, useEffect, useRef } from "react"
 import { formatUsd, GaloyGQL, translate, useMutation } from "@galoymoney/client"
 import { Spinner } from "@galoymoney/react"
 
-import { LightningInvoice, OnChainInvoice } from "./invoice"
-import ErrorMessage from "../error-message"
+import { LightningInvoice, OnChainInvoice } from "components/receive/invoice"
+import ErrorMessage from "components/error-message"
 
 const INVOICE_EXPIRE_INTERVAL = 60 * 60 * 1000
 

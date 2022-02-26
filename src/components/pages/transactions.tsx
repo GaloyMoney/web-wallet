@@ -1,9 +1,10 @@
+import { useCallback, useRef } from "react"
+
 import { GaloyGQL, translate, useQuery } from "@galoymoney/client"
 import { Spinner } from "@galoymoney/react"
-import { useCallback, useRef } from "react"
-import Header from "../header"
 
-import TransactionItem from "../transactions/item"
+import Header from "components/header"
+import TransactionItem from "components/transactions/item"
 
 const TRANSACTIONS_PER_PAGE = 25
 const EMPTY_CONNECTION = {

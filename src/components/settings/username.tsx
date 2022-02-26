@@ -1,7 +1,7 @@
 import { translate } from "@galoymoney/client"
 import { Icon } from "@galoymoney/react"
 
-import useMainQuery from "../../hooks/use-main-query"
+import useMainQuery from "hooks/use-main-query"
 
 type FCT = React.FC<{ guestView: boolean }>
 

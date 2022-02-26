@@ -11,12 +11,12 @@ import {
   Spinner,
 } from "@galoymoney/react"
 
-import useMainQuery from "../../hooks/use-main-query"
-import useMyUpdates from "../../hooks/use-my-updates"
+import useMainQuery from "hooks/use-main-query"
+import useMyUpdates from "hooks/use-my-updates"
 
-import InvoiceGenerator from "../receive/invoice-generator"
-import Header from "../header"
-import { ButtonLink } from "../link"
+import InvoiceGenerator from "components/receive/invoice-generator"
+import Header from "components/header"
+import { ButtonLink } from "components/link"
 
 type InvoiceInputState = {
   layer: "lightning" | "onchain"

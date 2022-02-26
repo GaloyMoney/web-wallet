@@ -1,9 +1,9 @@
 import { translate } from "@galoymoney/client"
 
-import { useAuthContext } from "../../store/use-auth-context"
+import { useAuthContext } from "store/use-auth-context"
 
-import Header from "../header"
-import TransactionList from "../transactions/list"
+import Header from "components/header"
+import TransactionList from "components/transactions/list"
 
 const Home: NoPropsFCT = () => {
   const { isAuthenticated } = useAuthContext()

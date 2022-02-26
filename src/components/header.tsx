@@ -3,12 +3,12 @@ import { useState } from "react"
 import { translate } from "@galoymoney/client"
 import { Icon } from "@galoymoney/react"
 
-import useMainQuery from "../hooks/use-main-query"
-import { useAuthContext } from "../store/use-auth-context"
+import useMainQuery from "hooks/use-main-query"
+import { useAuthContext } from "store/use-auth-context"
 
-import Balance from "./balance"
-import Link from "./link"
-import Logout from "./logout"
+import Balance from "components/balance"
+import Link from "components/link"
+import Logout from "components/logout"
 
 const LoginLink = () => (
   <Link to="/login">

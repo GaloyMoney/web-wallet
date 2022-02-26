@@ -1,7 +1,9 @@
-import { SelfServiceRegistrationFlow } from "@ory/kratos-client"
 import { useState } from "react"
-import { getUrlForFlow, KratosFlow } from "../../kratos"
-import config from "../../store/config"
+
+import { SelfServiceRegistrationFlow } from "@ory/kratos-client"
+
+import { getUrlForFlow, KratosFlow } from "kratos/index"
+import config from "store/config"
 
 type FCT = React.FC<{
   flowData?: KratosFlowData

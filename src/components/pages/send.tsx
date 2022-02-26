@@ -19,14 +19,14 @@ import {
   SatFormat,
 } from "@galoymoney/react"
 
-import config from "../../store/config"
-import { useAppDispatcher } from "../../store"
-import useMainQuery from "../../hooks/use-main-query"
-import useMyUpdates from "../../hooks/use-my-updates"
+import config from "store/config"
+import { useAppDispatcher } from "store/index"
+import useMainQuery from "hooks/use-main-query"
+import useMyUpdates from "hooks/use-my-updates"
 
-import Header from "../header"
-import { ButtonLink } from "../link"
-import SendAction from "../send/send-action"
+import Header from "components/header"
+import { ButtonLink } from "components/link"
+import SendAction from "components/send/send-action"
 
 type FCT = React.FC<{ to?: string }>
 

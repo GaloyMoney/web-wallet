@@ -1,4 +1,4 @@
-import { history } from "../store"
+import { history } from "store/index"
 
 type FCT = React.FC<{
   to: RoutePath | AuthRoutePath

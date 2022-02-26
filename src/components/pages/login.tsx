@@ -1,11 +1,12 @@
 import { useCallback, useState } from "react"
-import config from "../../store/config"
 
 import { translate } from "@galoymoney/client"
 import { PhoneNumberInput } from "@galoymoney/react"
-import Link from "../link"
 
-import { CaptchaChallenge } from "../login/captcha-callenge"
+import config from "store/config"
+
+import Link from "components/link"
+import { CaptchaChallenge } from "components/login/captcha-callenge"
 
 const Login: NoPropsFCT = () => {
   const [phoneNumber, setPhoneNumber] = useState<string>("")

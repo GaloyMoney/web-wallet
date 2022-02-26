@@ -1,12 +1,12 @@
-import config from "../store/config"
 import { Suspense } from "react"
 import { ErrorBoundary } from "react-error-boundary"
 
 import { Spinner } from "@galoymoney/react"
 
-import { appRoutes, checkRoute, authRoutes, checkAuthRoute } from "../server/routes"
+import { appRoutes, checkRoute, authRoutes, checkAuthRoute } from "server/routes"
+import config from "store/config"
 
-import ErrorFallback from "./error-fallback"
+import ErrorFallback from "components/error-fallback"
 
 type FCT = React.FC<{
   path: RoutePath | AuthRoutePath

@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@galoymoney/client"
 import { MouseEvent } from "react"
 
-import SendActionDisplay from "./send-action-display"
+import SendActionDisplay from "components/send/send-action-display"
 
 type FCT = React.FC<SendOnChainActionProps>
 

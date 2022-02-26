@@ -1,11 +1,11 @@
 import { Request } from "express"
 import { renderToStringWithData } from "@galoymoney/client"
 
-import config from "../store/config"
-import { createClient } from "../store"
-import { appRoutes, authRoutes } from "../server/routes"
+import config from "store/config"
+import { createClient } from "store/index"
+import { appRoutes, authRoutes } from "server/routes"
 
-import { SSRRoot } from "../components/root"
+import { SSRRoot } from "components/root"
 
 export const serverRenderer =
   (req: Request) =>
@@ -45,7 +45,6 @@ export const serverRenderer =
 
       const {
         walletName,
-        walletLayout,
         walletTheme,
         supportEmail,
         shareUri,
@@ -61,7 +60,6 @@ export const serverRenderer =
         GwwState,
         GwwConfig: {
           walletName,
-          walletLayout,
           walletTheme,
           supportEmail,
           shareUri,

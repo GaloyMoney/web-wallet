@@ -3,9 +3,9 @@ const isBrowser = typeof window !== "undefined"
 if (!isBrowser) {
   const requiredEnvVars = [
     "NODE_ENV",
+    "NODE_PATH",
     "SESSION_KEYS",
     "WALLET_NAME",
-    "WALLET_LAYOUT",
     "WALLET_THEME",
     "SHARE_URI",
     "HOST",
@@ -50,7 +50,6 @@ const config = isBrowser
   ? {
       isBrowser,
       walletName: window.__G_DATA.GwwConfig.walletName,
-      walletLayout: window.__G_DATA.GwwConfig.walletLayout,
       walletTheme: window.__G_DATA.GwwConfig.walletTheme,
       shareUri: window.__G_DATA.GwwConfig.shareUri,
       supportEmail: window.__G_DATA.GwwConfig.supportEmail,
@@ -66,7 +65,6 @@ const config = isBrowser
       isDev: process.env.NODE_ENV !== "production",
       isBrowser,
       walletName: process.env.WALLET_NAME as string,
-      walletLayout: process.env.WALLET_LAYOUT as string,
       walletTheme: process.env.WALLET_THEME as string,
       shareUri: process.env.SHARE_URI as string,
       sessionKeys: process.env.SESSION_KEYS as string,

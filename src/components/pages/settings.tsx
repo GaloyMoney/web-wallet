@@ -1,10 +1,11 @@
 import { translate } from "@galoymoney/client"
-import { useAuthContext } from "../../store/use-auth-context"
 
-import Header from "../header"
-import ColorThemeSetting from "../settings/color-theme"
-import LanguageSetting from "../settings/language"
-import UsernameSetting from "../settings/username"
+import { useAuthContext } from "store/use-auth-context"
+
+import Header from "components/header"
+import ColorThemeSetting from "components/settings/color-theme"
+import LanguageSetting from "components/settings/language"
+import UsernameSetting from "components/settings/username"
 
 const Settings: NoPropsFCT = () => {
   const { isAuthenticated } = useAuthContext()

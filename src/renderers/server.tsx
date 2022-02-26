@@ -45,6 +45,8 @@ export const serverRenderer =
 
       const {
         walletName,
+        walletLayout,
+        walletTheme,
         supportEmail,
         shareUri,
         graphqlUri,
@@ -59,6 +61,8 @@ export const serverRenderer =
         GwwState,
         GwwConfig: {
           walletName,
+          walletLayout,
+          walletTheme,
           supportEmail,
           shareUri,
           graphqlUri,

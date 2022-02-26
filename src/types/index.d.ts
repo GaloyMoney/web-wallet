@@ -70,6 +70,8 @@ declare interface Window {
     ssrData: NormalizedCacheObject
     GwwConfig: {
       walletName: string
+      walletLayout: string
+      walletTheme: string
       supportEmail: string
       shareUri: string
       graphqlUri: string

@@ -3,11 +3,11 @@ import { useState } from "react"
 import { getUrlForFlow, KratosFlow } from "../../kratos"
 import config from "../../store/config"
 
-interface RegisterProps {
+type FCT = React.FC<{
   flowData?: KratosFlowData
-}
+}>
 
-const Register = ({ flowData: flowDataProp }: RegisterProps) => {
+const Register: FCT = ({ flowData: flowDataProp }) => {
   const [flowData] = useState<SelfServiceRegistrationFlow | undefined>(
     flowDataProp?.registrationData,
   )

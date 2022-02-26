@@ -6,17 +6,13 @@ import { createClient } from "../store"
 import { getPersistedSession, persistSession, clearSession } from "../store/auth-session"
 import { AuthContext } from "../store/use-auth-context"
 
-interface AuthContextProps {
+type FCT = React.FC<{
   children: ReactNode
   galoyClient?: GaloyClient<unknown>
   galoyJwtToken?: string
-}
+}>
 
-export const AuthProvider = ({
-  children,
-  galoyClient,
-  galoyJwtToken,
-}: AuthContextProps) => {
+export const AuthProvider: FCT = ({ children, galoyClient, galoyJwtToken }) => {
   const [authSession, setAuthSession] = useState<AuthSession>(() =>
     getPersistedSession(galoyJwtToken),
   )

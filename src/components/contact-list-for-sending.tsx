@@ -14,7 +14,7 @@ import { history } from "../store"
 import config from "../store/config"
 import { useAuthContext } from "../store/use-auth-context"
 
-const ContactListForSending = () => {
+const ContactListForSending: NoPropsFCT = () => {
   const { isAuthenticated } = useAuthContext()
   const [showCopied, setShowCopied] = useState(false)
 

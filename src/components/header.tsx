@@ -21,23 +21,9 @@ const headerNavPages = ["home", "send-bitcoin", "receive-bitcoin"] as const
 
 type Page = typeof headerNavPages[number] | "contacts" | "transactions" | "settings"
 
-const Header = {} as LayoutComponent<{
-  page?: Page
-}>
+type FCT = React.FC<{ page: Page }>
 
-Header.Small = function Header({ page }) {
-  const { btcWalletBalance } = useMainQuery()
-
-  return (
-    <div className={`header-container ${page}-header`}>
-      <div className="header">
-        <Balance.Small balance={btcWalletBalance} />
-      </div>
-    </div>
-  )
-}
-
-Header.Large = function Header({ page }) {
+const Header: FCT = ({ page }) => {
   const { isAuthenticated } = useAuthContext()
   const { btcWalletBalance } = useMainQuery()
   const [showMenu, setShowMenu] = useState(false)
@@ -57,7 +43,7 @@ Header.Large = function Header({ page }) {
   return (
     <div className={`header-container ${page}-header`}>
       <div className="header">
-        <Balance.Large balance={btcWalletBalance} />
+        <Balance balance={btcWalletBalance} />
         <div className="links">
           {page !== "home" && (
             <>

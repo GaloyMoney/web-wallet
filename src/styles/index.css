@@ -1,4 +1,5 @@
 /*! purgecss start ignore */
 @import "@galoymoney/react/styles";
 @import "./main";
+@import "./themes/default";
 /*! purgecss end ignore */

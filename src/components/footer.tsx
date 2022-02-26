@@ -4,7 +4,9 @@ import Link from "./link"
 
 type Page = "home" | "settings" | "transactions"
 
-const Footer: React.FC<{ page?: Page }> = function Header({ page }) {
+type FCT = React.FC<{ page?: Page }>
+
+const Footer: FCT = ({ page }) => {
   const { isAuthenticated } = useAuthContext()
   return (
     <div className={`footer ${page}-footer`}>

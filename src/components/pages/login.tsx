@@ -7,7 +7,7 @@ import Link from "../link"
 
 import { CaptchaChallenge } from "../login/captcha-callenge"
 
-const LoginComponent = () => {
+const Login: NoPropsFCT = () => {
   const [phoneNumber, setPhoneNumber] = useState<string>("")
   const [errorMessage, setErrorMessage] = useState<string | number>("")
 
@@ -35,11 +35,6 @@ const LoginComponent = () => {
       )}
     </div>
   )
-}
-
-const Login = {
-  Small: LoginComponent,
-  Large: LoginComponent,
 }
 
 export default Login

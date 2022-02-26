@@ -5,11 +5,9 @@ import { Spinner } from "@galoymoney/react"
 
 import AuthCode from "./auth-code"
 
-type CaptchaChallengeProps = {
-  phoneNumber: string
-}
+type FCT = React.FC<{ phoneNumber: string }>
 
-const CaptchaChallengeComponent = ({ phoneNumber }: CaptchaChallengeProps) => {
+const CaptchaChallengeComponent: FCT = ({ phoneNumber }) => {
   const [createCaptchaChallenge, { loading: createLoading }] =
     useMutation.captchaCreateChallenge()
   const [requestCaptchaAuthCode, { loading: requestLoading }] =

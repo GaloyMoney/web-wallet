@@ -56,11 +56,9 @@ const descriptionDisplay = (tx: GaloyGQL.Transaction) => {
 
 type IconName = "send" | "receive" | "send-pending" | "receive-pending"
 
-type Props = {
-  tx: GaloyGQL.Transaction
-}
+type FCT = React.FC<{ tx: GaloyGQL.Transaction }>
 
-const TransactionItem = ({ tx }: Props) => {
+const TransactionItem: FCT = ({ tx }) => {
   const [showDetails, setShowDetails] = useState(false)
 
   const isReceive = tx.direction === "RECEIVE"

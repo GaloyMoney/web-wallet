@@ -12,11 +12,9 @@ const languageLabels = {
   "es-SV": "Spanish",
 } as const
 
-type Props = {
-  guestView: boolean
-}
+type FCT = React.FC<{ guestView: boolean }>
 
-const LanguageSetting = ({ guestView }: Props) => {
+const LanguageSetting: FCT = ({ guestView }) => {
   const { language } = useMainQuery()
   const { defaultLanguage } = useAppState()
 

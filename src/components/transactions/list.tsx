@@ -11,7 +11,7 @@ const EMPTY_CONNECTION = {
   pageInfo: { hasNextPage: false, hasPreviousPage: false },
 } as const
 
-const TransactionList = () => {
+const TransactionList: NoPropsFCT = () => {
   const { transactions } = useMainQuery()
   const [fetchTransactions, { loading }] = useDelayedQuery.transactionList()
 

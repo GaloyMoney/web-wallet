@@ -1,13 +1,7 @@
-import { getNodeLabel } from "@ory/integrations/ui"
-import { Button, TextInput } from "@ory/themes"
-
-import { NodeInputButton } from "./NodeInputButton"
-import { NodeInputCheckbox } from "./NodeInputCheckbox"
-import { NodeInputHidden } from "./NodeInputHidden"
-import { NodeInputSubmit } from "./NodeInputSubmit"
 import { NodeInputProps } from "./helpers"
+import TextInput from "./TextInput"
 
-export function NodeInputDefault<T>(props: NodeInputProps) {
+export const NodeInputDefault = function NodeInputDefault(props: NodeInputProps) {
   const { node, attributes, value = "", setValue, disabled } = props
 
   // Some attributes have dynamic JavaScript - this is for example required for WebAuthn.
@@ -16,6 +10,7 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
     // and the functions are available on the global window level. Unfortunately, there
     // is currently no better way than executing eval / function here at this moment.
     if (attributes.onclick) {
+      // eslint-disable-next-line no-new-func
       const run = new Function(attributes.onclick)
       run()
     }
@@ -26,19 +21,18 @@ export function NodeInputDefault<T>(props: NodeInputProps) {
     <TextInput
       title={node.meta.label?.text}
       onClick={onClick}
-      onChange={(e) => {
-        setValue(e.target.value)
+      onChange={(event) => {
+        setValue(event.target.value)
       }}
       type={attributes.type}
       name={attributes.name}
       value={value}
       disabled={attributes.disabled || disabled}
-      help={node.messages.length > 0}
       state={node.messages.find(({ type }) => type === "error") ? "error" : undefined}
       subtitle={
         <>
-          {node.messages.map(({ text, id }, k) => (
-            <span key={`${id}-${k}`} data-testid={`ui/message/${id}`}>
+          {node.messages.map(({ text, id }, index) => (
+            <span key={`${id}-${index}`} data-testid={`ui/message/${id}`}>
               {text}
             </span>
           ))}

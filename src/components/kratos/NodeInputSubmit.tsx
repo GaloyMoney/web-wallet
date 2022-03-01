@@ -1,6 +1,19 @@
 import { getNodeLabel } from "@ory/integrations/ui"
-import { Button } from "@ory/themes"
+import { ReactNode } from "react"
 import { NodeInputProps } from "./helpers"
+
+type ButtonProps = {
+  helper?: ReactNode
+  className?: string
+  [key: string]: unknown
+}
+
+const Button = ({ helper, className = "button-container", ...props }: ButtonProps) => (
+  <div className={className}>
+    <button className="button" {...props} />
+    {helper && <span className="button-helper">{helper}</span>}
+  </div>
+)
 
 export const NodeInputSubmit = ({
   node,

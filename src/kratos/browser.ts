@@ -10,9 +10,8 @@ export const handleFlowError = ({
   resetFlow: () => void
 }) => {
   return async (err: AxiosError) => {
-    console.log("Error fetching flow ", err)
+    console.debug("[Kratos error]", err)
 
-    console.log("ERROR ", err.response?.data)
     switch (err.response?.data.error?.id) {
       case "session_aal2_required":
         // 2FA is enabled and enforced, but user did not perform 2fa yet!

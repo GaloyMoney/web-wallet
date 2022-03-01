@@ -10,6 +10,8 @@ serve:
     base_url: http://localhost:4433/
     cors:
       enabled: true
+      allowed_origins:
+        - http://localhost:3000
   admin:
     base_url: http://kratos:4434/
 

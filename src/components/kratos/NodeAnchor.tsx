@@ -1,5 +1,4 @@
-import { UiNodeAnchorAttributes } from "@ory/kratos-client"
-import { UiNode } from "@ory/kratos-client"
+import { UiNodeAnchorAttributes, UiNode } from "@ory/kratos-client"
 import { Button } from "@ory/themes"
 
 interface Props {
@@ -7,7 +6,7 @@ interface Props {
   attributes: UiNodeAnchorAttributes
 }
 
-export const NodeAnchor = ({ node, attributes }: Props) => {
+export const NodeAnchor = ({ attributes }: Props) => {
   return (
     <Button
       data-testid={`node/anchor/${attributes.id}`}

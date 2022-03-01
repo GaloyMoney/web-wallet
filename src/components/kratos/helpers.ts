@@ -8,7 +8,7 @@ export type FormDispatcher = (e: MouseEvent | FormEvent) => Promise<void>
 export interface NodeInputProps {
   node: UiNode
   attributes: UiNodeInputAttributes
-  value: any
+  value: number | string | string[] | undefined
   disabled: boolean
   dispatchSubmit: FormDispatcher
   setValue: ValueSetter

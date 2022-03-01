@@ -1,16 +1,11 @@
 import { UiText } from "@ory/kratos-client"
-import { Alert, AlertContent } from "@ory/themes"
 
 interface MessageProps {
   message: UiText
 }
 
 export const Message = ({ message }: MessageProps) => {
-  return (
-    <Alert severity={message.type === "error" ? "error" : "info"}>
-      <AlertContent data-testid={`ui/message/${message.id}`}>{message.text}</AlertContent>
-    </Alert>
-  )
+  return <div className={`alert-${message.type}`}>{message.text}</div>
 }
 
 interface MessagesProps {

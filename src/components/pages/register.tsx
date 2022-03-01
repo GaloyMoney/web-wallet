@@ -75,7 +75,6 @@ const Register: FCT = ({ flowData: flowDataProp }) => {
       .submitSelfServiceRegistrationFlow(String(flowData?.id), values, {
         withCredentials: true,
       })
-      // .then(({ data }) => { // TODO: set session
       .then(() => {
         return history.push(flowData?.return_to || "/")
       })
@@ -101,9 +100,9 @@ const Register: FCT = ({ flowData: flowDataProp }) => {
   }
 
   return (
-    <>
+    <div className="register-form">
       <Flow onSubmit={onSubmit} flow={flowData} />
-    </>
+    </div>
   )
 }
 

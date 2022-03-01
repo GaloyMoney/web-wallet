@@ -17,7 +17,7 @@ import { FormDispatcher, ValueSetter } from "./helpers"
 interface Props {
   node: UiNode
   disabled: boolean
-  value: any
+  value: number | string | string[] | undefined
   setValue: ValueSetter
   dispatchSubmit: FormDispatcher
 }

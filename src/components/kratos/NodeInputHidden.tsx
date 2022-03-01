@@ -1,6 +1,6 @@
 import { NodeInputProps } from "./helpers"
 
-export function NodeInputHidden<T>({ attributes }: NodeInputProps) {
+export const NodeInputHidden = function NodeInputHidden({ attributes }: NodeInputProps) {
   // Render a hidden input field
   return (
     <input

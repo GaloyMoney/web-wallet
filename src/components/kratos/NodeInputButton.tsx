@@ -1,8 +1,8 @@
 import { getNodeLabel } from "@ory/integrations/ui"
-import { UiNode, UiNodeInputAttributes } from "@ory/kratos-client"
-import { Button, Checkbox, TextInput } from "@ory/themes"
 
-import { FormDispatcher, NodeInputProps, ValueSetter } from "./helpers"
+import { NodeInputProps } from "./helpers"
+
+import Button from "./Button"
 
 export const NodeInputButton = ({
   node,
@@ -17,6 +17,7 @@ export const NodeInputButton = ({
     // and the functions are available on the global window level. Unfortunately, there
     // is currently no better way than executing eval / function here at this moment.
     if (attributes.onclick) {
+      // eslint-disable-next-line no-new-func
       const run = new Function(attributes.onclick)
       run()
     }

@@ -1,5 +1,5 @@
-import { getNodeId } from "@ory/integrations/ui"
-import { isUiNodeInputAttributes } from "@ory/integrations/ui"
+import { Component, FormEvent } from "react"
+import { getNodeId, isUiNodeInputAttributes } from "@ory/integrations/ui"
 import {
   SelfServiceLoginFlow,
   SelfServiceRecoveryFlow,
@@ -13,7 +13,6 @@ import {
   SubmitSelfServiceVerificationFlowBody,
   UiNode,
 } from "@ory/kratos-client"
-import { Component, FormEvent } from "react"
 
 import { Messages } from "./Messages"
 import { Node } from "./Node"
@@ -51,7 +50,7 @@ export type Props<T> = {
   hideGlobalMessages?: boolean
 }
 
-function emptyState<T>() {
+const emptyState = function emptyState<T>() {
   return {} as T
 }
 
@@ -114,10 +113,10 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
   }
 
   // Handles form submission
-  handleSubmit = (e: MouseEvent | FormEvent) => {
+  handleSubmit = (event: MouseEvent | FormEvent) => {
     // Prevent all native handlers
-    e.stopPropagation()
-    e.preventDefault()
+    event.stopPropagation()
+    event.preventDefault()
 
     // Prevent double submission!
     if (this.state.isLoading) {
@@ -156,12 +155,12 @@ export class Flow<T extends Values> extends Component<Props<T>, State<T>> {
 
     return (
       <form action={flow.ui.action} method={flow.ui.method} onSubmit={this.handleSubmit}>
-        {!hideGlobalMessages ? <Messages messages={flow.ui.messages} /> : null}
-        {nodes.map((node, k) => {
+        {hideGlobalMessages ? null : <Messages messages={flow.ui.messages} />}
+        {nodes.map((node, index) => {
           const id = getNodeId(node) as keyof Values
           return (
             <Node
-              key={`${id}-${k}`}
+              key={`${id}-${index}`}
               disabled={isLoading}
               node={node}
               value={values[id]}

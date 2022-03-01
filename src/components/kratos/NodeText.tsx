@@ -6,14 +6,15 @@ interface Props {
   attributes: UiNodeTextAttributes
 }
 
-const Content = ({ node, attributes }: Props) => {
+const Content = ({ attributes }: Props) => {
   switch (attributes.text.id) {
-    case 1050015:
+    case 1050015: {
       // This text node contains lookup secrets. Let's make them a bit more beautiful!
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const secrets = (attributes.text.context as any).secrets.map(
-        (text: UiText, k: number) => (
+        (text: UiText, index: number) => (
           <div
-            key={k}
+            key={index}
             data-testid={`node/text/${attributes.id}/lookup_secret`}
             className="col-xs-3"
           >
@@ -27,13 +28,12 @@ const Content = ({ node, attributes }: Props) => {
           <div className="row">{secrets}</div>
         </div>
       )
+    }
   }
-
-  const style = "overflow-x: auto;"
 
   return (
     <div data-testid={`node/text/${attributes.id}/text`}>
-      <CodeBox code={attributes.text.text} style={style} />
+      <CodeBox code={attributes.text.text} />
     </div>
   )
 }

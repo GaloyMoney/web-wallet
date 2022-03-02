@@ -4,12 +4,13 @@ import config from "store/config"
 
 import Contacts from "components/pages/contacts"
 import Home from "components/pages/home"
-import Login from "components/pages/login"
 import Receive from "components/pages/receive"
 import Register from "components/pages/register"
 import Send from "components/pages/send"
 import Settings from "components/pages/settings"
 import Transactions from "components/pages/transactions"
+import LoginPhone from "components/pages/login-phone"
+import LoginEmail from "components/pages/login-email"
 
 // Note: The component property is skipped by the serialize function
 // It's only used on the front-end
@@ -17,10 +18,6 @@ const appRoutesDef = {
   "/": {
     component: Home,
     title: `${config.walletName} Web Wallet`,
-  },
-  "/login": {
-    component: Login,
-    title: `Login to ${config.walletName} Web Wallet`,
   },
   "/send": {
     component: Send,
@@ -61,9 +58,13 @@ export const checkRoute = (path: string): RoutePath | Error => {
 }
 
 const authRoutesDef = {
-  "/register/email": {
-    component: Register,
-    title: "Register with Email",
+  "/register": {
+    component: config.kratosFeatureFlag ? Register : LoginPhone,
+    title: `Create new account for ${config.walletName} Web Wallet`,
+  },
+  "/login": {
+    component: config.kratosFeatureFlag ? LoginEmail : LoginPhone,
+    title: `Login to ${config.walletName} Web Wallet`,
   },
 }
 
@@ -78,10 +79,7 @@ export const checkAuthRoute = (path: string): AuthRoutePath | Error => {
 
 type AuthRoutes = Record<
   AuthRoutePath,
-  {
-    component: React.FC<{ flowData?: KratosFlowData }>
-    title: string
-  }
+  { component: React.FC<{ flowData?: KratosFlowData }>; title: string }
 >
 
-export const authRoutes: AuthRoutes = authRoutesDef
+export const authRoutes: AuthRoutes = authRoutesDef as unknown as AuthRoutes

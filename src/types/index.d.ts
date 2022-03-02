@@ -1,5 +1,6 @@
 type SelfServiceRegistrationFlow =
   import("@ory/kratos-client").SelfServiceRegistrationFlow
+type SelfServiceLoginFlow = import("@ory/kratos-client").SelfServiceLoginFlow
 
 // Galoy Client
 type NormalizedCacheObject = import("@galoymoney/client").NormalizedCacheObject
@@ -20,15 +21,20 @@ type AtLeast<T, K extends keyof T> = Partial<T> & Pick<T, K>
 type RoutePath = import("../server/routes").SupportedRoutes
 type RouteInfo = Record<string, string | (() => JSX.Element | null)>
 
-type KratosFlowData = { registrationData?: SelfServiceRegistrationFlow }
+type KratosFlowRegistrationData = { registrationData?: SelfServiceRegistrationFlow }
+type KratosFlowLoginData = { loginData: SelfServiceLoginFlow }
+
+type KratosFlowData = KratosFlowRegistrationData | KratosFlowLoginData
+
 type AuthRoutePath = import("../server/routes").SupportedAuthRoutes
 
 type HandleRegisterResponse =
-  | {
-      redirect: true
-      redirectTo: string
-    }
-  | { redirect: false; flowData: KratosFlowData }
+  | { redirect: true; redirectTo: string }
+  | { redirect: false; flowData: KratosFlowRegistrationData }
+
+type HandleLoginResponse =
+  | { redirect: true; redirectTo: string }
+  | { redirect: false; flowData: KratosFlowLoginData }
 
 type GwwState = {
   key: number

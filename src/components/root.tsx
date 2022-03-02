@@ -51,7 +51,7 @@ type SSRRootFCT = React.FC<{
   client: GaloyClient<unknown>
   galoyJwtToken?: string
   GwwState: GwwState
-  flowData?: KratosFlowData
+  flowData?: KratosFlowRegistrationData | KratosFlowLoginData
 }>
 
 export const SSRRoot: SSRRootFCT = ({ client, GwwState, galoyJwtToken }) => {

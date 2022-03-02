@@ -1,11 +1,8 @@
-import {
-  SelfServiceRegistrationFlow,
-  SubmitSelfServiceRegistrationFlowBody,
-} from "@ory/kratos-client"
-
-import { AxiosError } from "axios"
-import { history } from "../../store/history"
 import { useState, useEffect, useCallback } from "react"
+import { SelfServiceLoginFlow, SubmitSelfServiceLoginFlowBody } from "@ory/kratos-client"
+import { AxiosError } from "axios"
+
+import { history } from "../../store/history"
 import { KratosSdk, handleFlowError } from "../../kratos"
 import { Flow } from "../kratos"
 
@@ -13,12 +10,12 @@ import config from "store/config"
 import Link from "components/link"
 
 type FCT = React.FC<{
-  flowData?: KratosFlowRegistrationData
+  flowData?: KratosFlowLoginData
 }>
 
-const Register: FCT = ({ flowData: flowDataProp }) => {
-  const [flowData, setFlowData] = useState<SelfServiceRegistrationFlow | undefined>(
-    flowDataProp?.registrationData,
+const LoginEmail: FCT = ({ flowData: flowDataProp }) => {
+  const [flowData, setFlowData] = useState<SelfServiceLoginFlow | undefined>(
+    flowDataProp?.loginData,
   )
 
   const resetFlow = useCallback(() => {
@@ -34,13 +31,14 @@ const Register: FCT = ({ flowData: flowDataProp }) => {
     const kratos = KratosSdk(config.kratosBrowserUrl)
     const params = new URLSearchParams(window.location.search)
     const flowId = params.get("flow")
+    const returnTo = params.get("return_to")
+    const refresh = params.get("refresh")
+    const aal = params.get("all")
 
     // flow id exists, we can fetch the flow data
     if (flowId) {
       kratos
-        .getSelfServiceRegistrationFlow(String(flowId), undefined, {
-          withCredentials: true,
-        })
+        .getSelfServiceLoginFlow(String(flowId))
         .then(({ data }) => {
           setFlowData(data)
         })
@@ -50,9 +48,10 @@ const Register: FCT = ({ flowData: flowDataProp }) => {
 
     // need to initialize the flow
     kratos
-      .initializeSelfServiceRegistrationFlowForBrowsers(
-        params.get("return_to") || undefined,
-        { withCredentials: true },
+      .initializeSelfServiceLoginFlowForBrowsers(
+        Boolean(refresh),
+        aal ? String(aal) : undefined,
+        returnTo ? String(returnTo) : undefined,
       )
       .then(({ data }) => {
         setFlowData(data)
@@ -60,12 +59,10 @@ const Register: FCT = ({ flowData: flowDataProp }) => {
       .catch(handleFlowError({ history, resetFlow }))
   }, [flowData, resetFlow])
 
-  const onSubmit = async (values: SubmitSelfServiceRegistrationFlowBody) => {
+  const onSubmit = async (values: SubmitSelfServiceLoginFlowBody) => {
     const kratos = KratosSdk(config.kratosBrowserUrl)
     kratos
-      .submitSelfServiceRegistrationFlow(String(flowData?.id), values, {
-        withCredentials: true,
-      })
+      .submitSelfServiceLoginFlow(String(flowData?.id), undefined, values)
       .then(() => {
         return history.push(flowData?.return_to || "/")
       })
@@ -74,7 +71,12 @@ const Register: FCT = ({ flowData: flowDataProp }) => {
         // If the previous handler did not catch the error it's most likely a form validation error
         if (err.response?.status === 400) {
           setFlowData(err.response?.data)
-          history.replace(`/register?flow=${flowData?.id}`)
+          const params = new URLSearchParams(window.location.search)
+          const flowId = params.get("flow")
+
+          if (flowId !== flowData?.id) {
+            history.replace(`/login?flow=${flowData?.id}`)
+          }
           return
         }
 
@@ -84,17 +86,17 @@ const Register: FCT = ({ flowData: flowDataProp }) => {
 
   return (
     <>
-      <div className="register-form">
+      <div className="login-form">
         <Flow onSubmit={onSubmit} flow={flowData} />
       </div>
-      <div className="login-link">
-        <Link to="/login">
+      <div className="register-link">
+        <Link to="/register">
           <i aria-hidden className="fas fa-sign-in-alt" />
-          Login
+          Create new account
         </Link>
       </div>
     </>
   )
 }
 
-export default Register
+export default LoginEmail

@@ -2,7 +2,7 @@ import express from "express"
 
 import { serverRenderer } from "../renderers/server"
 import { checkRoute } from "./routes"
-import { handleRegister } from "../kratos"
+import { handleRegister, handleLogin } from "../kratos"
 import config from "../store/config"
 
 const ssrRouter = express.Router({ caseSensitive: true })
@@ -27,7 +27,7 @@ ssrRouter.get("/*", async (req, res) => {
     if (config.kratosFeatureFlag) {
       let flowData = undefined
       switch (routePath) {
-        case "/register/email": {
+        case "/register": {
           const registerResult = await handleRegister(req, config.kratosBrowserUrl)
           if (registerResult.redirect) {
             return res.redirect(registerResult.redirectTo)
@@ -35,6 +35,16 @@ ssrRouter.get("/*", async (req, res) => {
           flowData = registerResult.flowData
           break
         }
+
+        case "/login": {
+          const loginResult = await handleLogin(req, config.kratosBrowserUrl)
+          if (loginResult.redirect) {
+            return res.redirect(loginResult.redirectTo)
+          }
+          flowData = loginResult.flowData
+          break
+        }
+
         default:
           return res.status(404).send("Resource not found")
       }

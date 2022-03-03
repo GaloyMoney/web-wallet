@@ -10,7 +10,7 @@ import config from "store/config"
 import Link from "components/link"
 
 type FCT = React.FC<{
-  flowData?: KratosFlowLoginData
+  flowData?: KratosFlowData
 }>
 
 const LoginEmail: FCT = ({ flowData: flowDataProp }) => {

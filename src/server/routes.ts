@@ -44,18 +44,15 @@ const appRoutesDef = {
     title: "Settings",
   },
 }
-
 export type SupportedRoutes = keyof typeof appRoutesDef
-type AppRoutes = Record<RoutePath, { component: React.FC<unknown>; title: string }>
-
-export const appRoutes: AppRoutes = appRoutesDef as unknown as AppRoutes
-
 export const checkRoute = (path: string): RoutePath | Error => {
-  if (appRoutes[path as never]) {
+  if (appRoutesDef[path as never]) {
     return path as RoutePath
   }
   return new Error("Invaild route path")
 }
+type AppRoutes = Record<RoutePath, { component: React.FC<unknown>; title: string }>
+export const appRoutes: AppRoutes = appRoutesDef as unknown as AppRoutes
 
 const authRoutesDef = {
   "/register": {
@@ -67,19 +64,15 @@ const authRoutesDef = {
     title: `Login to ${config.walletName} Web Wallet`,
   },
 }
-
 export type SupportedAuthRoutes = keyof typeof authRoutesDef
-
 export const checkAuthRoute = (path: string): AuthRoutePath | Error => {
   if (authRoutesDef[path as never]) {
     return path as AuthRoutePath
   }
   return new Error("Invaild auth route path")
 }
-
 type AuthRoutes = Record<
   AuthRoutePath,
   { component: React.FC<{ flowData?: KratosFlowData }>; title: string }
 >
-
-export const authRoutes: AuthRoutes = authRoutesDef as unknown as AuthRoutes
+export const authRoutes: AuthRoutes = authRoutesDef

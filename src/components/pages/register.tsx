@@ -13,7 +13,7 @@ import config from "store/config"
 import Link from "components/link"
 
 type FCT = React.FC<{
-  flowData?: KratosFlowRegistrationData
+  flowData?: KratosFlowData
 }>
 
 const Register: FCT = ({ flowData: flowDataProp }) => {

@@ -10,7 +10,7 @@ import ErrorFallback from "components/error-fallback"
 
 type FCT = React.FC<{
   path: RoutePath | AuthRoutePath
-  flowData?: KratosFlowRegistrationData | KratosFlowLoginData
+  flowData?: KratosFlowData
   [name: string]: unknown
 }>
 

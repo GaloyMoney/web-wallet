@@ -5,20 +5,20 @@ import { MockedProvider } from "@galoymoney/client"
 
 import RootComponent from "./root-component"
 
-describe("Root", () => {
+jest.mock("../kratos", () => ({
+  KratosSdk: () => ({
+    initializeSelfServiceRegistrationFlowForBrowsers: () =>
+      Promise.resolve({ data: undefined }),
+    initializeSelfServiceLoginFlowForBrowsers: () => Promise.resolve({ data: undefined }),
+  }),
+  handleFlowError: () => ({}),
+}))
+
+describe("Root appRoutes", () => {
   it("renders Home and matches snapshot", () => {
     const { asFragment } = render(
       <MockedProvider>
         <RootComponent path="/" />
-      </MockedProvider>,
-    )
-    expect(asFragment()).toMatchSnapshot()
-  })
-
-  it("renders Login and matches snapshot", () => {
-    const { asFragment } = render(
-      <MockedProvider>
-        <RootComponent path="/login" />
       </MockedProvider>,
     )
     expect(asFragment()).toMatchSnapshot()
@@ -73,6 +73,26 @@ describe("Root", () => {
     const { asFragment } = render(
       <MockedProvider>
         <RootComponent path="/settings" />
+      </MockedProvider>,
+    )
+    expect(asFragment()).toMatchSnapshot()
+  })
+})
+
+describe("Root authRoutes", () => {
+  it("renders Login and matches snapshot", () => {
+    const { asFragment } = render(
+      <MockedProvider>
+        <RootComponent path="/login" />
+      </MockedProvider>,
+    )
+    expect(asFragment()).toMatchSnapshot()
+  })
+
+  it("renders Register and matches snapshot", () => {
+    const { asFragment } = render(
+      <MockedProvider>
+        <RootComponent path="/register" />
       </MockedProvider>,
     )
     expect(asFragment()).toMatchSnapshot()

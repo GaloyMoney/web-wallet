@@ -21,20 +21,16 @@ type AtLeast<T, K extends keyof T> = Partial<T> & Pick<T, K>
 type RoutePath = import("../server/routes").SupportedRoutes
 type RouteInfo = Record<string, string | (() => JSX.Element | null)>
 
-type KratosFlowRegistrationData = { registrationData?: SelfServiceRegistrationFlow }
-type KratosFlowLoginData = { loginData: SelfServiceLoginFlow }
-
-type KratosFlowData = KratosFlowRegistrationData | KratosFlowLoginData
-
 type AuthRoutePath = import("../server/routes").SupportedAuthRoutes
 
-type HandleRegisterResponse =
-  | { redirect: true; redirectTo: string }
-  | { redirect: false; flowData: KratosFlowRegistrationData }
+type KratosFlowData = {
+  registrationData?: SelfServiceRegistrationFlow
+  loginData?: SelfServiceLoginFlow
+}
 
-type HandleLoginResponse =
+type HandleKratosResponse =
   | { redirect: true; redirectTo: string }
-  | { redirect: false; flowData: KratosFlowLoginData }
+  | { redirect: false; flowData: KratosFlowData }
 
 type GwwState = {
   key: number

@@ -8,7 +8,7 @@ import { KratosSdk } from "./sdk"
 export const handleRegister = async (
   req: Request,
   kratosBrowserUrl: string,
-): Promise<HandleRegisterResponse> => {
+): Promise<HandleKratosResponse> => {
   const { flow, return_to = "" } = req.query
 
   const initFlowUrl = getUrlForFlow({
@@ -44,7 +44,7 @@ export const handleRegister = async (
 export const handleLogin = async (
   req: Request,
   kratosBrowserUrl: string,
-): Promise<HandleLoginResponse> => {
+): Promise<HandleKratosResponse> => {
   const { flow, return_to = "" } = req.query
 
   const initFlowUrl = getUrlForFlow({

@@ -214,6 +214,9 @@ jobs:
           - get: edge-image
             passed: [ release ]
             params: { skip_download: true }
+          - get: mobile-layout-edge-image
+            passed: [ release ]
+            params: { skip_download: true }
           - get: repo
             trigger: true
             passed: [ release ]
@@ -229,6 +232,7 @@ jobs:
           inputs:
             - name: repo
             - name: edge-image
+            - name: mobile-layout-edge-image
             - name: pipeline-tasks
             - name: charts-repo
             - name: version
@@ -249,6 +253,7 @@ jobs:
           inputs:
             - name: pipeline-tasks
             - name: edge-image
+            - name: mobile-layout-edge-image
             - name: charts-repo
           params:
             GH_TOKEN: #@ data.values.github_token

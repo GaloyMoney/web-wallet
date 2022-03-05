@@ -7,6 +7,7 @@ const removeTrailingSlash = (str: string) => str.replace(/\/$/u, "")
 export const KratosFlow = {
   Registration: "registration",
   Login: "login",
+  Recovery: "recovery",
 } as const
 
 export const getUrlForFlow = ({

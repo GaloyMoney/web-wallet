@@ -1,5 +1,8 @@
 import { useState, useEffect, useCallback } from "react"
-import { SelfServiceLoginFlow, SubmitSelfServiceLoginFlowBody } from "@ory/kratos-client"
+import {
+  SelfServiceRecoveryFlow,
+  SubmitSelfServiceRecoveryFlowBody,
+} from "@ory/kratos-client"
 import { AxiosError } from "axios"
 
 import { history } from "../../store/history"
@@ -7,20 +10,19 @@ import { KratosSdk, handleFlowError } from "../../kratos"
 import { Flow } from "../kratos"
 
 import config from "store/config"
-import Link from "components/link"
 
 type FCT = React.FC<{
   flowData?: KratosFlowData
 }>
 
-const LoginEmail: FCT = ({ flowData: flowDataProp }) => {
-  const [flowData, setFlowData] = useState<SelfServiceLoginFlow | undefined>(
-    flowDataProp?.loginData,
+const Recovery: FCT = ({ flowData: flowDataProp }) => {
+  const [flowData, setFlowData] = useState<SelfServiceRecoveryFlow | undefined>(
+    flowDataProp?.recoveryData,
   )
 
   const resetFlow = useCallback(() => {
     setFlowData(undefined)
-    document.location.href = "/login"
+    document.location.href = "/recovery"
   }, [])
 
   useEffect(() => {
@@ -31,14 +33,11 @@ const LoginEmail: FCT = ({ flowData: flowDataProp }) => {
     const kratos = KratosSdk(config.kratosBrowserUrl)
     const params = new URLSearchParams(window.location.search)
     const flowId = params.get("flow")
-    const returnTo = params.get("return_to")
-    const refresh = params.get("refresh")
-    const aal = params.get("all")
 
     // flow id exists, we can fetch the flow data
     if (flowId) {
       kratos
-        .getSelfServiceLoginFlow(String(flowId))
+        .getSelfServiceRecoveryFlow(String(flowId))
         .then(({ data }) => {
           setFlowData(data)
         })
@@ -48,21 +47,17 @@ const LoginEmail: FCT = ({ flowData: flowDataProp }) => {
 
     // need to initialize the flow
     kratos
-      .initializeSelfServiceLoginFlowForBrowsers(
-        Boolean(refresh),
-        aal ? String(aal) : undefined,
-        returnTo ? String(returnTo) : undefined,
-      )
+      .initializeSelfServiceRecoveryFlowForBrowsers()
       .then(({ data }) => {
         setFlowData(data)
       })
       .catch(handleFlowError({ history, resetFlow }))
   }, [flowData, resetFlow])
 
-  const onSubmit = async (values: SubmitSelfServiceLoginFlowBody) => {
+  const onSubmit = async (values: SubmitSelfServiceRecoveryFlowBody) => {
     const kratos = KratosSdk(config.kratosBrowserUrl)
     kratos
-      .submitSelfServiceLoginFlow(String(flowData?.id), undefined, values)
+      .submitSelfServiceRecoveryFlow(String(flowData?.id), undefined, values)
       .then(() => {
         document.location.replace(flowData?.return_to || "/")
       })
@@ -71,7 +66,7 @@ const LoginEmail: FCT = ({ flowData: flowDataProp }) => {
         // If the previous handler did not catch the error it's most likely a form validation error
         if (err.response?.status === 400) {
           setFlowData(err.response?.data)
-          document.location.replace(`/login?flow=${flowData?.id}`)
+          document.location.replace(`/recovery?flow=${flowData?.id}`)
           return
         }
 
@@ -80,23 +75,10 @@ const LoginEmail: FCT = ({ flowData: flowDataProp }) => {
   }
 
   return (
-    <>
-      <div className="login-form auth-form">
-        <Flow onSubmit={onSubmit} flow={flowData} />
-      </div>
-      <div className="form-links">
-        <Link to="/register">
-          <i aria-hidden className="fas fa-sign-in-alt" />
-          Create new account
-        </Link>
-        <div className="separator">|</div>
-        <Link to="/recovery">
-          <i aria-hidden className="fas fa-key" />
-          Recover your account
-        </Link>
-      </div>
-    </>
+    <div className="recovery-form auth-form">
+      <Flow onSubmit={onSubmit} flow={flowData} />
+    </div>
   )
 }
 
-export default LoginEmail
+export default Recovery

@@ -447,8 +447,7 @@ button {
   color: var(--color-primary);
 }
 
-.register-form,
-.login-form {
+.auth-form {
   margin-top: 1.5rem;
   padding: 0.5rem;
   display: flex;
@@ -474,7 +473,6 @@ button {
   }
 }
 
-.login-link,
-.register-link {
+.form-links {
   margin: 2.5rem auto;
 }

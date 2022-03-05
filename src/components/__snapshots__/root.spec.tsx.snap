@@ -1537,10 +1537,10 @@ exports[`Root authRoutes renders Login and matches snapshot 1`] = `
     id="main-container"
   >
     <div
-      class="login-form"
+      class="login-form auth-form"
     />
     <div
-      class="register-link"
+      class="form-links"
     >
       <a
         href="/register"
@@ -1551,7 +1551,33 @@ exports[`Root authRoutes renders Login and matches snapshot 1`] = `
         />
         Create new account
       </a>
+      <div
+        class="separator"
+      >
+        |
+      </div>
+      <a
+        href="/recovery"
+      >
+        <i
+          aria-hidden="true"
+          class="fas fa-key"
+        />
+        Recover your account
+      </a>
     </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Root authRoutes renders Recorver and matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    id="main-container"
+  >
+    <div
+      class="recovery-form auth-form"
+    />
   </div>
 </DocumentFragment>
 `;
@@ -1562,10 +1588,10 @@ exports[`Root authRoutes renders Register and matches snapshot 1`] = `
     id="main-container"
   >
     <div
-      class="register-form"
+      class="register-form auth-form"
     />
     <div
-      class="login-link"
+      class="form-links"
     >
       <a
         href="/login"

@@ -26,21 +26,21 @@ selfservice:
 
   flows:
     error:
-      ui_url: http://localhost:4455/error
+      ui_url: http://localhost:3000/error
 
     settings:
-      ui_url: http://localhost:4455/settings
+      ui_url: http://localhost:3000/settings
       privileged_session_max_age: 15m
 
     recovery:
       enabled: true
-      ui_url: http://localhost:4455/recovery
+      ui_url: http://localhost:3000/recovery
 
     verification:
       enabled: true
-      ui_url: http://localhost:4455/verification
+      ui_url: http://localhost:3000/verification
       after:
-        default_browser_return_url: http://localhost:4455/
+        default_browser_return_url: http://localhost:3000/
 
     logout:
       after:

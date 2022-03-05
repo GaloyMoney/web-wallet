@@ -1,6 +1,7 @@
 type SelfServiceRegistrationFlow =
   import("@ory/kratos-client").SelfServiceRegistrationFlow
 type SelfServiceLoginFlow = import("@ory/kratos-client").SelfServiceLoginFlow
+type SelfServiceRecoveryFlow = import("@ory/kratos-client").SelfServiceRecoveryFlow
 
 // Galoy Client
 type NormalizedCacheObject = import("@galoymoney/client").NormalizedCacheObject
@@ -26,6 +27,7 @@ type AuthRoutePath = import("../server/routes").SupportedAuthRoutes
 type KratosFlowData = {
   registrationData?: SelfServiceRegistrationFlow
   loginData?: SelfServiceLoginFlow
+  recoveryData?: SelfServiceRecoveryFlow
 }
 
 type HandleKratosResponse =

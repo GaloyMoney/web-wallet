@@ -23,7 +23,7 @@ const Register: FCT = ({ flowData: flowDataProp }) => {
 
   const resetFlow = useCallback(() => {
     setFlowData(undefined)
-    history.push(`/login`)
+    document.location.href = "/register"
   }, [])
 
   useEffect(() => {
@@ -67,14 +67,14 @@ const Register: FCT = ({ flowData: flowDataProp }) => {
         withCredentials: true,
       })
       .then(() => {
-        return history.push(flowData?.return_to || "/")
+        document.location.href = flowData?.return_to || "/"
       })
       .catch(handleFlowError({ history, resetFlow }))
       .catch((err: AxiosError) => {
         // If the previous handler did not catch the error it's most likely a form validation error
         if (err.response?.status === 400) {
           setFlowData(err.response?.data)
-          history.replace(`/register?flow=${flowData?.id}`)
+          document.location.replace(`/register?flow=${flowData?.id}`)
           return
         }
 
@@ -84,10 +84,10 @@ const Register: FCT = ({ flowData: flowDataProp }) => {
 
   return (
     <>
-      <div className="register-form">
+      <div className="register-form auth-form">
         <Flow onSubmit={onSubmit} flow={flowData} />
       </div>
-      <div className="login-link">
+      <div className="form-links">
         <Link to="/login">
           <i aria-hidden className="fas fa-sign-in-alt" />
           Login

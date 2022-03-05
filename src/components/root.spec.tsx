@@ -5,11 +5,12 @@ import { MockedProvider } from "@galoymoney/client"
 
 import RootComponent from "./root-component"
 
+const mockDataPromise = () => Promise.resolve({ data: undefined })
 jest.mock("../kratos", () => ({
   KratosSdk: () => ({
-    initializeSelfServiceRegistrationFlowForBrowsers: () =>
-      Promise.resolve({ data: undefined }),
-    initializeSelfServiceLoginFlowForBrowsers: () => Promise.resolve({ data: undefined }),
+    initializeSelfServiceRegistrationFlowForBrowsers: mockDataPromise,
+    initializeSelfServiceLoginFlowForBrowsers: mockDataPromise,
+    initializeSelfServiceRecoveryFlowForBrowsers: mockDataPromise,
   }),
   handleFlowError: () => ({}),
 }))
@@ -93,6 +94,15 @@ describe("Root authRoutes", () => {
     const { asFragment } = render(
       <MockedProvider>
         <RootComponent path="/register" />
+      </MockedProvider>,
+    )
+    expect(asFragment()).toMatchSnapshot()
+  })
+
+  it("renders Recorver and matches snapshot", () => {
+    const { asFragment } = render(
+      <MockedProvider>
+        <RootComponent path="/recovery" />
       </MockedProvider>,
     )
     expect(asFragment()).toMatchSnapshot()

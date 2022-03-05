@@ -4,13 +4,14 @@ import config from "store/config"
 
 import Contacts from "components/pages/contacts"
 import Home from "components/pages/home"
+import LoginEmail from "components/pages/login-email"
+import LoginPhone from "components/pages/login-phone"
 import Receive from "components/pages/receive"
+import Recovery from "components/pages/recovery"
 import Register from "components/pages/register"
 import Send from "components/pages/send"
 import Settings from "components/pages/settings"
 import Transactions from "components/pages/transactions"
-import LoginPhone from "components/pages/login-phone"
-import LoginEmail from "components/pages/login-email"
 
 // Note: The component property is skipped by the serialize function
 // It's only used on the front-end
@@ -62,6 +63,10 @@ const authRoutesDef = {
   "/login": {
     component: config.kratosFeatureFlag ? LoginEmail : LoginPhone,
     title: `Login to ${config.walletName} Web Wallet`,
+  },
+  "/recovery": {
+    component: Recovery,
+    title: `Recover your ${config.walletName} Web Wallet`,
   },
 }
 export type SupportedAuthRoutes = keyof typeof authRoutesDef

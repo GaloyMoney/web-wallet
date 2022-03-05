@@ -1,6 +1,10 @@
 /* eslint-disable camelcase */
 
-import { SelfServiceLoginFlow, SelfServiceRegistrationFlow } from "@ory/kratos-client"
+import {
+  SelfServiceLoginFlow,
+  SelfServiceRecoveryFlow,
+  SelfServiceRegistrationFlow,
+} from "@ory/kratos-client"
 import { Request } from "express"
 import { getUrlForFlow, isQuerySet, KratosFlow } from "./helpers"
 import { KratosSdk } from "./sdk"
@@ -63,6 +67,42 @@ export const handleLogin = async (
     const { data }: { data: SelfServiceLoginFlow } =
       await KratosSdk().getSelfServiceLoginFlow(flow, req.header("Cookie"))
     return { redirect: false, flowData: { loginData: data } }
+  } catch (error) {
+    switch (error?.response?.status) {
+      case 410:
+      case 404:
+      case 403: {
+        return { redirect: true, redirectTo: initFlowUrl }
+      }
+      default: {
+        throw error
+      }
+    }
+  }
+}
+
+export const handleRecovery = async (
+  req: Request,
+  kratosBrowserUrl: string,
+): Promise<HandleKratosResponse> => {
+  const { flow, return_to = "" } = req.query
+
+  const initFlowUrl = getUrlForFlow({
+    flow: KratosFlow.Recovery,
+    kratosBrowserUrl,
+    query: new URLSearchParams({ return_to: return_to.toString() }),
+  })
+
+  // The flow is used to identify the settings and login flow and
+  // return data like the csrf_token and so on.
+  if (!isQuerySet(flow)) {
+    return { redirect: true, redirectTo: initFlowUrl }
+  }
+
+  try {
+    const { data }: { data: SelfServiceRecoveryFlow } =
+      await KratosSdk().getSelfServiceRecoveryFlow(flow, req.header("Cookie"))
+    return { redirect: false, flowData: { recoveryData: data } }
   } catch (error) {
     switch (error?.response?.status) {
       case 410:

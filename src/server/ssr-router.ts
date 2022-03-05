@@ -2,7 +2,7 @@ import express from "express"
 
 import { serverRenderer } from "../renderers/server"
 import { checkRoute } from "./routes"
-import { handleRegister, handleLogin } from "../kratos"
+import { handleRegister, handleLogin, handleRecovery } from "../kratos"
 import config from "../store/config"
 
 const ssrRouter = express.Router({ caseSensitive: true })
@@ -42,6 +42,15 @@ ssrRouter.get("/*", async (req, res) => {
             return res.redirect(loginResult.redirectTo)
           }
           flowData = loginResult.flowData
+          break
+        }
+
+        case "/recovery": {
+          const recoveryResult = await handleRecovery(req, config.kratosBrowserUrl)
+          if (recoveryResult.redirect) {
+            return res.redirect(recoveryResult.redirectTo)
+          }
+          flowData = recoveryResult.flowData
           break
         }
 

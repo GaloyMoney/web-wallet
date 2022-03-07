@@ -3,8 +3,8 @@ import { ChangeEvent, useEffect, useState } from "react"
 import { translate } from "@galoymoney/client"
 import { Icon } from "@galoymoney/react"
 
-import localStorage from "store/local-storage"
-import { ColorTheme, colorThemeLabels, setColorTheme } from "store/theme"
+import localStorage from "../../store/local-storage"
+import { ColorTheme, colorThemeLabels, setColorTheme } from "../../store/theme"
 
 const ColorThemeSetting: NoPropsFCT = () => {
   const [colorTheme, setColorThemeState] = useState<ColorTheme>("DEFAULT")

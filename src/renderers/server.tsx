@@ -2,8 +2,8 @@ import { Request } from "express"
 import { renderToStringWithData } from "@galoymoney/client"
 
 import config from "../store/config"
-import { createClient } from "store/index"
-import { appRoutes, authRoutes } from "server/routes"
+import { createClient } from "../store/index"
+import { appRoutes, authRoutes } from "../server/routes"
 
 import { SSRRoot } from "components/root"
 

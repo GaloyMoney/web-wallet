@@ -1,6 +1,6 @@
 import { translate } from "@galoymoney/client"
 
-import { useAuthContext } from "store/use-auth-context"
+import { useAuthContext } from "../../store/use-auth-context"
 
 import Header from "components/header"
 import ColorThemeSetting from "components/settings/color-theme"

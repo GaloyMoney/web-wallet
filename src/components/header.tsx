@@ -4,7 +4,7 @@ import { translate } from "@galoymoney/client"
 import { Icon } from "@galoymoney/react"
 
 import useMainQuery from "hooks/use-main-query"
-import { useAuthContext } from "store/use-auth-context"
+import { useAuthContext } from "../store/use-auth-context"
 
 import Balance from "components/balance"
 import Link from "components/link"

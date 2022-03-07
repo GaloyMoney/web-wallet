@@ -4,7 +4,7 @@ import { setLocale, translate, useMutation } from "@galoymoney/client"
 import { Icon } from "@galoymoney/react"
 
 import useMainQuery from "hooks/use-main-query"
-import { useAppState } from "store/index"
+import { useAppState } from "../../store/index"
 
 const languageLabels = {
   "DEFAULT": "Default (OS)",

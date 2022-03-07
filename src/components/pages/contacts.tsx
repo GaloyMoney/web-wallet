@@ -2,7 +2,7 @@ import { translate, truncatedDisplay, useQuery } from "@galoymoney/client"
 import { Icon, Spinner } from "@galoymoney/react"
 
 import { history } from "../../store/index"
-import { useAuthContext } from "store/use-auth-context"
+import { useAuthContext } from "../../store/use-auth-context"
 import ErrorMessage from "components/error-message"
 import Header from "components/header"
 

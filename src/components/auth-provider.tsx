@@ -4,8 +4,8 @@ import { useErrorHandler } from "react-error-boundary"
 import { GaloyClient, GaloyProvider, postRequest } from "@galoymoney/client"
 
 import { createClient } from "../store/index"
-import { getPersistedSession, persistSession, clearSession } from "store/auth-session"
-import { AuthContext } from "store/use-auth-context"
+import { getPersistedSession, persistSession, clearSession } from "../store/auth-session"
+import { AuthContext } from "../store/use-auth-context"
 
 type FCT = React.FC<{
   children: ReactNode

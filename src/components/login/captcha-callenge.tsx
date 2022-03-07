@@ -3,7 +3,7 @@ import { memo, useCallback, useEffect, useState } from "react"
 import { translate, useMutation } from "@galoymoney/client"
 import { Spinner } from "@galoymoney/react"
 
-import AuthCode from "components/login/auth-code"
+import AuthCode from "./auth-code"
 
 type FCT = React.FC<{ phoneNumber: string }>
 

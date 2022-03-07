@@ -2,7 +2,7 @@ import { Icon } from "@galoymoney/react"
 
 import { useAuthContext } from "../store/use-auth-context"
 
-import Link from "components/link"
+import Link from "./link"
 
 type Page = "home" | "settings" | "transactions"
 

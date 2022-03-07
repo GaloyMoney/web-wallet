@@ -5,8 +5,8 @@ import { GaloyClient, setLocale } from "@galoymoney/client"
 import { GwwContext, history } from "../store/index"
 import mainReducer from "../store/reducer"
 
-import { AuthProvider } from "components/auth-provider"
-import RootComponent from "components/root-component"
+import { AuthProvider } from "./auth-provider"
+import RootComponent from "./root-component"
 
 type RootFCT = React.FC<{ GwwState: GwwState }>
 

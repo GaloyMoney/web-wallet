@@ -5,8 +5,8 @@ import { PhoneNumberInput } from "@galoymoney/react"
 
 import config from "../../store/config"
 
-import Link from "components/link"
-import { CaptchaChallenge } from "components/login/captcha-callenge"
+import Link from "../link"
+import { CaptchaChallenge } from "../login/captcha-callenge"
 
 const Login: NoPropsFCT = () => {
   const [phoneNumber, setPhoneNumber] = useState<string>("")

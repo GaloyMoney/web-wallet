@@ -39,10 +39,4 @@ apiRouter.post("/login", async (req, res) => {
   }
 })
 
-apiRouter.post("/logout", async (req, res) => {
-  req.session = req.session || {}
-  req.session.galoyJwtToken = null
-  return res.send({ galoyJwtToken: null })
-})
-
 export default apiRouter

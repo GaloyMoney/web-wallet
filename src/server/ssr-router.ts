@@ -2,16 +2,10 @@ import express from "express"
 
 import { serverRenderer } from "../renderers/server"
 import { checkRoute } from "./routes"
-import { handleRegister, handleLogin, handleRecovery } from "../kratos"
+import { handleRegister, handleLogin, handleRecovery, handleLogout } from "../kratos"
 import config from "../store/config"
 
 const ssrRouter = express.Router({ caseSensitive: true })
-
-ssrRouter.get("/logout", async (req, res) => {
-  req.session = req.session || {}
-  req.session.galoyJwtToken = null
-  return res.redirect("/")
-})
 
 ssrRouter.get("/*", async (req, res) => {
   try {
@@ -52,6 +46,13 @@ ssrRouter.get("/*", async (req, res) => {
           }
           flowData = recoveryResult.flowData
           break
+        }
+
+        case "/logout": {
+          req.session = req.session || {}
+          req.session.galoyJwtToken = null
+          const logoutResult = await handleLogout(req)
+          return res.redirect(logoutResult.redirectTo)
         }
 
         default:

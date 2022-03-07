@@ -6,8 +6,12 @@ import {
   SelfServiceRegistrationFlow,
 } from "@ory/kratos-client"
 import { Request } from "express"
+
+import config from "store/config"
 import { getUrlForFlow, isQuerySet, KratosFlow } from "./helpers"
 import { KratosSdk } from "./sdk"
+
+const kratos = KratosSdk(config.kratosBrowserUrl)
 
 export const handleRegister = async (
   req: Request,
@@ -114,5 +118,18 @@ export const handleRecovery = async (
         throw error
       }
     }
+  }
+}
+
+export const handleLogout = async (req: Request): Promise<{ redirectTo: string }> => {
+  try {
+    const { data } = await kratos.createSelfServiceLogoutFlowUrlForBrowsers(
+      req.header("Cookie"),
+    )
+
+    return { redirectTo: data.logout_url }
+  } catch (err) {
+    console.error(err)
+    return { redirectTo: "/" }
   }
 }

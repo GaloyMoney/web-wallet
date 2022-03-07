@@ -2,8 +2,8 @@ import { useEffect, useReducer } from "react"
 
 import { GaloyClient, setLocale } from "@galoymoney/client"
 
-import { GwwContext, history } from "store/index"
-import mainReducer from "store/reducer"
+import { GwwContext, history } from "../store/index"
+import mainReducer from "../store/reducer"
 
 import { AuthProvider } from "components/auth-provider"
 import RootComponent from "components/root-component"

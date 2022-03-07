@@ -9,7 +9,7 @@ import { useState, useEffect } from "react"
 import { KratosSdk, handleFlowError } from "../../kratos"
 import { Flow } from "../kratos"
 
-import config from "store/config"
+import config from "../../store/config"
 
 type FCT = React.FC<{
   flowData?: KratosFlowData

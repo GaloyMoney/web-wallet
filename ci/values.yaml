@@ -1,7 +1,7 @@
 #@data/values
 ---
 git_uri: git@github.com:GaloyMoney/web-wallet.git
-git_branch: main
+git_branch: fix_imports
 git_charts_uri: git@github.com:GaloyMoney/charts.git
 git_charts_branch: main
 git_charts_bot_branch: bot-bump-web-wallet-image

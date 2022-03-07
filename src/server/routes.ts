@@ -1,6 +1,6 @@
 import React from "react"
 
-import config from "store/config"
+import config from "../store/config"
 
 import Contacts from "components/pages/contacts"
 import Home from "components/pages/home"

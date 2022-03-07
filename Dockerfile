@@ -15,7 +15,6 @@ COPY ./*.js ./
 
 RUN WALLET_LAYOUT=${WALLET_LAYOUT} yarn build:node && yarn build:files && yarn build:webpack
 
-
 # FROM gcr.io/distroless/nodejs:16
 FROM node:16-alpine
 

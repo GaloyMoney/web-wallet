@@ -4,7 +4,7 @@ import { ErrorBoundary } from "react-error-boundary"
 import { Spinner } from "@galoymoney/react"
 
 import { appRoutes, checkRoute, authRoutes, checkAuthRoute } from "server/routes"
-import config from "store/config"
+import config from "../store/config"
 
 import ErrorFallback from "components/error-fallback"
 

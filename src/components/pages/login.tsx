@@ -3,7 +3,7 @@ import { useCallback, useState } from "react"
 import { translate } from "@galoymoney/client"
 import { PhoneNumberInput } from "@galoymoney/react"
 
-import config from "store/config"
+import config from "../../store/config"
 
 import Link from "components/link"
 import { CaptchaChallenge } from "components/login/captcha-callenge"

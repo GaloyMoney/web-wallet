@@ -62,7 +62,9 @@ const LoginEmail: FCT = ({ flowData: flowDataProp }) => {
   const onSubmit = async (values: SubmitSelfServiceLoginFlowBody) => {
     const kratos = KratosSdk(config.kratosBrowserUrl)
     kratos
-      .submitSelfServiceLoginFlow(String(flowData?.id), undefined, values)
+      .submitSelfServiceLoginFlow(String(flowData?.id), undefined, values, {
+        withCredentials: true,
+      })
       .then(() => {
         document.location.replace(flowData?.return_to || "/")
       })

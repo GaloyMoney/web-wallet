@@ -1,5 +1,6 @@
 type SelfServiceRegistrationFlow =
   import("@ory/kratos-client").SelfServiceRegistrationFlow
+type KratosSession = import("@ory/kratos-client").Session
 type SelfServiceLoginFlow = import("@ory/kratos-client").SelfServiceLoginFlow
 type SelfServiceRecoveryFlow = import("@ory/kratos-client").SelfServiceRecoveryFlow
 
@@ -53,7 +54,11 @@ type GwwContextType = {
 }
 
 type AuthSession = {
-  galoyJwtToken: string
+  galoyJwtToken?: string
+  kratosSession?: {
+    session: KratosSession
+    token: string
+  }
 } | null
 
 type AuthContextType = {

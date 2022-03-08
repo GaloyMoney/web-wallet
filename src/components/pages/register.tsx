@@ -8,6 +8,7 @@ import { history } from "../../store/history"
 import { useState, useEffect, useCallback } from "react"
 import { KratosSdk, handleFlowError } from "../../kratos"
 import { Flow } from "../kratos"
+import { useAuthContext } from "store/use-auth-context"
 
 import config from "store/config"
 import Link from "components/link"
@@ -17,6 +18,7 @@ type FCT = React.FC<{
 }>
 
 const Register: FCT = ({ flowData: flowDataProp }) => {
+  const { setAuthSession } = useAuthContext()
   const [flowData, setFlowData] = useState<SelfServiceRegistrationFlow | undefined>(
     flowDataProp?.registrationData,
   )
@@ -66,7 +68,13 @@ const Register: FCT = ({ flowData: flowDataProp }) => {
       .submitSelfServiceRegistrationFlow(String(flowData?.id), values, {
         withCredentials: true,
       })
-      .then(() => {
+      .then(({ data }) => {
+        if (data.session && data.session_token) {
+          setAuthSession({ kratosSession: {
+            session: data.session ,
+            token: data.session_token
+          }})
+        }
         document.location.href = flowData?.return_to || "/"
       })
       .catch(handleFlowError({ history, resetFlow }))

@@ -39,6 +39,7 @@ type GwwState = {
   key: number
   path: RoutePath | AuthRoutePath
   props?: Record<string, unknown>
+  hasSessionToken?: boolean
   defaultLanguage?: string
   flowData?: KratosFlowData
 }
@@ -54,11 +55,7 @@ type GwwContextType = {
 }
 
 type AuthSession = {
-  galoyJwtToken?: string
-  kratosSession?: {
-    session: KratosSession
-    token: string
-  }
+  galoyJwtToken: string
 } | null
 
 type AuthContextType = {
@@ -88,6 +85,7 @@ declare interface Window {
       authEndpoint: string
       kratosFeatureFlag: boolean
       kratosBrowserUrl: string
+      kratosAuthEndpoint: string
     }
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

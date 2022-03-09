@@ -23,6 +23,7 @@ export const serverRenderer =
         path,
         props: req.query,
         key: 0,
+        hasSessionToken: Boolean(galoyJwtToken),
         defaultLanguage: req.acceptsLanguages()?.[0],
         flowData,
       }
@@ -54,6 +55,7 @@ export const serverRenderer =
         authEndpoint,
         kratosFeatureFlag,
         kratosBrowserUrl,
+        kratosAuthEndpoint,
       } = config
 
       return Promise.resolve({
@@ -69,6 +71,7 @@ export const serverRenderer =
           authEndpoint,
           kratosFeatureFlag,
           kratosBrowserUrl,
+          kratosAuthEndpoint,
         },
         initialMarkup,
         ssrData,

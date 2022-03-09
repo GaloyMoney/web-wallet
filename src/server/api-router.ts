@@ -1,14 +1,33 @@
 import express from "express"
+import * as jwt from "jsonwebtoken"
 
 import { MUTATIONS } from "@galoymoney/client"
 
 import { createClient } from "store/index"
+import { handleWhoAmI } from "kratos"
 
 const apiRouter = express.Router({ caseSensitive: true })
 
 apiRouter.post("/login", async (req, res) => {
   try {
-    const { phoneNumber, authCode } = req.body
+    const { authToken, phoneNumber, authCode } = req.body
+
+    if (authToken) {
+      const token = jwt.decode(authToken) as jwt.JwtPayload & { kratosUserId: string }
+      const kratosSession = await handleWhoAmI(req)
+
+      if (
+        !token.kratosUserId ||
+        !kratosSession ||
+        kratosSession.identity.id !== token.kratosUserId
+      ) {
+        return res.send(404).send("Invaild login request")
+      }
+
+      req.session = req.session || {}
+      req.session.galoyJwtToken = authToken
+      return res.send({ galoyJwtToken: authToken })
+    }
 
     if (!phoneNumber || !authCode) {
       throw new Error("INVALID_LOGIN_REQUEST")

@@ -11,15 +11,9 @@ type FCT = React.FC<{
   children: ReactNode
   galoyClient?: GaloyClient<unknown>
   galoyJwtToken?: string
-  kratosSession?: {
-    session: KratosSession,
-    token: string
-  }
 }>
 
 export const AuthProvider: FCT = ({ children, galoyClient, galoyJwtToken }) => {
-  // kratos.whoAmI();
-
   const [authSession, setAuthSession] = useState<AuthSession>(() =>
     getPersistedSession(galoyJwtToken),
   )
@@ -67,7 +61,7 @@ export const AuthProvider: FCT = ({ children, galoyClient, galoyJwtToken }) => {
     <AuthContext.Provider
       value={{
         galoyJwtToken: authSession?.galoyJwtToken,
-        isAuthenticated: Boolean(authSession?.galoyJwtToken || authSession?.kratosSession),
+        isAuthenticated: Boolean(authSession?.galoyJwtToken),
         setAuthSession: setAuth,
       }}
     >

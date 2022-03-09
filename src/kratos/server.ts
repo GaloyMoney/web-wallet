@@ -7,11 +7,8 @@ import {
 } from "@ory/kratos-client"
 import { Request } from "express"
 
-import config from "store/config"
 import { getUrlForFlow, isQuerySet, KratosFlow } from "./helpers"
 import { KratosSdk } from "./sdk"
-
-const kratos = KratosSdk(config.kratosBrowserUrl)
 
 export const handleRegister = async (
   req: Request,
@@ -69,7 +66,9 @@ export const handleLogin = async (
 
   try {
     const { data }: { data: SelfServiceLoginFlow } =
-      await KratosSdk().getSelfServiceLoginFlow(flow, req.header("Cookie"))
+      await KratosSdk().getSelfServiceLoginFlow(flow, req.header("Cookie"), {
+        withCredentials: true,
+      })
     return { redirect: false, flowData: { loginData: data } }
   } catch (error) {
     switch (error?.response?.status) {
@@ -121,15 +120,37 @@ export const handleRecovery = async (
   }
 }
 
+export const handleWhoAmI = async (req: Request): Promise<KratosSession | undefined> => {
+  try {
+    const { data } = await KratosSdk().toSession(undefined, req.header("Cookie"))
+    return data
+  } catch (error) {
+    switch (error?.response?.status) {
+      case 401: {
+        return undefined
+      }
+      default: {
+        throw error
+      }
+    }
+  }
+}
+
 export const handleLogout = async (req: Request): Promise<{ redirectTo: string }> => {
   try {
-    const { data } = await kratos.createSelfServiceLogoutFlowUrlForBrowsers(
+    const { data } = await KratosSdk().createSelfServiceLogoutFlowUrlForBrowsers(
       req.header("Cookie"),
     )
 
     return { redirectTo: data.logout_url }
-  } catch (err) {
-    console.error(err)
-    return { redirectTo: "/" }
+  } catch (error) {
+    switch (error?.response?.status) {
+      case 401: {
+        return { redirectTo: "/" }
+      }
+      default: {
+        throw error
+      }
+    }
   }
 }

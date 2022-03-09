@@ -3,7 +3,7 @@ import {
   SubmitSelfServiceRegistrationFlowBody,
 } from "@ory/kratos-client"
 
-import { AxiosError } from "axios"
+import axios, { AxiosError } from "axios"
 import { history } from "../../store/history"
 import { useState, useEffect, useCallback } from "react"
 import { KratosSdk, handleFlowError } from "../../kratos"
@@ -12,13 +12,16 @@ import { useAuthContext } from "store/use-auth-context"
 
 import config from "store/config"
 import Link from "components/link"
+import { useRequest } from "store"
 
 type FCT = React.FC<{
   flowData?: KratosFlowData
 }>
 
 const Register: FCT = ({ flowData: flowDataProp }) => {
+  const request = useRequest()
   const { setAuthSession } = useAuthContext()
+
   const [flowData, setFlowData] = useState<SelfServiceRegistrationFlow | undefined>(
     flowDataProp?.registrationData,
   )
@@ -68,14 +71,35 @@ const Register: FCT = ({ flowData: flowDataProp }) => {
       .submitSelfServiceRegistrationFlow(String(flowData?.id), values, {
         withCredentials: true,
       })
-      .then(({ data }) => {
-        if (data.session && data.session_token) {
-          setAuthSession({ kratosSession: {
-            session: data.session ,
-            token: data.session_token
-          }})
+      .then(async ({ data }) => {
+        try {
+          if (!data.session) {
+            throw new Error("Invaild session")
+          }
+          const resp = await axios.post(
+            config.kratosAuthEndpoint,
+            {},
+            { withCredentials: true },
+          )
+          if (!resp.data.authToken) {
+            throw new Error("Invalid auth token respose")
+          }
+          const authToken = resp.data.authToken
+          const { galoyJwtToken } = await request.post(config.authEndpoint, {
+            authToken,
+          })
+          if (!galoyJwtToken) {
+            throw new Error("Invalid auth token respose")
+          }
+          const session = {
+            galoyJwtToken,
+            identity: { emailAddress: data.session.identity.traits.email },
+          }
+          setAuthSession(session.galoyJwtToken ? session : null)
+          history.push("/")
+        } catch (err) {
+          console.error(err)
         }
-        document.location.href = flowData?.return_to || "/"
       })
       .catch(handleFlowError({ history, resetFlow }))
       .catch((err: AxiosError) => {

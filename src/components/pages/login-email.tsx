@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react"
 import { SelfServiceLoginFlow, SubmitSelfServiceLoginFlowBody } from "@ory/kratos-client"
-import { AxiosError } from "axios"
+import axios, { AxiosError } from "axios"
 
 import { history } from "../../store/history"
 import { KratosSdk, handleFlowError } from "../../kratos"
@@ -8,12 +8,16 @@ import { Flow } from "../kratos"
 
 import config from "store/config"
 import Link from "components/link"
+import { useRequest } from "store"
+import { useAuthContext } from "store/use-auth-context"
 
 type FCT = React.FC<{
   flowData?: KratosFlowData
 }>
 
 const LoginEmail: FCT = ({ flowData: flowDataProp }) => {
+  const request = useRequest()
+  const { setAuthSession } = useAuthContext()
   const [flowData, setFlowData] = useState<SelfServiceLoginFlow | undefined>(
     flowDataProp?.loginData,
   )
@@ -38,7 +42,7 @@ const LoginEmail: FCT = ({ flowData: flowDataProp }) => {
     // flow id exists, we can fetch the flow data
     if (flowId) {
       kratos
-        .getSelfServiceLoginFlow(String(flowId))
+        .getSelfServiceLoginFlow(String(flowId), undefined, { withCredentials: true })
         .then(({ data }) => {
           setFlowData(data)
         })
@@ -65,8 +69,32 @@ const LoginEmail: FCT = ({ flowData: flowDataProp }) => {
       .submitSelfServiceLoginFlow(String(flowData?.id), undefined, values, {
         withCredentials: true,
       })
-      .then(() => {
-        document.location.replace(flowData?.return_to || "/")
+      .then(async ({ data }) => {
+        try {
+          const resp = await axios.post(
+            config.kratosAuthEndpoint,
+            {},
+            { withCredentials: true },
+          )
+          if (!resp.data.authToken) {
+            throw new Error("Invalid auth token respose")
+          }
+          const authToken = resp.data.authToken
+          const { galoyJwtToken } = await request.post(config.authEndpoint, {
+            authToken,
+          })
+          if (!galoyJwtToken) {
+            throw new Error("Invalid auth token respose")
+          }
+          const session = {
+            galoyJwtToken,
+            identity: { emailAddress: data.session.identity.traits.email },
+          }
+          setAuthSession(session.galoyJwtToken ? session : null)
+          history.push("/")
+        } catch (err) {
+          console.error(err)
+        }
       })
       .catch(handleFlowError({ history, resetFlow }))
       .catch((err: AxiosError) => {

@@ -11,17 +11,19 @@ type FCT = React.FC<{
   children: ReactNode
   galoyClient?: GaloyClient<unknown>
   galoyJwtToken?: string
-  kratosSession?: {
-    session: KratosSession,
-    token: string
-  }
+  kratosSessionToken?: string
 }>
 
-export const AuthProvider: FCT = ({ children, galoyClient, galoyJwtToken }) => {
+export const AuthProvider: FCT = ({
+  children,
+  galoyClient,
+  galoyJwtToken,
+  kratosSessionToken,
+}) => {
   // kratos.whoAmI();
 
   const [authSession, setAuthSession] = useState<AuthSession>(() =>
-    getPersistedSession(galoyJwtToken),
+    getPersistedSession(galoyJwtToken, kratosSessionToken),
   )
 
   const setAuth = (session: AuthSession) => {
@@ -41,7 +43,7 @@ export const AuthProvider: FCT = ({ children, galoyClient, galoyJwtToken }) => {
       return galoyClient
     }
     return createClient({
-      authToken: authSession?.galoyJwtToken,
+      authToken: authSession?.galoyJwtToken || authSession?.kratosSessionToken,
       onError: ({ graphQLErrors, networkError }) => {
         if (graphQLErrors) {
           console.debug("[GraphQL errors]:", graphQLErrors)
@@ -67,7 +69,9 @@ export const AuthProvider: FCT = ({ children, galoyClient, galoyJwtToken }) => {
     <AuthContext.Provider
       value={{
         galoyJwtToken: authSession?.galoyJwtToken,
-        isAuthenticated: Boolean(authSession?.galoyJwtToken || authSession?.kratosSession),
+        isAuthenticated: Boolean(
+          authSession?.galoyJwtToken || authSession?.kratosSessionToken,
+        ),
         setAuthSession: setAuth,
       }}
     >

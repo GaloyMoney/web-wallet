@@ -69,11 +69,13 @@ const Register: FCT = ({ flowData: flowDataProp }) => {
         withCredentials: true,
       })
       .then(({ data }) => {
-        if (data.session && data.session_token) {
-          setAuthSession({ kratosSession: {
-            session: data.session ,
-            token: data.session_token
-          }})
+        if (data.session) {
+          setAuthSession({
+            kratosSessionToken: "", // FIXME: data.session_token is not set for browser flows
+            identity: {
+              email: data.session.identity.traits.email,
+            },
+          })
         }
         document.location.href = flowData?.return_to || "/"
       })

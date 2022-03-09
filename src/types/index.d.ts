@@ -55,9 +55,12 @@ type GwwContextType = {
 
 type AuthSession = {
   galoyJwtToken?: string
-  kratosSession?: {
-    session: KratosSession
-    token: string
+  kratosSessionToken?: string
+  identity?: {
+    email?: string
+    firstName?: string
+    lastName?: string
+    phoneNumber?: string
   }
 } | null
 

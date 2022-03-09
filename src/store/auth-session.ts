@@ -18,12 +18,17 @@ export const persistSession = (session: AuthSession) => {
   }
 }
 
-export const getPersistedSession = (galoyJwtToken: string | undefined): AuthSession => {
+export const getPersistedSession = (
+  galoyJwtToken: string | undefined,
+  kratosSessionToken: string | undefined,
+): AuthSession => {
   if (galoyJwtToken) {
-    return {
-      galoyJwtToken,
-    }
-  } else if (config.isBrowser) {
+    return { galoyJwtToken }
+  }
+  if (kratosSessionToken) {
+    return { kratosSessionToken }
+  }
+  if (config.isBrowser) {
     const session = window.localStorage.getItem(galoySessionName)
     if (session) {
       return JSON.parse(session)

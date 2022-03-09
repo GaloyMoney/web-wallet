@@ -18,53 +18,50 @@ ssrRouter.get("/*", async (req, res) => {
       return res.render("index", vars)
     }
 
-    if (config.kratosFeatureFlag) {
-      let flowData = undefined
-      switch (routePath) {
-        case "/register": {
-          const registerResult = await handleRegister(req, config.kratosBrowserUrl)
-          if (registerResult.redirect) {
-            return res.redirect(registerResult.redirectTo)
-          }
-          flowData = registerResult.flowData
-          break
+    let flowData = undefined
+    switch (routePath) {
+      case "/register": {
+        const registerResult = await handleRegister(req, config.kratosBrowserUrl)
+        if (registerResult.redirect) {
+          return res.redirect(registerResult.redirectTo)
         }
-
-        case "/login": {
-          const loginResult = await handleLogin(req, config.kratosBrowserUrl)
-          if (loginResult.redirect) {
-            return res.redirect(loginResult.redirectTo)
-          }
-          flowData = loginResult.flowData
-          break
-        }
-
-        case "/recovery": {
-          const recoveryResult = await handleRecovery(req, config.kratosBrowserUrl)
-          if (recoveryResult.redirect) {
-            return res.redirect(recoveryResult.redirectTo)
-          }
-          flowData = recoveryResult.flowData
-          break
-        }
-
-        case "/logout": {
-          req.session = req.session || {}
-          req.session.galoyJwtToken = null
-          const logoutResult = await handleLogout(req)
-          return res.redirect(logoutResult.redirectTo)
-        }
-
-        default:
-          return res.status(404).send("Resource not found")
+        flowData = registerResult.flowData
+        break
       }
-      const vars = await serverRenderer(req)({
-        path: routePath,
-        flowData,
-      })
-      return res.render("index", vars)
+
+      case "/login": {
+        const loginResult = await handleLogin(req, config.kratosBrowserUrl)
+        if (loginResult.redirect) {
+          return res.redirect(loginResult.redirectTo)
+        }
+        flowData = loginResult.flowData
+        break
+      }
+
+      case "/recovery": {
+        const recoveryResult = await handleRecovery(req, config.kratosBrowserUrl)
+        if (recoveryResult.redirect) {
+          return res.redirect(recoveryResult.redirectTo)
+        }
+        flowData = recoveryResult.flowData
+        break
+      }
+
+      case "/logout": {
+        req.session = req.session || {}
+        req.session.galoyJwtToken = null
+        const logoutResult = await handleLogout(req)
+        return res.redirect(logoutResult.redirectTo)
+      }
+
+      default:
+        return res.status(404).send("Resource not found")
     }
-    return res.status(404).send("Resource not found")
+    const vars = await serverRenderer(req)({
+      path: routePath,
+      flowData,
+    })
+    return res.render("index", vars)
   } catch (err) {
     console.error(err)
     return res.status(500).send("Server error")

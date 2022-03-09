@@ -7,6 +7,7 @@ import { KratosSdk, handleFlowError } from "../../kratos"
 import { Flow } from "../kratos"
 
 import config from "store/config"
+import { useAuthContext } from "store/use-auth-context"
 import Link from "components/link"
 
 type FCT = React.FC<{
@@ -14,6 +15,7 @@ type FCT = React.FC<{
 }>
 
 const LoginEmail: FCT = ({ flowData: flowDataProp }) => {
+  const { setAuthSession } = useAuthContext()
   const [flowData, setFlowData] = useState<SelfServiceLoginFlow | undefined>(
     flowDataProp?.loginData,
   )
@@ -65,7 +67,15 @@ const LoginEmail: FCT = ({ flowData: flowDataProp }) => {
       .submitSelfServiceLoginFlow(String(flowData?.id), undefined, values, {
         withCredentials: true,
       })
-      .then(() => {
+      .then(({ data }) => {
+        if (data.session) {
+          setAuthSession({
+            kratosSessionToken: "", // FIXME: data.session_token is not set for browser flows
+            identity: {
+              email: data.session.identity.traits.email,
+            },
+          })
+        }
         document.location.replace(flowData?.return_to || "/")
       })
       .catch(handleFlowError({ history, resetFlow }))

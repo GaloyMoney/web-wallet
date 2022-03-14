@@ -49,8 +49,7 @@ ssrRouter.get("/*", async (req, res) => {
 
       case "/logout": {
         req.session = req.session || {}
-        req.session.galoyJwtToken = undefined
-        req.session.kratosSession = undefined
+        req.session.authSession = undefined
         const logoutResult = await handleLogout(req)
 
         return res.redirect(logoutResult.redirectTo)

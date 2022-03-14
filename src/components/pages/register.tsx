@@ -74,7 +74,7 @@ const Register: FCT = ({ flowData: flowDataProp }) => {
       .then(async ({ data }) => {
         try {
           if (!data.session) {
-            throw new Error("Invaild session")
+            throw new Error("Invalid session")
           }
           const resp = await axios.post(
             config.kratosAuthEndpoint,
@@ -85,15 +85,9 @@ const Register: FCT = ({ flowData: flowDataProp }) => {
             throw new Error("Invalid auth token respose")
           }
           const authToken = resp.data.authToken
-          const { galoyJwtToken } = await request.post(config.authEndpoint, {
-            authToken,
-          })
-          if (!galoyJwtToken) {
+          const session = await request.post(config.authEndpoint, { authToken })
+          if (!session || !session.galoyJwtToken) {
             throw new Error("Invalid auth token respose")
-          }
-          const session = {
-            galoyJwtToken,
-            identity: { emailAddress: data.session.identity.traits.email },
           }
           setAuthSession(session.galoyJwtToken ? session : null)
           history.push("/")

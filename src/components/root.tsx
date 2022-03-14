@@ -4,7 +4,7 @@ import { GaloyClient, setLocale } from "@galoymoney/client"
 
 import { GwwContext, history } from "store/index"
 import mainReducer from "store/reducer"
-import { getPersistedSession } from "store/auth-session"
+import { clearSession, getPersistedSession } from "store/auth-session"
 
 import { AuthProvider } from "components/auth-provider"
 import RootComponent from "components/root-component"
@@ -13,11 +13,13 @@ type RootFCT = React.FC<{ GwwState: GwwState }>
 
 const Root: RootFCT = ({ GwwState }) => {
   const [state, dispatch] = useReducer(mainReducer, GwwState, (initState) => {
-    if (initState.hasSessionToken) {
-      const persistedSession = getPersistedSession()
-      if (!persistedSession) {
-        document.location.href = "/logout"
-      }
+    const persistedSession = getPersistedSession()
+    if (
+      (initState.sessionUserId || persistedSession) &&
+      persistedSession?.identity?.userId !== initState.sessionUserId
+    ) {
+      clearSession()
+      document.location.href = "/logout"
     }
     setLocale(initState.defaultLanguage)
     return initState

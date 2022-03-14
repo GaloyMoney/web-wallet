@@ -50,7 +50,7 @@ export const checkRoute = (path: string): RoutePath | Error => {
   if (appRoutesDef[path as never]) {
     return path as RoutePath
   }
-  return new Error("Invaild route path")
+  return new Error("Invalid route path")
 }
 type AppRoutes = Record<RoutePath, { component: React.FC<unknown>; title: string }>
 export const appRoutes: AppRoutes = appRoutesDef as unknown as AppRoutes
@@ -74,7 +74,7 @@ export const checkAuthRoute = (path: string): AuthRoutePath | Error => {
   if (authRoutesDef[path as never]) {
     return path as AuthRoutePath
   }
-  return new Error("Invaild auth route path")
+  return new Error("Invalid auth route path")
 }
 type AuthRoutes = Record<
   AuthRoutePath,

@@ -39,7 +39,7 @@ type GwwState = {
   key: number
   path: RoutePath | AuthRoutePath
   props?: Record<string, unknown>
-  hasSessionToken?: boolean
+  sessionUserId?: string
   defaultLanguage?: string
   flowData?: KratosFlowData
 }
@@ -56,6 +56,13 @@ type GwwContextType = {
 
 type AuthSession = {
   galoyJwtToken: string
+  identity?: {
+    userId: string
+    phoneNumber?: string
+    emailAddress?: string
+    firstName?: string
+    lastName?: string
+  }
 } | null
 
 type AuthContextType = {

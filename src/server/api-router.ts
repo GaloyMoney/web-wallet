@@ -8,25 +8,38 @@ import { handleWhoAmI } from "kratos"
 
 const apiRouter = express.Router({ caseSensitive: true })
 
+type GalowyJwtToken = null | (jwt.JwtPayload & { kratosUserId?: string })
+
 apiRouter.post("/login", async (req, res) => {
   try {
     const { authToken, phoneNumber, authCode } = req.body
 
     if (authToken) {
-      const token = jwt.decode(authToken) as jwt.JwtPayload & { kratosUserId: string }
+      const token = jwt.decode(authToken) as GalowyJwtToken
       const kratosSession = await handleWhoAmI(req)
 
       if (
+        !token ||
         !token.kratosUserId ||
         !kratosSession ||
         kratosSession.identity.id !== token.kratosUserId
       ) {
-        return res.send(404).send("Invaild login request")
+        return res.send(404).send("Invalid login request")
+      }
+
+      const authSession = {
+        galoyJwtToken: authToken,
+        identity: {
+          userId: kratosSession.identity.id,
+          emailAddress: kratosSession.identity.traits.email,
+          firstName: kratosSession.identity.traits.name?.first,
+          lastName: kratosSession.identity.traits.name?.last,
+        },
       }
 
       req.session = req.session || {}
-      req.session.galoyJwtToken = authToken
-      return res.send({ galoyJwtToken: authToken })
+      req.session.authSession = authSession
+      return res.send(authSession)
     }
 
     if (!phoneNumber || !authCode) {
@@ -45,11 +58,20 @@ apiRouter.post("/login", async (req, res) => {
     }
 
     const galoyJwtToken = data?.userLogin?.authToken
+    const token = jwt.decode(galoyJwtToken) as GalowyJwtToken
+
+    if (!token || !token.uid) {
+      return res.send(404).send("Invalid login request")
+    }
+
+    const authSession = {
+      identity: { userId: token.uid, phoneNumber },
+      galoyJwtToken,
+    }
 
     req.session = req.session || {}
-    req.session.galoyJwtToken = galoyJwtToken
-
-    return res.send({ galoyJwtToken })
+    req.session.authSession = authSession
+    return res.send(authSession)
   } catch (err) {
     console.error(err)
     return res

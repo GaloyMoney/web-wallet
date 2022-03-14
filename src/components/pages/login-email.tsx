@@ -69,7 +69,7 @@ const LoginEmail: FCT = ({ flowData: flowDataProp }) => {
       .submitSelfServiceLoginFlow(String(flowData?.id), undefined, values, {
         withCredentials: true,
       })
-      .then(async ({ data }) => {
+      .then(async () => {
         try {
           const resp = await axios.post(
             config.kratosAuthEndpoint,
@@ -80,15 +80,9 @@ const LoginEmail: FCT = ({ flowData: flowDataProp }) => {
             throw new Error("Invalid auth token respose")
           }
           const authToken = resp.data.authToken
-          const { galoyJwtToken } = await request.post(config.authEndpoint, {
-            authToken,
-          })
-          if (!galoyJwtToken) {
+          const session = await request.post(config.authEndpoint, { authToken })
+          if (!session || !session.galoyJwtToken) {
             throw new Error("Invalid auth token respose")
-          }
-          const session = {
-            galoyJwtToken,
-            identity: { emailAddress: data.session.identity.traits.email },
           }
           setAuthSession(session.galoyJwtToken ? session : null)
           history.push("/")

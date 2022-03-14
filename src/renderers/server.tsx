@@ -17,13 +17,13 @@ export const serverRenderer =
     flowData?: KratosFlowData
   }) => {
     try {
-      const galoyJwtToken = req.session?.galoyJwtToken
+      const galoyJwtToken = req.session?.authSession?.galoyJwtToken
 
       const GwwState: GwwState = {
         path,
         props: req.query,
         key: 0,
-        hasSessionToken: Boolean(galoyJwtToken),
+        sessionUserId: req.session?.authSession?.identity?.userId,
         defaultLanguage: req.acceptsLanguages()?.[0],
         flowData,
       }

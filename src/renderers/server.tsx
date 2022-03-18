@@ -116,6 +116,6 @@ export const serverRenderer =
             : authRoutes[path as AuthRoutePath],
       })
     } catch (err) {
-      console.error(err)
+      return err
     }
   }

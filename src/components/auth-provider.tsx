@@ -4,28 +4,62 @@ import { useErrorHandler } from "react-error-boundary"
 import { GaloyClient, GaloyProvider, postRequest } from "@galoymoney/client"
 
 import { createClient, useAppDispatcher, useRequest } from "store/index"
-import { getPersistedSession, persistSession, clearSession } from "store/auth-session"
 import { AuthContext } from "store/use-auth-context"
-import config from "store/config"
 import axios from "axios"
+
+import config from "../store/config"
+import storage from "../store/local-storage"
+
+const galoySessionName = "galoy-session"
+
+const clearSession = () => {
+  storage.delete(galoySessionName)
+}
+
+const persistSession = (session: AuthSession) => {
+  if (session) {
+    storage.set(galoySessionName, JSON.stringify(session))
+  } else {
+    clearSession()
+  }
+}
+
+const getPersistedSession = (sessionData?: {
+  galoyJwtToken?: string
+  identity?: AuthIdentity
+}): AuthSession => {
+  if (sessionData?.galoyJwtToken && sessionData?.identity) {
+    const { galoyJwtToken, identity } = sessionData
+    return { galoyJwtToken, identity }
+  }
+  if (config.isBrowser) {
+    const session = storage.get(galoySessionName)
+
+    if (session) {
+      // TODO: verify session shape
+      return JSON.parse(session)
+    }
+  }
+  return null
+}
 
 type FCT = React.FC<{
   children: ReactNode
   galoyClient?: GaloyClient<unknown>
   galoyJwtToken?: string
-  sessionUserId?: string
+  authIdentity?: AuthIdentity
 }>
 
 export const AuthProvider: FCT = ({
   children,
   galoyClient,
   galoyJwtToken,
-  sessionUserId,
+  authIdentity,
 }) => {
   const request = useRequest()
   const dispatch = useAppDispatcher()
   const [authSession, setAuthSession] = useState<AuthSession>(() =>
-    getPersistedSession(galoyJwtToken),
+    getPersistedSession({ galoyJwtToken, identity: authIdentity }),
   )
 
   const setAuth = useCallback((session: AuthSession) => {
@@ -49,20 +83,20 @@ export const AuthProvider: FCT = ({
       throw new Error("Invalid auth token respose")
     }
     setAuth(session.galoyJwtToken ? session : null)
-    dispatch({ type: "kratos-login", sessionUserId: session.identity.userId })
+    dispatch({ type: "kratos-login", authIdentity: session.identity })
   }, [dispatch, request, setAuth])
 
   useEffect(() => {
     const persistedSession = getPersistedSession()
 
     if (
-      (sessionUserId || persistedSession) &&
-      persistedSession?.identity?.userId !== sessionUserId
+      (authIdentity?.userId || persistedSession) &&
+      persistedSession?.identity?.userId !== authIdentity?.userId
     ) {
       setAuth(null)
       document.location.href = "/logout"
     }
-  }, [sessionUserId, setAuth])
+  }, [authIdentity?.userId, setAuth])
 
   const handleError = useErrorHandler()
   const client = useMemo(() => {
@@ -96,8 +130,9 @@ export const AuthProvider: FCT = ({
   return (
     <AuthContext.Provider
       value={{
-        galoyJwtToken: authSession?.galoyJwtToken,
         isAuthenticated: Boolean(authSession?.galoyJwtToken),
+        galoyJwtToken: authSession?.galoyJwtToken,
+        authIdentity: authSession?.identity,
         setAuthSession: setAuth,
         syncSession,
       }}

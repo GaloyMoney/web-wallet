@@ -58,7 +58,7 @@ export const serverRenderer =
         path,
         props: extractAllowedProps({ path, props: req.query }),
         key: 0,
-        sessionUserId: req.session?.authSession?.identity?.userId,
+        authIdentity: req.session?.authSession?.identity,
         defaultLanguage: req.acceptsLanguages()?.[0],
         emailVerified: req.session?.emailVerified,
         flowData,

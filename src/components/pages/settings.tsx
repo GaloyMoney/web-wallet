@@ -11,6 +11,7 @@ import ColorThemeSetting from "components/settings/color-theme"
 import LanguageSetting from "components/settings/language"
 import UsernameSetting from "components/settings/username"
 import config from "store/config"
+import EmailSetting from "components/settings/email"
 
 type FCT = React.FC<{
   flowData?: KratosFlowData
@@ -71,6 +72,7 @@ const Settings: FCT = ({ flowData: flowDataProp }) => {
       <div className="page-title">{translate("Settings")}</div>
 
       <div className="list">
+        <EmailSetting guestView={!isAuthenticated} />
         <UsernameSetting guestView={!isAuthenticated} />
         <LanguageSetting guestView={!isAuthenticated} />
         <ColorThemeSetting />

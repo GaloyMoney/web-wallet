@@ -34,7 +34,7 @@ const Root: RootFCT = ({ GwwState }) => {
   }, [dispatch])
 
   return (
-    <AuthProvider sessionUserId={state.sessionUserId}>
+    <AuthProvider authIdentity={state.authIdentity}>
       <GwwContext.Provider value={{ state, dispatch }}>
         <RootComponent
           key={state.key}
@@ -64,7 +64,7 @@ export const SSRRoot: SSRRootFCT = ({ client, GwwState, galoyJwtToken }) => {
     <AuthProvider
       galoyClient={client}
       galoyJwtToken={galoyJwtToken}
-      sessionUserId={state.sessionUserId}
+      authIdentity={state.authIdentity}
     >
       <GwwContext.Provider value={{ state, dispatch }}>
         <RootComponent path={state.path} flowData={state.flowData} {...state.props} />

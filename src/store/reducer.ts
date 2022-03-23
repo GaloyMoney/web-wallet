@@ -7,7 +7,7 @@ const mainReducer = (state: GwwState, action: GwwAction): GwwState => {
     case "update-with-key":
       return { ...state, ...newState, key: Math.random() }
     case "kratos-login":
-      return { ...state, sessionUserId: newState.sessionUserId }
+      return { ...state, authIdentity: newState.authIdentity }
     default:
       throw new Error("UNSUPPORTED_ACTION")
   }

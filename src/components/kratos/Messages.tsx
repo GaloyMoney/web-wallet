@@ -1,21 +1,24 @@
+import { TranslationKey, translate, translateUnknown } from "@galoymoney/client"
 import { UiText } from "@ory/kratos-client"
 
 interface MessageProps {
   message: UiText
 }
 
-const messageText = (message: UiText): string => {
-  switch (message.id) {
-    case 4000005:
-      return "Password is too short"
-    case 4000006:
-      return "Invaild email or password"
-    case 4000007:
-      return "An account with the same email exists already"
+const kratosMessages: Record<number, TranslationKey> = {
+  4000005: "Password is too short",
+  4000006: "Invaild email or password",
+  4000007: "An account with the same email exists already",
+}
 
-    default:
-      return message.text
+const messageText = (message: UiText): string => {
+  const text = kratosMessages[message.id]
+
+  if (text) {
+    return translate(text)
   }
+
+  return translateUnknown(message.text)
 }
 
 export const Message = ({ message }: MessageProps) => {

@@ -53,6 +53,7 @@ if [ "$1" = "on" ]; then
   # mod .envrc
   sudo -u galoy sed -i "s/export NETWORK=.*/export NETWORK=${NETWORK}/g" ./.envrc
   sudo -u galoy sed -i "s/export NODE_ENV=.*/export NODE_ENV=production/g" ./.envrc
+  sudo -u galoy sed -i "s/export HOST=.*/export HOST=0.0.0.0/g" ./.envrc
   # change port to collision
   sudo -u galoy sed -i "s/3000/4030/g" ./.envrc
 
@@ -71,8 +72,9 @@ if [ "$1" = "on" ]; then
   fi
   sudo ln -sf /etc/nginx/sites-available/web-wallet_ssl.conf /etc/nginx/sites-enabled/
 
-  DOCKER_HOST_IP=$(ip addr show docker0 | awk '/inet/ {print $2}' | cut -d'/' -f1)
-  sudo sed -i "s#proxy_pass http://127.0.0.1:4030;#proxy_pass http://$DOCKER_HOST_IP:4030;#g" /etc/nginx/sites-available/web-wallet_ssl.conf
+  #DOCKER_HOST_IP=$(ip addr show docker0 | awk '/inet/ {print $2}' | cut -d'/' -f1)
+  WEBWALLET_ADDRESS=$(docker container inspect -f '{{ $network := index .NetworkSettings.Networks "web-wallet_default" }}{{ $network.IPAddress }}' web-wallet-web-wallet-1)
+  sudo sed -i "s#proxy_pass http://.*#proxy_pass http://$WEBWALLET_ADDRESS:4030;#g" /etc/nginx/sites-available/web-wallet_ssl.conf
 
   sudo nginx -t || exit 1
   sudo systemctl reload nginx

@@ -22,7 +22,7 @@
     "tsc:check": "tsc --pretty --noEmit --skipLibCheck"
   },
   "dependencies": {
-    "@galoymoney/client": "^0.1.12",
+    "@galoymoney/client": "^0.1.13",
     "@galoymoney/react": "^0.1.7",
     "@opentelemetry/api": "^1.1.0",
     "@opentelemetry/core": "^1.1.1",
@@ -37,7 +37,7 @@
     "@ory/integrations": "^0.2.4",
     "@ory/kratos-client": "^0.8.2-alpha.1",
     "@ory/themes": "^0.0.101",
-    "@testing-library/jest-dom": "^5.16.3",
+    "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^14.0.4",
     "@types/body-parser": "^1.19.2",
@@ -52,7 +52,7 @@
     "@types/serialize-javascript": "^5.0.2",
     "autoprefixer": "^10.4.2",
     "axios": "^0.26.1",
-    "body-parser": "^1.19.2",
+    "body-parser": "^1.20.0",
     "buffer": "^6.0.3",
     "cookie-session": "^2.0.0",
     "copy-to-clipboard": "^3.3.1",
@@ -92,15 +92,15 @@
     "webpack-cli": "^4.9.1"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.17.0",
-    "@typescript-eslint/parser": "^5.17.0",
+    "@typescript-eslint/eslint-plugin": "^5.18.0",
+    "@typescript-eslint/parser": "^5.18.0",
     "babel-jest": "^27.5.1",
     "eslint": "^8.12.0",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.4.0",
     "jest": "^27.5.1",
-    "prettier": "^2.6.1",
+    "prettier": "^2.6.2",
     "ts-jest": "^27.1.4",
     "ts-node-dev": "^1.1.8",
     "typesync": "^0.9.0"

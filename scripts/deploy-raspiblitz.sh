@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# wget https://raw.githubusercontent.com/openoms/galoy/self-hosting/scripts/deploy-raspiblitz.sh -O deploy-raspiblitz.sh
-# sh -x deploy-raspiblitz.sh on
+# wget https://raw.githubusercontent.com/openoms/web-wallet/self-hosting/scripts/deploy-raspiblitz.sh -O deploy-raspiblitz.sh
 # sh -x deploy-raspiblitz.sh web-wallet
 
 # command info
@@ -51,20 +50,21 @@ if [ "$1" = "on" ]; then
   fi
 
   # mod .envrc
-  sudo -u galoy sed -i "s/export NETWORK=.*/export NETWORK=${NETWORK}/g" ./.envrc
-  sudo -u galoy sed -i "s/export NODE_ENV=.*/export NODE_ENV=production/g" ./.envrc
-  sudo -u galoy sed -i "s/export HOST=.*/export HOST=0.0.0.0/g" ./.envrc
+  # sudo -u galoy sed -i "s/export NETWORK=.*/export NETWORK=${NETWORK}/g" ./.envrc
+  # sudo -u galoy sed -i "s/export NODE_ENV=.*/export NODE_ENV=production/g" ./.envrc
+  # sudo -u galoy sed -i "s/export HOST=.*/export HOST=0.0.0.0/g" ./.envrc
   # change port to collision
-  sudo -u galoy sed -i "s/3000/4030/g" ./.envrc
 
   # start
   sudo -u galoy docker compose down
-  sudo -u galoy bash -c '. ./.envrc; ./scripts/generate-env.sh'
-  sudo -u galoy docker compose up postgres -d
-  sudo -u galoy docker compose up kratos -d
-  sudo -u galoy docker compose up kratos-migrate -d
-  sudo -u galoy docker compose up mailslurper -d
-  sudo -u galoy docker compose up web-wallet -d
+  sudo -u galoy bash -c '. ./.envrc.selfhosted && \
+   ./scripts/generate-env.sh && \
+   docker compose -f docker-compose.selfhosted.yml up web-wallet -d'
+  # sudo -u galoy docker compose up postgres -d
+  # sudo -u galoy docker compose up kratos -d
+  # sudo -u galoy docker compose up kratos-migrate -d
+  # sudo -u galoy docker compose up mailslurper -d
+  #sudo -u galoy docker compose -f docker-compose.selfhosted.yml up web-wallet -d
 
   # galoy-web-wallet_ssl
   if ! [ -f /etc/nginx/sites-available/web-wallet_ssl.conf ]; then
@@ -86,10 +86,9 @@ if [ "$1" = "on" ]; then
 fi
 
 if [ "$1" = "off" ]; then
-
   # web-wallet
   cd /home/galoy/web-wallet
-  sudo -u galoy docker compose down
+  sudo -u galoy docker compose -f docker-compose.selfhosted.yml down
   cd
   sudo rm -rf /home/galoy/web-wallet
   sudo ufw deny 4031

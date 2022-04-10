@@ -1,0 +1,30 @@
+#!/bin/bash
+
+DOCKER_HOST_IP=$(ip addr show docker0 | awk '/inet/ {print $2}' | cut -d'/' -f1)
+#export DOCKER_HOST_IP=${DOCKER_HOST_IP:-127.0.0.1}
+
+export NODE_PATH="src/layouts/default:src/"
+export NODE_ENV="production"
+export SESSION_KEYS="sessionkeys"
+export HOST="0.0.0.0"
+export PORT="4030"
+
+export WALLET_NAME="Galoy"
+export WALLET_LAYOUT="default"
+export WALLET_THEME="default"
+export SUPPORT_EMAIL="support@galoy.io"
+export SHARE_URI="https://pay.mainnet.galoy.io/"
+
+export NETWORK="testnet"
+
+export GRAPHQL_URI="http://${DOCKER_HOST_IP}:4002/graphql"
+export GRAPHQL_SUBSCRIPTION_URI="ws://${DOCKER_HOST_IP}:4002/graphql"
+export AUTH_ENDPOINT="http://localhost:3000/api/login"
+
+
+export KRATOS_API_URL="http://${DOCKER_HOST_IP}:4433"
+export KRATOS_BROWSER_URL="http://${DOCKER_HOST_IP}:4433"
+
+export GALOY_AUTH_ENDPOINT="http://${DOCKER_HOST_IP}:4002/auth/browser"
+
+export KRATOS_FEATURE_FLAG="true"

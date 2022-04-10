@@ -58,5 +58,24 @@ services:
     networks:
       - intranet
 
+  web-wallet:
+    # https://github.com/GaloyMoney/charts/blob/main/charts/web-wallet/values.yaml
+    image: us.gcr.io/galoy-org/web-wallet # @sha256:f9e1269a2b063a40706c8e9407e1834d19ac5300912a645d88e157552b98694c
+    env_file:
+      - .env
+#    ports:
+#      - "4030:3000"
+    networks:
+      - intranet
+      - default
+    depends_on:
+      - postgres
+      - kratos
+      - kratos-migrate
+      - mailslurper
+
 networks:
   intranet:
+  default:
+    external:
+      name: galoy_default

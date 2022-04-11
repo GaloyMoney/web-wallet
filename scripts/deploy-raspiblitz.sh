@@ -49,22 +49,13 @@ if [ "$1" = "on" ]; then
     sudo -u galoy git checkout ${githubBranch}
   fi
 
-  # mod .envrc
-  # sudo -u galoy sed -i "s/export NETWORK=.*/export NETWORK=${NETWORK}/g" ./.envrc
-  # sudo -u galoy sed -i "s/export NODE_ENV=.*/export NODE_ENV=production/g" ./.envrc
-  # sudo -u galoy sed -i "s/export HOST=.*/export HOST=0.0.0.0/g" ./.envrc
-  # change port to collision
-
+  # sudo -u galoy yarn install
+  # sudo -u galoy sh -c 'export WALLET_LAYOUT="default" &&  yarn build:all'
   # start
-  sudo -u galoy docker compose down
+  sudo -u galoy docker compose -f docker-compose.selfhosted.yml down
   sudo -u galoy bash -c '. ./.envrc.selfhosted && \
-   ./scripts/generate-env.sh && \
+   bash scripts/generate-env.sh && \
    docker compose -f docker-compose.selfhosted.yml up web-wallet -d'
-  # sudo -u galoy docker compose up postgres -d
-  # sudo -u galoy docker compose up kratos -d
-  # sudo -u galoy docker compose up kratos-migrate -d
-  # sudo -u galoy docker compose up mailslurper -d
-  #sudo -u galoy docker compose -f docker-compose.selfhosted.yml up web-wallet -d
 
   # galoy-web-wallet_ssl
   if ! [ -f /etc/nginx/sites-available/web-wallet_ssl.conf ]; then
@@ -73,7 +64,7 @@ if [ "$1" = "on" ]; then
   sudo ln -sf /etc/nginx/sites-available/web-wallet_ssl.conf /etc/nginx/sites-enabled/
 
   #DOCKER_HOST_IP=$(ip addr show docker0 | awk '/inet/ {print $2}' | cut -d'/' -f1)
-  WEBWALLET_ADDRESS=$(docker container inspect -f '{{ $network := index .NetworkSettings.Networks "web-wallet_default" }}{{ $network.IPAddress }}' web-wallet-web-wallet-1)
+  WEBWALLET_ADDRESS=$(docker container inspect -f '{{ $network := index .NetworkSettings.Networks "galoy_default" }}{{ $network.IPAddress }}' web-wallet-web-wallet-1)
   sudo sed -i "s#proxy_pass http://.*#proxy_pass http://$WEBWALLET_ADDRESS:4030;#g" /etc/nginx/sites-available/web-wallet_ssl.conf
 
   sudo nginx -t || exit 1

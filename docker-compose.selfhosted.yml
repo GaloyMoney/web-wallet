@@ -11,7 +11,7 @@ services:
     restart: on-failure
     volumes:
       - type: bind
-        source: ./dev/kratos.yml
+        source: ./dev/kratos.selfhosted.yml
         target: /etc/config/kratos/kratos.yml
       - type: bind
         source: ./dev/email-schema.json
@@ -26,7 +26,7 @@ services:
       - postgres
     volumes:
       - type: bind
-        source: ./dev/kratos.yml
+        source: ./dev/kratos.selfhosted.yml
         target: /etc/config/kratos/kratos.yml
       - type: bind
         source: ./dev/email-schema.json
@@ -38,6 +38,7 @@ services:
       - "4434:4434" # admin
     networks:
       - intranet
+      - default
 
   postgres:
     image: postgres:9.6
@@ -60,11 +61,12 @@ services:
 
   web-wallet:
     # https://github.com/GaloyMoney/charts/blob/main/charts/web-wallet/values.yaml
-    image: us.gcr.io/galoy-org/web-wallet # @sha256:f9e1269a2b063a40706c8e9407e1834d19ac5300912a645d88e157552b98694c
+    # https://console.cloud.google.com/gcr/images/galoy-org/US/web-wallet
+    image: us.gcr.io/galoy-org/web-wallet@sha256:c7672f6ff74e999e0042d67a323db2617e260cac645feb46a2c2828a78fab4e2
     env_file:
       - .env
-#    ports:
-#      - "4030:3000"
+    ports:
+      - "4030:4030"
     networks:
       - intranet
       - default
@@ -73,6 +75,14 @@ services:
       - kratos
       - kratos-migrate
       - mailslurper
+    restart: on-failure
+  #  volumes:
+  #    - type: bind
+  #      source: ./build/store/config.js
+  #      target: /node_modules/store/config.js
+  #    - type: bind
+  #      source: ./build/store/index.js
+  #      target: /node_modules/store/index.js
 
 networks:
   intranet:

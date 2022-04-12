@@ -1,12 +1,13 @@
 #!/bin/bash
 
-DOCKER_HOST_IP=$(ip addr show docker0 | awk '/inet/ {print $2}' | cut -d'/' -f1)
+DOCKER_HOST_IP=$(ip addr show docker0 | awk '/inet/ {print $2}' | head -1 | cut -d'/' -f1)
+GQL_SSL="api.testnet.diynodes.com"
 
 export NODE_PATH="build/layouts/default:build/"
 export NODE_ENV="production"
 export SESSION_KEYS="sessionkeys"
 export HOST="0.0.0.0"
-export PORT="4030"
+export PORT="3030"
 
 export WALLET_NAME="Galoy"
 export WALLET_LAYOUT="default"
@@ -16,14 +17,14 @@ export SHARE_URI="https://pay.mainnet.galoy.io/"
 
 export NETWORK="testnet"
 
-export GRAPHQL_URI="http://${DOCKER_HOST_IP}:4002/graphql"
-export GRAPHQL_SUBSCRIPTION_URI="ws://${DOCKER_HOST_IP}:4002/graphql"
-export AUTH_ENDPOINT="http://${DOCKER_HOST_IP}:4030/api/login"
+export GRAPHQL_URI="https://${GQL_SSL}/graphql"
+export GRAPHQL_SUBSCRIPTION_URI="wss://${GQL_SSL}/graphql"
+export AUTH_ENDPOINT="http://localhost:3030/api/login"
 
 
 export KRATOS_API_URL="http://${DOCKER_HOST_IP}:4433"
 export KRATOS_BROWSER_URL="http://${DOCKER_HOST_IP}:4433"
 
-export GALOY_AUTH_ENDPOINT="http://${DOCKER_HOST_IP}:4002/auth/browser"
+export GALOY_AUTH_ENDPOINT="https://${GQL_SSL}/auth/browser"
 
 export KRATOS_FEATURE_FLAG="false"

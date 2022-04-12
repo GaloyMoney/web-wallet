@@ -3,22 +3,22 @@ version: v0.8.2-alpha.1
 dsn: memory
 session:
   cookie:
-    domain: 172.17.0.1:4030
+    domain: 172.17.0.1:3030
 
 serve:
   public:
-    base_url: http://localhost:4433/
+    base_url: http://172.17.0.1:4433/
     cors:
       enabled: true
       allowed_origins:
-        - http://172.17.0.1:4030
+        - http://172.17.0.1:3030
   admin:
-    base_url: http://kratos:4434/
+    base_url: http://172.17.0.1:4434/
 
 selfservice:
-  default_browser_return_url: http://172.17.0.1:4030/
+  default_browser_return_url: http://172.17.0.1:3030/
   allowed_return_urls:
-    - http://172.17.0.1:4030
+    - http://172.17.0.1:3030
 
   methods:
     password:
@@ -26,33 +26,33 @@ selfservice:
 
   flows:
     error:
-      ui_url: http://172.17.0.1:4030/error
+      ui_url: http://172.17.0.1:3030/error
 
     settings:
-      ui_url: http://172.17.0.1:4030/settings
+      ui_url: http://172.17.0.1:3030/settings
       privileged_session_max_age: 15m
 
     recovery:
       enabled: true
-      ui_url: http://172.17.0.1:4030/recovery
+      ui_url: http://172.17.0.1:3030/recovery
 
     verification:
       enabled: true
-      ui_url: http://172.17.0.1:4030/verification
+      ui_url: http://172.17.0.1:3030/verification
       after:
-        default_browser_return_url: http://172.17.0.1:4030/verified
+        default_browser_return_url: http://172.17.0.1:3030/verified
 
     logout:
       after:
-        default_browser_return_url: http://172.17.0.1:4030/
+        default_browser_return_url: http://172.17.0.1:3030/
 
     login:
-      ui_url: http://172.17.0.1:4030/login
+      ui_url: http://172.17.0.1:3030/login
       lifespan: 10m
 
     registration:
       lifespan: 10m
-      ui_url: http://172.17.0.1:4030/register
+      ui_url: http://172.17.0.1:3030/register
       after:
         password:
           hooks:

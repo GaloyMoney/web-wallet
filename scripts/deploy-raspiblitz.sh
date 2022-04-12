@@ -64,8 +64,8 @@ if [ "$1" = "on" ]; then
   sudo ln -sf /etc/nginx/sites-available/web-wallet_ssl.conf /etc/nginx/sites-enabled/
 
   #DOCKER_HOST_IP=$(ip addr show docker0 | awk '/inet/ {print $2}' | cut -d'/' -f1)
-  WEBWALLET_ADDRESS=$(docker container inspect -f '{{ $network := index .NetworkSettings.Networks "galoy_default" }}{{ $network.IPAddress }}' web-wallet-web-wallet-1)
-  sudo sed -i "s#proxy_pass http://.*#proxy_pass http://$WEBWALLET_ADDRESS:4030;#g" /etc/nginx/sites-available/web-wallet_ssl.conf
+  # WEBWALLET_ADDRESS=$(docker container inspect -f '{{ $network := index .NetworkSettings.Networks "galoy_default" }}{{ $network.IPAddress }}' web-wallet-web-wallet-1)
+  # sudo sed -i "s#proxy_pass http://.*#proxy_pass http://$WEBWALLET_ADDRESS:3030;#g" /etc/nginx/sites-available/web-wallet_ssl.conf
 
   sudo nginx -t || exit 1
   sudo systemctl reload nginx

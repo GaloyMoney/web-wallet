@@ -50,6 +50,7 @@ services:
       - POSTGRES_DB=kratos
     networks:
       - intranet
+      - default
 
   mailslurper:
     image: oryd/mailslurper:latest-smtps
@@ -66,7 +67,7 @@ services:
     env_file:
       - .env
     ports:
-      - "4030:4030"
+      - "3030:3030"
     networks:
       - intranet
       - default
@@ -76,16 +77,9 @@ services:
       - kratos-migrate
       - mailslurper
     restart: on-failure
-  #  volumes:
-  #    - type: bind
-  #      source: ./build/store/config.js
-  #      target: /node_modules/store/config.js
-  #    - type: bind
-  #      source: ./build/store/index.js
-  #      target: /node_modules/store/index.js
 
 networks:
   intranet:
   default:
-    external:
-      name: galoy_default
+    name: galoy_default
+    external: true

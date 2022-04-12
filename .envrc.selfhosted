@@ -2,6 +2,7 @@
 
 DOCKER_HOST_IP=$(ip addr show docker0 | awk '/inet/ {print $2}' | head -1 | cut -d'/' -f1)
 GQL_SSL="api.testnet.diynodes.com"
+WALLET_SSL="wallet.testnet.diynodes.com"
 
 export NODE_PATH="build/layouts/default:build/"
 export NODE_ENV="production"
@@ -19,7 +20,7 @@ export NETWORK="testnet"
 
 export GRAPHQL_URI="https://${GQL_SSL}/graphql"
 export GRAPHQL_SUBSCRIPTION_URI="wss://${GQL_SSL}/graphql"
-export AUTH_ENDPOINT="http://localhost:3030/api/login"
+export AUTH_ENDPOINT="https://${WALLET_SSL}/api/login"
 
 
 export KRATOS_API_URL="http://${DOCKER_HOST_IP}:4433"

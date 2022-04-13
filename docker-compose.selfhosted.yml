@@ -26,7 +26,7 @@ services:
       - postgres
     volumes:
       - type: bind
-        source: ./dev/kratos.selfhosted.yml
+        source: ./scripts/assets/kratos.selfhosted.yml
         target: /etc/config/kratos/kratos.yml
       - type: bind
         source: ./dev/email-schema.json

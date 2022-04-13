@@ -3,22 +3,22 @@ version: v0.8.2-alpha.1
 dsn: memory
 session:
   cookie:
-    domain: 172.17.0.1:3030
+    domain: wallet.testnet.diynodes.com
 
 serve:
   public:
-    base_url: http://172.17.0.1:4433/
+    base_url: https://kratos.testnet.diynodes.com/
     cors:
       enabled: true
       allowed_origins:
-        - http://172.17.0.1:3030
+        - https://wallet.testnet.diynodes.com
   admin:
     base_url: http://172.17.0.1:4434/
 
 selfservice:
-  default_browser_return_url: http://172.17.0.1:3030/
+  default_browser_return_url: https://wallet.testnet.diynodes.com/
   allowed_return_urls:
-    - http://172.17.0.1:3030
+    - https://wallet.testnet.diynodes.com
 
   methods:
     password:
@@ -26,33 +26,33 @@ selfservice:
 
   flows:
     error:
-      ui_url: http://172.17.0.1:3030/error
+      ui_url: https://wallet.testnet.diynodes.com/error
 
     settings:
-      ui_url: http://172.17.0.1:3030/settings
+      ui_url: https://wallet.testnet.diynodes.com/settings
       privileged_session_max_age: 15m
 
     recovery:
       enabled: true
-      ui_url: http://172.17.0.1:3030/recovery
+      ui_url: https://wallet.testnet.diynodes.com/recovery
 
     verification:
       enabled: true
-      ui_url: http://172.17.0.1:3030/verification
+      ui_url: https://wallet.testnet.diynodes.com/verification
       after:
-        default_browser_return_url: http://172.17.0.1:3030/verified
+        default_browser_return_url: https://wallet.testnet.diynodes.com/verified
 
     logout:
       after:
-        default_browser_return_url: http://172.17.0.1:3030/
+        default_browser_return_url: https://wallet.testnet.diynodes.com/
 
     login:
-      ui_url: http://172.17.0.1:3030/login
+      ui_url: https://wallet.testnet.diynodes.com/login
       lifespan: 10m
 
     registration:
       lifespan: 10m
-      ui_url: http://172.17.0.1:3030/register
+      ui_url: https://wallet.testnet.diynodes.com/register
       after:
         password:
           hooks:

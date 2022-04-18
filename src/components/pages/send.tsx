@@ -361,7 +361,7 @@ const Send: FCT = ({ to }) => {
           />
           <div className="c3">
             <QRCodeDetecor
-              autoStart={document.location.pathname === "/scan"}
+              autoStart={window.location.pathname === "/scan"}
               startText=""
               stopText={translate("Close")}
               onCodeDetected={parseQRCode}

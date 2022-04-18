@@ -29,7 +29,7 @@ const Register: FCT = ({ flowData: flowDataProp }) => {
 
   const resetFlow = useCallback(() => {
     setFlowData(undefined)
-    document.location.href = "/register"
+    window.location.href = "/register"
   }, [])
 
   useEffect(() => {

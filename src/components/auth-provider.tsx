@@ -94,7 +94,7 @@ export const AuthProvider: FCT = ({
       persistedSession?.identity?.userId !== authIdentity?.userId
     ) {
       setAuth(null)
-      document.location.href = "/logout"
+      window.location.href = "/logout"
     }
   }, [authIdentity?.userId, setAuth])
 

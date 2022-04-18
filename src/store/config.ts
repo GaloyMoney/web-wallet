@@ -49,21 +49,7 @@ const networkMap = (graphqlUri: string): Network => {
 }
 
 const config = isBrowser
-  ? {
-      isBrowser,
-      walletName: window.__G_DATA.GwwConfig.walletName,
-      walletTheme: window.__G_DATA.GwwConfig.walletTheme,
-      shareUri: window.__G_DATA.GwwConfig.shareUri,
-      supportEmail: window.__G_DATA.GwwConfig.supportEmail,
-      network: window.__G_DATA.GwwConfig.network,
-      graphqlUri: window.__G_DATA.GwwConfig.graphqlUri,
-      graphqlSubscriptionUri: window.__G_DATA.GwwConfig.graphqlSubscriptionUri,
-      authEndpoint: window.__G_DATA.GwwConfig.authEndpoint,
-      kratosFeatureFlag: window.__G_DATA.GwwConfig.kratosFeatureFlag,
-      kratosBrowserUrl: window.__G_DATA.GwwConfig.kratosBrowserUrl,
-      galoyAuthEndpoint: window.__G_DATA.GwwConfig.galoyAuthEndpoint,
-      sessionKeys: "",
-    }
+  ? { isBrowser, ...window.__G_DATA.GwwConfig }
   : {
       isDev: process.env.NODE_ENV !== "production",
       isBrowser,
@@ -84,5 +70,23 @@ const config = isBrowser
       kratosBrowserUrl: process.env.KRATOS_BROWSER_URL as string,
       galoyAuthEndpoint: process.env.GALOY_AUTH_ENDPOINT as string,
     }
+
+const publicConfigKeys = [
+  "walletName",
+  "walletTheme",
+  "supportEmail",
+  "shareUri",
+  "graphqlUri",
+  "graphqlSubscriptionUri",
+  "network",
+  "authEndpoint",
+  "kratosFeatureFlag",
+  "kratosBrowserUrl",
+  "galoyAuthEndpoint",
+] as const
+
+export const publicConfig = Object.fromEntries(
+  publicConfigKeys.map((key) => [key, config[key]]),
+)
 
 export default config

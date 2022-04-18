@@ -1,7 +1,7 @@
 import { Request } from "express"
 import { renderToStringWithData } from "@galoymoney/client"
 
-import config from "store/config"
+import { publicConfig } from "store/config"
 import { createClient } from "store/index"
 import { appRoutes, AuthRoutePath, authRoutes, RoutePath } from "server/routes"
 
@@ -86,35 +86,9 @@ export const serverRenderer =
         req.session.emailVerified = undefined
       }
 
-      const {
-        walletName,
-        walletTheme,
-        supportEmail,
-        shareUri,
-        graphqlUri,
-        graphqlSubscriptionUri,
-        network,
-        authEndpoint,
-        kratosFeatureFlag,
-        kratosBrowserUrl,
-        galoyAuthEndpoint,
-      } = config
-
       return Promise.resolve({
         GwwState,
-        GwwConfig: {
-          walletName,
-          walletTheme,
-          supportEmail,
-          shareUri,
-          graphqlUri,
-          graphqlSubscriptionUri,
-          network,
-          authEndpoint,
-          kratosFeatureFlag,
-          kratosBrowserUrl,
-          galoyAuthEndpoint,
-        },
+        GwwConfig: publicConfig,
         initialMarkup,
         ssrData,
         pageData:

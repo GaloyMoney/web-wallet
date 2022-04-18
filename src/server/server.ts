@@ -36,7 +36,7 @@ if (!config.isDev) {
 app.use(
   cookieSession({
     name: "session",
-    keys: [config.sessionKeys],
+    keys: [config.sessionKeys as string],
     secure: !config.isDev,
     maxAge: 7 * 24 * 60 * 60 * 1000,
   }),

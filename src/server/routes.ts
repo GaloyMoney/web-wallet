@@ -10,6 +10,7 @@ import Register from "components/pages/register"
 import Send from "components/pages/send"
 import Settings from "components/pages/settings"
 import Transactions from "components/pages/transactions"
+
 import { KratosFlowData } from "kratos/index"
 
 // Note: The component property is skipped by the serialize function

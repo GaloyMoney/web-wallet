@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import { useState, useEffect, useCallback } from "react"
+import { useErrorHandler } from "react-error-boundary"
 import {
   SelfServiceRegistrationFlow,
   SubmitSelfServiceRegistrationFlowBody,
@@ -21,6 +22,7 @@ type FCT = React.FC<{
 }>
 
 const Register: FCT = ({ flowData: flowDataProp }) => {
+  const handleError = useErrorHandler()
   const { syncSession } = useAuthContext()
 
   const [flowData, setFlowData] = useState<SelfServiceRegistrationFlow | undefined>(
@@ -77,7 +79,11 @@ const Register: FCT = ({ flowData: flowDataProp }) => {
           if (!data.session) {
             throw new Error("Invalid session")
           }
-          syncSession()
+          const syncStatus = await syncSession()
+          if (syncStatus instanceof Error) {
+            handleError(syncStatus)
+            return
+          }
           history.push("/")
         } catch (err) {
           console.error(err)

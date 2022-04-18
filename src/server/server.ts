@@ -8,8 +8,8 @@ import rateLimit from "express-rate-limit"
 
 import config from "store/config"
 
-import apiRouter from "./api-router"
-import ssrRouter from "./ssr-router"
+import apiRouter from "server/api-router"
+import ssrRouter from "server/ssr-router"
 
 const app = express()
 app.enable("trust proxy")

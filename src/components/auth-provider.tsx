@@ -74,16 +74,24 @@ export const AuthProvider: FCT = ({
 
   const syncSession = useCallback(async () => {
     const resp = await axios.post(config.galoyAuthEndpoint, {}, { withCredentials: true })
+
+    if (resp.data.error) {
+      return new Error(resp.data.error?.message || "Invalid auth token response")
+    }
+
     if (!resp.data.authToken) {
-      throw new Error("Invalid auth token respose")
+      return new Error("Invalid auth token response")
     }
     const authToken = resp.data.authToken
     const session = await request.post(config.authEndpoint, { authToken })
+
     if (!session || !session.galoyJwtToken) {
-      throw new Error("Invalid auth token respose")
+      return new Error("Invalid auth token response")
     }
+
     setAuth(session.galoyJwtToken ? session : null)
     dispatch({ type: "kratos-login", authIdentity: session.identity })
+    return true
   }, [dispatch, request, setAuth])
 
   useEffect(() => {

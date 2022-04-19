@@ -34,6 +34,7 @@ apiRouter.post("/login", async (req, res) => {
           emailAddress: kratosSession.identity.traits.email,
           firstName: kratosSession.identity.traits.name?.first,
           lastName: kratosSession.identity.traits.name?.last,
+          accountStatus: token.accountStatus,
         },
       }
 

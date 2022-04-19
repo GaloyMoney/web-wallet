@@ -1,4 +1,5 @@
 import { Network } from "@galoymoney/client"
+import { GwwConfigType } from "./types"
 
 const isBrowser = typeof window !== "undefined"
 
@@ -48,7 +49,15 @@ const networkMap = (graphqlUri: string): Network => {
   return "regtest"
 }
 
-const config = isBrowser
+export type configType = GwwConfigType & {
+  isBrowser?: boolean
+  isDev?: boolean
+  sessionKeys?: string
+  host?: string
+  port?: number
+}
+
+const config: configType = isBrowser
   ? { isBrowser, ...window.__G_DATA.GwwConfig }
   : {
       isDev: process.env.NODE_ENV !== "production",

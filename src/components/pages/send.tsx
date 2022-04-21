@@ -259,7 +259,7 @@ const Send: FCT = ({ to }) => {
   }, [convertedValues])
 
   const resetSendScreen = useCallback(() => {
-    dispatch({ type: "update-with-key", path: "/send" })
+    dispatch({ type: "navigate", path: "/send" })
   }, [dispatch])
 
   const parseQRCode = useCallback<(destination: string) => false | ValidPaymentReponse>(

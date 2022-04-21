@@ -10,12 +10,12 @@ if (!isBrowser) {
     "SESSION_KEYS",
     "WALLET_NAME",
     "WALLET_THEME",
-    "SHARE_URI",
+    "SHARE_URL",
     "HOST",
     "PORT",
     "SUPPORT_EMAIL",
-    "GRAPHQL_URI",
-    "GRAPHQL_SUBSCRIPTION_URI",
+    "GRAPHQL_URL",
+    "GRAPHQL_SUBSCRIPTION_URL",
     "AUTH_ENDPOINT",
   ]
 
@@ -37,12 +37,12 @@ if (!isBrowser) {
   }
 }
 
-const networkMap = (graphqlUri: string): Network => {
-  if (graphqlUri.match("mainnet")) {
+const networkMap = (graphqlUrl: string): Network => {
+  if (graphqlUrl.match("mainnet")) {
     return "mainnet"
   }
 
-  if (graphqlUri.match("testnet")) {
+  if (graphqlUrl.match("testnet")) {
     return "testnet"
   }
 
@@ -64,15 +64,15 @@ const config: configType = isBrowser
       isBrowser,
       walletName: process.env.WALLET_NAME as string,
       walletTheme: process.env.WALLET_THEME as string,
-      shareUri: process.env.SHARE_URI as string,
+      shareUrl: process.env.SHARE_URL as string,
       sessionKeys: process.env.SESSION_KEYS as string,
       host: process.env.HOST as string,
       port: Number(process.env.PORT),
       supportEmail: process.env.SUPPORT_EMAIL as string,
       network:
-        (process.env.NETWORK as Network) ?? networkMap(process.env.GRAPHQL_URI as string),
-      graphqlUri: process.env.GRAPHQL_URI as string,
-      graphqlSubscriptionUri: process.env.GRAPHQL_SUBSCRIPTION_URI as string,
+        (process.env.NETWORK as Network) ?? networkMap(process.env.GRAPHQL_URL as string),
+      graphqlUrl: process.env.GRAPHQL_URL as string,
+      graphqlSubscriptionUrl: process.env.GRAPHQL_SUBSCRIPTION_URL as string,
 
       authEndpoint: process.env.AUTH_ENDPOINT as string,
       kratosFeatureFlag: Boolean(process.env.KRATOS_FEATURE_FLAG === "true" || false),
@@ -84,9 +84,9 @@ const publicConfigKeys = [
   "walletName",
   "walletTheme",
   "supportEmail",
-  "shareUri",
-  "graphqlUri",
-  "graphqlSubscriptionUri",
+  "shareUrl",
+  "graphqlUrl",
+  "graphqlSubscriptionUrl",
   "network",
   "authEndpoint",
   "kratosFeatureFlag",

@@ -1,11 +1,13 @@
 import { useContext, createContext } from "react"
 
 export type AuthIdentity = {
-  userId: string
+  id: string
+  uid: string
   phoneNumber?: string
   emailAddress?: string
   firstName?: string
   lastName?: string
+  accountStatus?: string
 }
 
 export type AuthSession = {

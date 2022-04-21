@@ -10,9 +10,9 @@ export type GwwConfigType = {
   walletName: string
   walletTheme: string
   supportEmail: string
-  shareUri: string
-  graphqlUri: string
-  graphqlSubscriptionUri: string
+  shareUrl: string
+  graphqlUrl: string
+  graphqlSubscriptionUrl: string
   network: Network
   authEndpoint: string
   kratosFeatureFlag: boolean

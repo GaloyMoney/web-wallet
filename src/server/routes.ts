@@ -96,3 +96,5 @@ type AuthRoutes = Record<
   { component: React.FC<{ flowData?: KratosFlowData }>; title: string }
 >
 export const authRoutes: AuthRoutes = authRoutesDef
+
+export type ValidPath = RoutePath | AuthRoutePath

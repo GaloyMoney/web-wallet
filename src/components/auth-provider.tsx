@@ -98,13 +98,13 @@ export const AuthProvider: FCT = ({
     const persistedSession = getPersistedSession()
 
     if (
-      (authIdentity?.userId || persistedSession) &&
-      persistedSession?.identity?.userId !== authIdentity?.userId
+      (authIdentity?.uid || persistedSession) &&
+      persistedSession?.identity?.uid !== authIdentity?.uid
     ) {
       setAuth(null)
       window.location.href = "/logout"
     }
-  }, [authIdentity?.userId, setAuth])
+  }, [authIdentity?.uid, setAuth])
 
   const handleError = useErrorHandler()
   const client = useMemo(() => {

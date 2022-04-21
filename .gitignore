@@ -8,4 +8,4 @@ yarn-error.log
 .env
 .vscode/
 .DS_Store
-src/layouts
+src/modules

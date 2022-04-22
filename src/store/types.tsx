@@ -8,7 +8,6 @@ import { GwwStateType } from "./reducer"
 
 export type GwwConfigType = {
   walletName: string
-  walletTheme: string
   supportEmail: string
   shareUrl: string
   graphqlUrl: string

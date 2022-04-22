@@ -9,7 +9,6 @@ if (!isBrowser) {
     "NODE_PATH",
     "SESSION_KEYS",
     "WALLET_NAME",
-    "WALLET_THEME",
     "SHARE_URL",
     "HOST",
     "PORT",
@@ -63,7 +62,6 @@ const config: configType = isBrowser
       isDev: process.env.NODE_ENV !== "production",
       isBrowser,
       walletName: process.env.WALLET_NAME as string,
-      walletTheme: process.env.WALLET_THEME as string,
       shareUrl: process.env.SHARE_URL as string,
       sessionKeys: process.env.SESSION_KEYS as string,
       host: process.env.HOST as string,
@@ -82,7 +80,6 @@ const config: configType = isBrowser
 
 const publicConfigKeys = [
   "walletName",
-  "walletTheme",
   "supportEmail",
   "shareUrl",
   "graphqlUrl",

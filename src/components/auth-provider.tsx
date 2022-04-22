@@ -76,17 +76,22 @@ export const AuthProvider: FCT = ({
     const resp = await axios.post(config.galoyAuthEndpoint, {}, { withCredentials: true })
 
     if (resp.data.error) {
-      return new Error(resp.data.error?.message || "Invalid auth token response")
+      // TODO: logout?
+      return new Error(resp.data.error?.message || "INVALID_AUTH_TOKEN_RESPONSE")
     }
 
-    if (!resp.data.authToken) {
-      return new Error("Invalid auth token response")
-    }
     const authToken = resp.data.authToken
     const session = await request.post(config.authEndpoint, { authToken })
 
-    if (!session || !session.galoyJwtToken) {
-      return new Error("Invalid auth token response")
+    session.identity.accountStatus = resp.data.accountStatus
+
+    if (
+      !session ||
+      !session.galoyJwtToken ||
+      session.identity.id !== resp.data.kratosUserId
+    ) {
+      // TODO: logout?
+      return new Error("INVALID_AUTH_TOKEN_RESPONSE")
     }
 
     setAuth(session.galoyJwtToken ? session : null)

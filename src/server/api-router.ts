@@ -18,13 +18,8 @@ apiRouter.post("/login", async (req, res) => {
       const token = jwt.decode(authToken) as GalowyJwtToken
       const kratosSession = await handleWhoAmI(req)
 
-      if (
-        !token ||
-        !token.kratosUserId ||
-        !kratosSession ||
-        kratosSession.identity.id !== token.kratosUserId
-      ) {
-        return res.status(404).send("Invalid login request")
+      if (!token || !token.uid || !kratosSession) {
+        throw new Error("INVALID_LOGIN_REQUEST")
       }
 
       const authSession = {
@@ -35,7 +30,6 @@ apiRouter.post("/login", async (req, res) => {
           emailAddress: kratosSession.identity.traits.email,
           firstName: kratosSession.identity.traits.name?.first,
           lastName: kratosSession.identity.traits.name?.last,
-          accountStatus: token.accountStatus,
         },
       }
 

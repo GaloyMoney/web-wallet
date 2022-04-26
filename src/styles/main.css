@@ -1,5 +1,106 @@
-.amount-input {
+#main-container {
+  height: 92%;
+  width: 90%;
+  padding-top: 1.5rem;
+}
+
+.header-container {
+  margin-bottom: 2rem;
+  .header {
+    margin-right: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .balance {
+      cursor: pointer;
+      .title {
+        text-align: center;
+        margin-bottom: 0.5rem;
+      }
+
+      .value {
+        text-align: center;
+        .primary {
+          font-size: 1.2rem;
+          text-align: center;
+        }
+        .secondary {
+          color: var(--color-secondary);
+          margin-top: 0.2rem;
+          text-align: center;
+        }
+      }
+    }
+    .links {
+      display: flex;
+      justify-content: space-around;
+      font-size: 1.1rem;
+      .menu-icon {
+        cursor: pointer;
+        font-size: 1.25rem;
+        color: var(--color-links);
+      }
+    }
+  }
+}
+
+.header-nav {
+  margin: 1rem auto;
+  display: flex;
   flex-direction: row;
+  a {
+    margin: 1rem auto;
+    border: thin solid var(--color-borders);
+    border-radius: 0.25rem;
+    padding: 0.75rem 1.75rem;
+    background-color: var(--color-light-bg);
+    width: 75%;
+    max-width: 225px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .active {
+    background-color: var(--color-active-bg);
+    font-weight: bold;
+    color: var(--color-primary);
+  }
+}
+
+.home {
+  .header-nav {
+    margin-top: 3rem;
+  }
+}
+
+.fee-amount {
+  padding: 0.75rem;
+  border: thin dashed var(--color-borders);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1.75rem auto;
+  .label {
+    margin-right: 0.75rem;
+    font-weight: bold;
+  }
+  .fee-usd-amount {
+    text-align: left;
+  }
+}
+
+.transaction-list {
+  .transaction-item {
+    background-color: var(--color-light-bg);
+    border: thin solid var(--color-borders);
+  }
+}
+
+.amount-input-form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   .currency-label {
     margin-right: 0.5rem;
     font-size: 1.5rem;
@@ -509,5 +610,42 @@ button {
 .button-container {
   a {
     margin: 0 1rem;
+  }
+}
+
+.send,
+.receive {
+  position: relative;
+  .input-label {
+    text-align: left;
+    width: 100%;
+    margin: 1.5rem 0 0.1rem 0;
+  }
+}
+
+.send-confirm {
+  margin: 1rem auto;
+  .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border-bottom: thin solid var(--color-borders);
+    padding-bottom: 1rem;
+    margin-top: 1.5rem;
+    .content {
+      text-align: left;
+      max-width: 300px;
+      .amount-display {
+        .primary {
+          display: block;
+        }
+        .converted {
+          font-size: 0.85rem;
+          margin-top: 0.3rem;
+          color: var(--color-secondary);
+        }
+      }
+    }
   }
 }

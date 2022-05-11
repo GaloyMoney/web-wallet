@@ -60,6 +60,16 @@
     align-items: center;
     justify-content: center;
   }
+  .send {
+    svg {
+      color: var(--color-send);
+    }
+  }
+  .receive {
+    svg {
+      color: var(--color-receive);
+    }
+  }
   .active {
     background-color: var(--color-active-bg);
     font-weight: bold;
@@ -200,6 +210,9 @@
     width: 100%;
     text-align: center;
   }
+  .auth-code-form {
+    width: unset;
+  }
   * input {
     min-width: 275px;
   }
@@ -234,10 +247,6 @@
 .qrcode-detector {
   font-weight: bold;
 
-  .spinner {
-    text-align: center;
-  }
-
   .qrcode-camera {
     position: fixed;
     left: 0;
@@ -263,6 +272,8 @@
 }
 
 button {
+  display: inline-flex;
+  align-items: center;
   .spinner {
     margin-left: 0.75rem;
   }
@@ -301,9 +312,10 @@ button {
     display: flex;
     width: 100%;
     align-items: center;
-    i {
-      margin-left: 1rem;
-      font-size: 1.75rem;
+    svg {
+      margin-left: 0.25rem;
+      width: 32px;
+      height: 32px;
     }
   }
 }
@@ -337,6 +349,9 @@ button {
 
 .sat-format {
   white-space: nowrap;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   .minus {
     margin-right: 2px;
   }
@@ -443,6 +458,19 @@ button {
   margin-top: 1rem;
 }
 
+.spinner {
+  .path {
+    stroke: var(--color-secondary);
+  }
+}
+
+.big-spinner {
+  svg {
+    width: 84px;
+    height: 84px;
+  }
+}
+
 #root {
   .menu {
     background-color: var(--color-menu-bg);
@@ -458,8 +486,11 @@ button {
     z-index: 1;
     a {
       display: flex;
+      justify-content: left;
+      align-items: center;
       margin: 1rem;
-      i {
+      i,
+      svg {
         width: 30px;
       }
     }
@@ -545,8 +576,21 @@ button {
 .link-copied {
   padding: 1rem;
   margin: 0.5rem auto;
-  background-color: var(--color-bg);
-  color: var(--color-primary);
+  background-color: var(--color-highlight-bg);
+  color: var(--color-highlight-fg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.phone-number-form,
+.auth-code-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  button {
+    padding: 0.25rem 1rem;
+  }
 }
 
 .auth-form {
@@ -641,6 +685,8 @@ button {
           display: block;
         }
         .converted {
+          display: inline-flex;
+          align-items: center;
           font-size: 0.85rem;
           margin-top: 0.3rem;
           color: var(--color-secondary);

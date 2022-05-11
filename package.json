@@ -21,8 +21,8 @@
     "tsc:check": "tsc --pretty --noEmit --skipLibCheck"
   },
   "dependencies": {
-    "@galoymoney/client": "^0.1.17",
-    "@galoymoney/react": "^0.1.7",
+    "@galoymoney/client": "^0.1.20",
+    "@galoymoney/react": "^0.1.11",
     "@opentelemetry/api": "^1.1.0",
     "@opentelemetry/core": "^1.2.0",
     "@opentelemetry/exporter-jaeger": "^1.2.0",
@@ -38,16 +38,16 @@
     "@ory/themes": "^0.0.101",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.2.0",
-    "@testing-library/user-event": "^14.1.1",
+    "@testing-library/user-event": "^14.2.0",
     "@types/body-parser": "^1.19.2",
     "@types/cookie-session": "^2.0.44",
-    "@types/ejs": "^3.1.0",
+    "@types/ejs": "^3.1.1",
     "@types/express": "^4.17.13",
     "@types/express-rate-limit": "^6.0.0",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/morgan": "^1.9.3",
     "@types/react": "^18.0.9",
-    "@types/react-dom": "^18.0.3",
+    "@types/react-dom": "^18.0.4",
     "@types/serialize-javascript": "^5.0.2",
     "@types/supertest": "^2.0.12",
     "autoprefixer": "^10.4.7",
@@ -60,7 +60,7 @@
     "cross-env-file": "^1.0.0",
     "cross-fetch": "^3.1.4",
     "css-loader": "^6.7.1",
-    "ejs": "^3.1.7",
+    "ejs": "^3.1.8",
     "express": "^4.18.1",
     "express-rate-limit": "^6.4.0",
     "graphql": "^16.5.0",
@@ -101,12 +101,10 @@
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.5.0",
     "jest": "^28.1.0",
+    "jest-environment-jsdom": "^28.1.0",
     "prettier": "^2.6.2",
     "ts-jest": "^28.0.2",
     "ts-node-dev": "^1.1.8",
     "typesync": "^0.9.1"
-  },
-  "resolutions": {
-    "axios": "^0.26.0"
   }
 }

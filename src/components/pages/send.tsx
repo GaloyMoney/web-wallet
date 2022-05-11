@@ -13,11 +13,11 @@ import {
   DebouncedInput,
   DebouncedTextarea,
   OnTextValueChange,
-  SatSymbol,
   Spinner,
   OnNumberValueChange,
   QRCodeDetecor,
   SatFormat,
+  Icon,
 } from "@galoymoney/react"
 
 import { config, useAppDispatcher } from "store/index"
@@ -355,10 +355,10 @@ const Send: FCT = ({ to }) => {
       {input.view === "amount" && (
         <div>
           <div className="amount-input center-display">
-            <div className="input-label">Set Amount</div>
+            <div className="input-label">{translate("Set Amount")}</div>
             <div className="amount-input-form">
               <div className="currency-label">
-                {input.currency === "SATS" ? <SatSymbol /> : "$"}
+                {input.currency === "SATS" ? <Icon name="sat" /> : "$"}
               </div>
               <FormattedNumberInput
                 initValue={input.amount}
@@ -378,7 +378,7 @@ const Send: FCT = ({ to }) => {
           </div>
 
           <div className="note-input center-display">
-            <div className="input-label">Note or Label</div>
+            <div className="input-label">{translate("Note or Label")}</div>
             <DebouncedTextarea
               initValue={input.memo}
               onChange={handleMemoUpdate}
@@ -414,18 +414,18 @@ const Send: FCT = ({ to }) => {
         <>
           <div className="send-confirm center-display">
             <div className="item">
-              <div className="label">Amount</div>
+              <div className="label">{translate("Amount")}</div>
               <div className="content">{conversionDisplay}</div>
             </div>
 
             <div className="item">
-              <div className="label">To</div>
+              <div className="label">{translate("To")}</div>
               <div className="content">{destinationLine}</div>
             </div>
 
             {input.memo && (
               <div className="item">
-                <div className="label">Note</div>
+                <div className="label">{translate("Note")}</div>
                 <div className="content">{input.memo}</div>
               </div>
             )}

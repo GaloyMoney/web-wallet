@@ -74,11 +74,11 @@ const Header: FCT = ({ page }) => {
             <Icon name="qrcode" />
             {translate("Scan QR code")}
           </Link>
-          <Link to="/send" className="link">
+          <Link to="/send" className="link send">
             <Icon name="send" />
             {translate("Send Bitcoin")}
           </Link>
-          <Link to="/receive" className="link">
+          <Link to="/receive" className="link receive">
             <Icon name="receive" />
             {translate("Receive Bitcoin")}
           </Link>

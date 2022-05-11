@@ -4,10 +4,10 @@ import { formatUsd, translate, useMutation } from "@galoymoney/client"
 import {
   DebouncedTextarea,
   FormattedNumberInput,
+  Icon,
   OnNumberValueChange,
   OnTextValueChange,
   SatFormat,
-  SatSymbol,
   Spinner,
 } from "@galoymoney/react"
 
@@ -234,10 +234,10 @@ const Receive: NoPropsFCT = () => {
         {input.view === "amount" && (
           <>
             <div className="amount-input center-display">
-              <div className="input-label">Set Amount</div>
+              <div className="input-label">{translate("Set Amount")}</div>
               <div className="amount-input-form">
                 <div className="currency-label">
-                  {input.currency === "SATS" ? <SatSymbol /> : "$"}
+                  {input.currency === "SATS" ? <Icon name="sat" /> : "$"}
                 </div>
                 <FormattedNumberInput
                   initValue={input.amount}
@@ -254,7 +254,7 @@ const Receive: NoPropsFCT = () => {
             </div>
 
             <div className="note-input center-display">
-              <div className="input-label">Note or Label</div>
+              <div className="input-label">{translate("Note or Label")}</div>
               <DebouncedTextarea
                 initValue={input.memo}
                 onChange={handleMemoUpdate}

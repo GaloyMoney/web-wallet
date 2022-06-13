@@ -1,0 +1,88 @@
+version: v0.8.2-alpha.1
+
+dsn: memory
+session:
+  cookie:
+    domain: wallet.testnet.diynodes.com
+
+serve:
+  public:
+    base_url: https://kratos.testnet.diynodes.com/
+    cors:
+      enabled: true
+      allowed_origins:
+        - https://wallet.testnet.diynodes.com
+  admin:
+    base_url: http://172.17.0.1:4434/
+
+selfservice:
+  default_browser_return_url: https://wallet.testnet.diynodes.com/
+  allowed_return_urls:
+    - https://wallet.testnet.diynodes.com
+
+  methods:
+    password:
+      enabled: true
+
+  flows:
+    error:
+      ui_url: https://wallet.testnet.diynodes.com/error
+
+    settings:
+      ui_url: https://wallet.testnet.diynodes.com/settings
+      privileged_session_max_age: 15m
+
+    recovery:
+      enabled: true
+      ui_url: https://wallet.testnet.diynodes.com/recovery
+
+    verification:
+      enabled: true
+      ui_url: https://wallet.testnet.diynodes.com/verification
+      after:
+        default_browser_return_url: https://wallet.testnet.diynodes.com/verified
+
+    logout:
+      after:
+        default_browser_return_url: https://wallet.testnet.diynodes.com/
+
+    login:
+      ui_url: https://wallet.testnet.diynodes.com/login
+      lifespan: 10m
+
+    registration:
+      lifespan: 10m
+      ui_url: https://wallet.testnet.diynodes.com/register
+      after:
+        password:
+          hooks:
+            - hook: session
+
+log:
+  level: debug
+  format: text
+  leak_sensitive_values: true
+
+secrets:
+  cookie:
+    - PLEASE-CHANGE-ME-I-AM-VERY-INSECURE
+  cipher:
+    - 32-LONG-SECRET-NOT-SECURE-AT-ALL
+
+ciphers:
+  algorithm: xchacha20-poly1305
+
+hashers:
+  algorithm: bcrypt
+  bcrypt:
+    cost: 8
+
+identity:
+  schemas:
+  - id: email
+    url: file:///etc/config/kratos/identity.schema.json
+  default_schema_id: email
+
+courier:
+  smtp:
+    connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true

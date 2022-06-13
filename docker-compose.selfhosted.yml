@@ -1,0 +1,85 @@
+version: "3.7"
+
+services:
+  kratos-migrate:
+    image: oryd/kratos:v0.9.0-alpha.2
+    depends_on:
+      - postgres
+    environment:
+      - DSN=postgres://kratos:secret@postgres:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
+    command: -c /etc/config/kratos/kratos.yml migrate sql -e --yes
+    restart: on-failure
+    volumes:
+      - type: bind
+        source: ./dev/kratos.selfhosted.yml
+        target: /etc/config/kratos/kratos.yml
+      - type: bind
+        source: ./dev/email-schema.json
+        target: /etc/config/kratos/identity.schema.json
+    networks:
+      - intranet
+
+  kratos:
+    image: oryd/kratos:v0.9.0-alpha.2
+    command: serve -c /etc/config/kratos/kratos.yml --dev --watch-courier
+    depends_on:
+      - postgres
+    volumes:
+      - type: bind
+        source: ./scripts/assets/kratos.selfhosted.yml
+        target: /etc/config/kratos/kratos.yml
+      - type: bind
+        source: ./dev/email-schema.json
+        target: /etc/config/kratos/identity.schema.json
+    environment:
+      - DSN=postgres://kratos:secret@postgres:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
+    ports:
+      - "4433:4433" # public
+      - "4434:4434" # admin
+    networks:
+      - intranet
+      - default
+
+  postgres:
+    image: postgres:9.6
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=kratos
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=kratos
+    networks:
+      - intranet
+      - default
+
+  mailslurper:
+    image: oryd/mailslurper:latest-smtps
+    ports:
+      - "4436:4436"
+      - "4437:4437"
+    networks:
+      - intranet
+
+  web-wallet:
+    # https://github.com/GaloyMoney/charts/blob/main/charts/web-wallet/values.yaml
+    # https://console.cloud.google.com/gcr/images/galoy-org/US/web-wallet
+    image: us.gcr.io/galoy-org/web-wallet@sha256:c7672f6ff74e999e0042d67a323db2617e260cac645feb46a2c2828a78fab4e2
+    env_file:
+      - .env
+    ports:
+      - "3030:3030"
+    networks:
+      - intranet
+      - default
+    depends_on:
+      - postgres
+      - kratos
+      - kratos-migrate
+      - mailslurper
+    restart: on-failure
+
+networks:
+  intranet:
+  default:
+    name: galoy_default
+    external: true

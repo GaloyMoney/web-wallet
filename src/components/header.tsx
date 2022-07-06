@@ -1,7 +1,7 @@
 import { useState } from "react"
 
 import { translate } from "@galoymoney/client"
-import { Icon } from "@galoymoney/react"
+import { Icon } from "components/icon"
 
 import useMainQuery from "hooks/use-main-query"
 import { useAuthContext, useAppState } from "store/index"
@@ -21,6 +21,7 @@ type Page =
   | "contacts"
   | "transactions"
   | "settings"
+  | "bitcoin"
 
 type FCT = React.FC<{ page: Page }>
 

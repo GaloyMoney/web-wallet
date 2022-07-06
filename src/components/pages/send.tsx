@@ -256,7 +256,7 @@ const Send: FCT = ({ to }) => {
     [pubKey],
   )
 
-  const ActionDislapy = () => {
+  const ActionDisplay = () => {
     if (!btcWalletId) {
       return <ButtonLink to="/login">{translate("Login to send")}</ButtonLink>
     }
@@ -430,7 +430,7 @@ const Send: FCT = ({ to }) => {
               </div>
             )}
 
-            <div className="action-container">{ActionDislapy()}</div>
+            <div className="action-container">{ActionDisplay()}</div>
           </div>
         </>
       )}

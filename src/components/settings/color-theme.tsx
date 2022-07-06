@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState } from "react"
 
 import { translate } from "@galoymoney/client"
-import { Icon } from "@galoymoney/react"
+import { Icon } from "components/icon"
 
 import {
   ColorTheme,

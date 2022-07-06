@@ -43,6 +43,9 @@ const appRoutesDef = {
     component: Settings,
     title: "Settings",
   },
+  "/bitcoin": {
+    // override in customizations... better way?
+  },
 }
 
 // Allow SMS login without kratos

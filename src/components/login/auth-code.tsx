@@ -1,7 +1,8 @@
 import { ChangeEvent, useState } from "react"
 
 import { translate } from "@galoymoney/client"
-import { Icon, Spinner } from "@galoymoney/react"
+import { Spinner } from "@galoymoney/react"
+import { Icon } from "components/icon"
 
 import { config, history, useRequest, useAuthContext } from "store/index"
 

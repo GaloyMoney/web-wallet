@@ -1,4 +1,4 @@
-import { Icon } from "@galoymoney/react"
+import { Icon } from "components/icon"
 
 import { useAuthContext } from "store/index"
 

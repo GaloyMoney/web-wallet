@@ -1,5 +1,5 @@
 import { useResetClient, translate } from "@galoymoney/client"
-import { Icon } from "@galoymoney/react"
+import { Icon } from "components/icon"
 
 import { useAuthContext, NoPropsFCT } from "store/index"
 

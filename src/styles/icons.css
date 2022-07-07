@@ -1,18 +1,19 @@
 @font-face {
-  font-family: 'galoy-icons';
-  src:  url('styles/fonts/icomoon.eot?yr3hoz');
-  src:  url('styles/fonts/icomoon.eot?yr3hoz#iefix') format('embedded-opentype'),
-    url('styles/fonts/icomoon.ttf?yr3hoz') format('truetype'),
-    url('styles/fonts/icomoon.woff?yr3hoz') format('woff'),
-    url('styles/fonts/icomoon.svg?yr3hoz#icomoon') format('svg');
+  font-family: "galoy-icons";
+  src: url("styles/fonts/icomoon.eot?yr3hoz");
+  src: url("styles/fonts/icomoon.eot?yr3hoz#iefix") format("embedded-opentype"),
+    url("styles/fonts/icomoon.ttf?yr3hoz") format("truetype"),
+    url("styles/fonts/icomoon.woff?yr3hoz") format("woff"),
+    url("styles/fonts/icomoon.svg?yr3hoz#icomoon") format("svg");
   font-weight: normal;
   font-style: normal;
   font-display: block;
 }
 
-[class^="icon-"], [class*=" icon-"] {
+[class^="icon-"],
+[class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'galoy-icons' !important;
+  font-family: "galoy-icons" !important;
   speak: never;
   font-style: normal;
   font-weight: normal;

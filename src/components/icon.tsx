@@ -28,5 +28,5 @@ export type IconName =
   | "world"
 
 export const Icon: React.FC<{ name: IconName }> = ({ name }) => {
-  return <i className={"icon-"+name} />
+  return <i className={"icon-" + name} />
 }

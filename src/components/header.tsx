@@ -21,6 +21,7 @@ type Page =
   | "contacts"
   | "transactions"
   | "settings"
+  | "proof-of-reserves"
 
 type FCT = React.FC<{ page: Page }>
 
@@ -100,7 +101,10 @@ const Header: FCT = ({ page }) => {
             <Icon name="people" />
             {translate("Contacts")}
           </Link>
-
+          <Link to="/proof-of-reserves">
+            <Icon name="home" />
+            Proof of Reserves
+          </Link>
           <Link to="/settings">
             <Icon name="settings" />
             {translate("Settings")}

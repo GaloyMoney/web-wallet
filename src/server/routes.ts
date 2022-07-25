@@ -11,6 +11,7 @@ import Register from "components/pages/register"
 import Send from "components/pages/send"
 import Settings from "components/pages/settings"
 import Transactions from "components/pages/transactions"
+import ProofOfReserves from "components/pages/proof-of-reserves"
 
 // Note: The component property is skipped by the serialize function
 // It's only used on the front-end
@@ -42,6 +43,10 @@ const appRoutesDef = {
   "/settings": {
     component: Settings,
     title: "Settings",
+  },
+  "/proof-of-reserves": {
+    component: ProofOfReserves,
+    title: "Proof of Reserves",
   },
 }
 

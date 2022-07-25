@@ -24,6 +24,7 @@ const config = (env) => ({
       events: require.resolve("events/"),
       stream: require.resolve("stream-browserify"),
       url: require.resolve("url"),
+      crypto: require.resolve("crypto-browserify") 
     },
   },
   entry: {

@@ -1,19 +1,18 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
-import Temp from "components/proof-of-reserves/temp"
+import ValidateProof from "components/proof-of-reserves/proof"
 import Header from "components/header"
-import { useAuthContext } from "store"
+import { NoPropsFCT, useAuthContext } from "store"
 import useMainQuery from "hooks/use-main-query"
 
-const ListInputField = () => {
+const ListInputField: NoPropsFCT = () => {
   const [rootHash, setRootHash] = useState("")
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
-  // const [walletId, setWalletId] = useState("")
   const { btcWalletId } = useMainQuery()
 
   const fetchTreeMetadata = async () => {
-    const query = `query{
+    const query = `query TreeMetadata{
       treeMetadata{
         roothash
       }
@@ -31,27 +30,27 @@ const ListInputField = () => {
     fetchTreeMetadata()
   })
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit: React.MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.preventDefault()
     try {
-      const query = `query{
-            liabilityProof(accountId:"${btcWalletId}", merkleRoot:"${rootHash}"){
-              partialLiabilityProofs{
-                merklePath{
-                  node{
-                    sum
-                    hash
-                  }
-                  index
-                }
-                balance
-                idx
+      const query = `query Proof{
+        liabilityProof(accountId:"${btcWalletId}", roothash:"${rootHash}"){
+          accountId
+          totalBalance
+          nonce
+          partialLiabilityProofs{
+            idx
+            balance
+            merklePath{
+              node{
+                sum
+                hash
               }
-              nonce
-              accountId
-              totalBalance
+              index
             }
-          }`
+          }
+        }
+      }`
       const response = await axios({
         url: "http://localhost:4004/",
         method: "post",
@@ -59,6 +58,7 @@ const ListInputField = () => {
           query,
         },
       })
+
       setData(response.data.data.liabilityProof)
     } catch (err) {
       setError(err)
@@ -81,7 +81,7 @@ const ListInputField = () => {
           </div>
         </div>
       )}
-      {data && <Temp liabilityProof={data} rootHash={rootHash} />}
+      {data && <ValidateProof liabilityProof={data} rootHash={rootHash} />}
     </div>
   )
 }

@@ -1,9 +1,29 @@
 import { SuccessCheckmark } from "@galoymoney/react"
 import { isLiabilityIncludedInTree } from "proof-of-liabilities"
 
-const Temp = (props: any) => {
-  const liabilityProof = props.liabilityProof
-  const rootHash = props.rootHash
+type LiablityProof = {
+  accountId: string
+  totalBalance: number
+  nonce: number
+  partialLiabilityProofs: {
+    idx: number
+    balance: number
+    merklePath: {
+      node: {
+        sum: number
+        hash: string
+      }
+      index: number
+    }[]
+  }
+}
+
+type LiabilityProofFCT = React.FC<{
+  liabilityProof: LiablityProof
+  rootHash: string
+}>
+
+const ValidateProof: LiabilityProofFCT = ({ liabilityProof, rootHash }) => {
   const validatedProof = isLiabilityIncludedInTree(liabilityProof, rootHash)
   if (validatedProof.isProofValid) {
     return (
@@ -21,4 +41,4 @@ const Temp = (props: any) => {
     </div>
   )
 }
-export default Temp
+export default ValidateProof

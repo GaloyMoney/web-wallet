@@ -9,6 +9,7 @@ import { KratosFlowData } from "kratos/index"
 
 import { AuthProvider } from "components/auth-provider"
 import RootComponent from "components/root-component"
+import TraceProvider from "store/client-tracing/trace-provider"
 
 type RootFCT = React.FC<{ GwwState: GwwStateType }>
 
@@ -38,12 +39,14 @@ const Root: RootFCT = ({ GwwState }) => {
   return (
     <AuthProvider authIdentity={state.authIdentity}>
       <GwwContext.Provider value={{ state, dispatch }}>
-        <RootComponent
-          key={state.key}
-          path={state.path}
-          flowData={state.flowData}
-          {...state.props}
-        />
+        <TraceProvider>
+          <RootComponent
+            key={state.key}
+            path={state.path}
+            flowData={state.flowData}
+            {...state.props}
+          />
+        </TraceProvider>
       </GwwContext.Provider>
     </AuthProvider>
   )

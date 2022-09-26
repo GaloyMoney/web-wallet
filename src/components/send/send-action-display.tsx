@@ -2,8 +2,10 @@ import { MouseEvent } from "react"
 
 import { formatUsd, GaloyGQL } from "@galoymoney/client"
 import { SatFormat, Spinner, SuccessCheckmark } from "@galoymoney/react"
+import { Span } from "@opentelemetry/api"
 
 import { translate } from "store/index"
+import { getTracer, withTracing } from "store/client-tracing/tracing"
 
 import useMyUpdates from "hooks/use-my-updates"
 
@@ -59,7 +61,17 @@ const SendActionDisplay: SendActionDisplayFCT = ({
   reset,
   handleSend,
 }) => {
+  const recordErrors = (sendError: string, span: Span) => {
+    span.setAttribute("Error sending payment", sendError)
+    withTracing("send bitcoin error", span)
+  }
+
   if (error) {
+    if (typeof error === "string") {
+      const tracer = getTracer()
+      const span = tracer.startSpan("web wallet error")
+      recordErrors(error, span)
+    }
     return <div className="error">{error}</div>
   }
 

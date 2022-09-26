@@ -1,8 +1,11 @@
 import { useMutation, useQuery } from "@galoymoney/client"
-import { MouseEvent } from "react"
+import React, { MouseEvent } from "react"
 
 import SendActionDisplay from "components/send/send-action-display"
 import { SendActionProps } from "components/send/send-action"
+import { getTracer, reportSpan, withTracing } from "store/client-tracing/tracing"
+
+const tracer = getTracer()
 
 export type SendOnChainActionProps = SendActionProps & {
   address: string
@@ -12,6 +15,8 @@ export type SendOnChainActionProps = SendActionProps & {
 type FCT = React.FC<SendOnChainActionProps>
 
 const SendOnChainAction: FCT = (props) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [parentSpan, setParentSpan] = React.useState<any>(null)
   const [sendPayment, { loading, data, errorsMessage: paymentError }] =
     useMutation.onChainPaymentSend()
 
@@ -29,19 +34,30 @@ const SendOnChainAction: FCT = (props) => {
 
   const feeSatAmount = feeData?.onChainTxFee?.amount
 
-  const handleSend = (event: MouseEvent<HTMLButtonElement>) => {
+  const handleSend = async (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
-    sendPayment({
-      variables: {
-        input: {
-          walletId: props.btcWalletId,
-          address: props.address,
-          amount: props.satAmount,
-          memo: props.memo,
+    const rootSpan = tracer.startSpan("web wallet")
+    await withTracing("on-chain send", rootSpan, async () => {
+      sendPayment({
+        variables: {
+          input: {
+            walletId: props.btcWalletId,
+            address: props.address,
+            amount: props.satAmount,
+            memo: props.memo,
+          },
         },
-      },
+      })
     })
+    setParentSpan(rootSpan)
   }
+
+  React.useEffect(() => {
+    if (parentSpan) {
+      parentSpan.end()
+      reportSpan(parentSpan)
+    }
+  }, [parentSpan])
 
   return (
     <SendActionDisplay

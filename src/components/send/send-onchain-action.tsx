@@ -3,9 +3,7 @@ import React, { MouseEvent } from "react"
 
 import SendActionDisplay from "components/send/send-action-display"
 import { SendActionProps } from "components/send/send-action"
-import { getTracer, reportSpan, withTracing } from "store/client-tracing/tracing"
-
-const tracer = getTracer()
+import { recordTrace } from "store/client-tracing/tracing"
 
 export type SendOnChainActionProps = SendActionProps & {
   address: string
@@ -15,8 +13,6 @@ export type SendOnChainActionProps = SendActionProps & {
 type FCT = React.FC<SendOnChainActionProps>
 
 const SendOnChainAction: FCT = (props) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [parentSpan, setParentSpan] = React.useState<any>(null)
   const [sendPayment, { loading, data, errorsMessage: paymentError }] =
     useMutation.onChainPaymentSend()
 
@@ -36,28 +32,24 @@ const SendOnChainAction: FCT = (props) => {
 
   const handleSend = async (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
-    const rootSpan = tracer.startSpan("web wallet")
-    await withTracing("on-chain send", rootSpan, async () => {
-      sendPayment({
-        variables: {
-          input: {
-            walletId: props.btcWalletId,
-            address: props.address,
-            amount: props.satAmount,
-            memo: props.memo,
+    await recordTrace({
+      spanName: "on-chain-send",
+      fnName: sendPayment.name,
+      exception: paymentError,
+      fn: () => {
+        sendPayment({
+          variables: {
+            input: {
+              walletId: props.btcWalletId,
+              address: props.address,
+              amount: props.satAmount,
+              memo: props.memo,
+            },
           },
-        },
-      })
+        })
+      },
     })
-    setParentSpan(rootSpan)
   }
-
-  React.useEffect(() => {
-    if (parentSpan) {
-      parentSpan.end()
-      reportSpan(parentSpan)
-    }
-  }, [parentSpan])
 
   return (
     <SendActionDisplay

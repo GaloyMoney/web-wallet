@@ -1,40 +1,76 @@
-import { trace, context, Span } from "@opentelemetry/api"
+import { context, SpanKind, SpanStatusCode, trace } from "@opentelemetry/api"
+import { SemanticAttributes } from "@opentelemetry/semantic-conventions"
 
-export const reportSpan = (span: Span) => {
-  console.log("report span:", span)
-
-  fetch("./send-trace", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(span),
-  })
-    .then((response) => response.json())
-    .then((data) => console.log(data))
-    .catch((error) => {
-      console.error("Error:", error)
-    })
+type Attr = {
+  key: string
+  value: string
 }
 
-export const withTracing = async (name: string, parentSpan: Span, cb?: () => void) => {
+type TracingFields = {
+  spanName: string
+  attachSpan?: boolean
+  fnName?: string
+  attr?: Attr
+  fn?: () => void
+  fnArgs?: string[] | number[]
+  exception?: string
+}
+
+export const recordTrace = async ({
+  spanName,
+  attachSpan,
+  attr,
+  fnName,
+  fn,
+  fnArgs,
+  exception,
+}: TracingFields) => {
+  const functionName = fnName || fn?.name || "unknown"
   const tracer = trace.getTracer("galoy-web-wallet")
-  let span = trace.getSpan(context.active())
+  const ctx = context.active()
+  const currentSpan = trace.getSpan(ctx)
 
-  if (parentSpan) {
-    const ctx = trace.setSpan(context.active(), parentSpan)
-    span = tracer.startSpan(name, undefined, ctx)
-  } else {
-    span = tracer.startSpan(name)
-  }
-
-  if (cb) {
-    await cb()
-  }
-
-  span.end()
-
-  reportSpan(span)
+  tracer.startActiveSpan(spanName, { kind: SpanKind.CLIENT }, async (rootSpan) => {
+    if (attachSpan && currentSpan) {
+      // eslint-disable-next-line no-param-reassign
+      rootSpan = currentSpan
+    }
+    rootSpan.setAttribute("pageUrlwindow", window.location.href)
+    if (attr) {
+      rootSpan.setAttribute(attr.key, attr.value)
+    }
+    try {
+      if (fn) {
+        rootSpan.setAttribute(SemanticAttributes.CODE_FUNCTION, functionName)
+        if (fnArgs) {
+          rootSpan.setAttribute("fn.arguments", fnArgs)
+        }
+        const resp = await Promise.resolve(fn())
+        if ((resp as unknown) instanceof Error) {
+          rootSpan.recordException(resp as unknown as Error)
+          rootSpan.setStatus({
+            code: SpanStatusCode.ERROR,
+          })
+        }
+        rootSpan.setStatus({
+          code: SpanStatusCode.OK,
+        })
+      }
+      if (exception) {
+        rootSpan.setStatus({
+          code: SpanStatusCode.ERROR,
+          message: exception,
+        })
+      }
+    } catch (err) {
+      rootSpan.recordException(err)
+      rootSpan.setStatus({
+        code: SpanStatusCode.ERROR,
+        message: err.message,
+      })
+    }
+    rootSpan.end()
+  })
 }
 
 export const getTracer = () => {

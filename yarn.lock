@@ -1121,7 +1121,7 @@
     "@opentelemetry/sdk-trace-base" "1.7.0"
     semver "^7.3.5"
 
-"@opentelemetry/sdk-trace-web@1.7.0", "@opentelemetry/sdk-trace-web@^1.0.0":
+"@opentelemetry/sdk-trace-web@1.7.0", "@opentelemetry/sdk-trace-web@^1.0.0", "@opentelemetry/sdk-trace-web@^1.7.0":
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/@opentelemetry/sdk-trace-web/-/sdk-trace-web-1.7.0.tgz#6c8b8a1f5775f27755cb207b8444579c4b9d14c4"
   integrity sha512-c+Aq9lMv6MIItJF6XiXCfqyCq/x4VgF6GoKY5aygsxapu1bVk96qaLfGkuQvlUlT2KlyaI6INQiFwQegBXoYiQ==
@@ -1150,7 +1150,7 @@
   resolved "https://registry.yarnpkg.com/@opentelemetry/semantic-conventions/-/semantic-conventions-1.7.0.tgz#af80a1ef7cf110ea3a68242acd95648991bcd763"
   integrity sha512-FGBx/Qd09lMaqQcogCHyYrFEpTx4cAjeS+48lMIR12z7LdH+zofGDVQSubN59nL6IpubfKqTeIDu9rNO28iHVA==
 
-"@opentelemetry/tracing@0.24.0", "@opentelemetry/tracing@^0.24.0":
+"@opentelemetry/tracing@^0.24.0":
   version "0.24.0"
   resolved "https://registry.yarnpkg.com/@opentelemetry/tracing/-/tracing-0.24.0.tgz#63077fe77b2f450442cb36710ea355db76f60faa"
   integrity sha512-sTLEs1SIon3xV8vLe53PzfbU0FahoxL9NPY/CYvA1mwGbMu4zHkHAjqy1Tc8JmqRrfa+XrHkmzeSM4hrvloBaA==
@@ -1159,15 +1159,6 @@
     "@opentelemetry/resources" "0.24.0"
     "@opentelemetry/semantic-conventions" "0.24.0"
     lodash.merge "^4.6.2"
-
-"@opentelemetry/web@^0.24.0":
-  version "0.24.0"
-  resolved "https://registry.yarnpkg.com/@opentelemetry/web/-/web-0.24.0.tgz#911bcb81e34c0419e49f0cfb9e1be845a5475dc6"
-  integrity sha512-yxAKj7bQ3czfif9MtYXaSJrgRcrLUNltslyhEE+Oh7Ojh9XQ0Q5RhPnE9cwHdR7yp1+HjbEHE+I91QIMKMlVWA==
-  dependencies:
-    "@opentelemetry/core" "0.24.0"
-    "@opentelemetry/semantic-conventions" "0.24.0"
-    "@opentelemetry/tracing" "0.24.0"
 
 "@ory/client@^0.2.0-alpha.16", "@ory/client@^0.2.0-alpha.4":
   version "0.2.0-alpha.48"
@@ -7800,7 +7791,7 @@ url@^0.11.0:
     punycode "1.3.2"
     querystring "0.2.0"
 
-use-debounce@^8.0.1:
+use-debounce@^8.0.3:
   version "8.0.4"
   resolved "https://registry.yarnpkg.com/use-debounce/-/use-debounce-8.0.4.tgz#27e93b2f010bd0b8ad06e9fc7de891d9ee5d6b8e"
   integrity sha512-fGqsYQzl8kLHF2QpQSgIwgOgJmnh6j5L6SIzQiHdLfwp3q1egUL3btq5Bg2SJysH6A0ILLgT2IqXZKoNJr0nFw==

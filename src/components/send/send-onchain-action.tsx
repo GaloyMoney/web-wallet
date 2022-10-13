@@ -1,8 +1,9 @@
 import { useMutation, useQuery } from "@galoymoney/client"
-import { MouseEvent } from "react"
+import React, { MouseEvent } from "react"
 
 import SendActionDisplay from "components/send/send-action-display"
 import { SendActionProps } from "components/send/send-action"
+import { recordTrace } from "store/client-tracing/tracing"
 
 export type SendOnChainActionProps = SendActionProps & {
   address: string
@@ -29,16 +30,23 @@ const SendOnChainAction: FCT = (props) => {
 
   const feeSatAmount = feeData?.onChainTxFee?.amount
 
-  const handleSend = (event: MouseEvent<HTMLButtonElement>) => {
+  const handleSend = async (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
-    sendPayment({
-      variables: {
-        input: {
-          walletId: props.btcWalletId,
-          address: props.address,
-          amount: props.satAmount,
-          memo: props.memo,
-        },
+    await recordTrace({
+      spanName: "on-chain-send",
+      fnName: sendPayment.name,
+      exception: paymentError,
+      fn: () => {
+        sendPayment({
+          variables: {
+            input: {
+              walletId: props.btcWalletId,
+              address: props.address,
+              amount: props.satAmount,
+              memo: props.memo,
+            },
+          },
+        })
       },
     })
   }

@@ -26,6 +26,7 @@ import useMyUpdates from "hooks/use-my-updates"
 import Link, { ButtonLink } from "components/link"
 import SendAction from "components/send/send-action"
 import Header from "components/header"
+import { recordTrace } from "store/client-tracing/tracing"
 
 export type InvoiceInput = {
   view?: "destination" | "amount" | "confirm"
@@ -112,8 +113,19 @@ const Send: FCT = ({ to }) => {
 
           if (errorsMessage) {
             newInputState.errorMessage = errorsMessage
+            recordTrace({
+              spanName: "fetch recipient-wallet-id",
+              fnName: userDefaultWalletIdQuery.name,
+              exception: errorsMessage,
+              attachSpan: true
+            })
           } else {
             newInputState.recipientWalletId = data?.userDefaultWalletId
+            recordTrace({
+              spanName: "fetch recipient-wallet-id",
+              fnName: userDefaultWalletIdQuery.name,
+              attachSpan: true
+            })
           }
         }
       }

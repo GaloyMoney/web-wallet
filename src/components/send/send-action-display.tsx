@@ -2,8 +2,8 @@ import { MouseEvent } from "react"
 
 import { formatUsd, GaloyGQL } from "@galoymoney/client"
 import { SatFormat, Spinner, SuccessCheckmark } from "@galoymoney/react"
-
 import { translate } from "store/index"
+import { recordTrace } from "store/client-tracing/tracing"
 
 import useMyUpdates from "hooks/use-my-updates"
 
@@ -60,6 +60,7 @@ const SendActionDisplay: SendActionDisplayFCT = ({
   handleSend,
 }) => {
   if (error) {
+    recordTrace({ spanName: "payment-send-error", exception: error })
     return <div className="error">{error}</div>
   }
 

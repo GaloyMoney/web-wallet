@@ -6,6 +6,7 @@ import { Spinner } from "@galoymoney/react"
 import useMainQuery from "hooks/use-main-query"
 import TransactionItem from "components/transactions/item"
 import { translate, NoPropsFCT } from "store/index"
+import { recordTrace } from "store/client-tracing/tracing"
 
 const TRANSACTIONS_PER_PAGE = 25
 const EMPTY_CONNECTION = {
@@ -67,7 +68,19 @@ const TransactionList: NoPropsFCT = () => {
         </div>
       ) : (
         pageInfo.hasNextPage && (
-          <div className="load-more link" onClick={fetchNextTransactionsPage}>
+          <div
+            className="load-more link"
+            onClick={async () => {
+              await recordTrace({
+                spanName: "fetch transaction-list",
+                fnName: fetchNextTransactionsPage.name,
+                attr: { key: "pageInfo", value: pageInfo.__typename ?? "unkown" },
+                fn: () => {
+                  fetchNextTransactionsPage()
+                },
+              })
+            }}
+          >
             {translate("Load more transactions")}
           </div>
         )

@@ -5,6 +5,7 @@ import { Spinner } from "@galoymoney/react"
 import { config, translate, history, useRequest, useAuthContext } from "store/index"
 
 import Icon from "components/icon"
+import { recordTrace } from "store/client-tracing/tracing"
 
 type FCT = React.FC<{ phoneNumber: string }>
 
@@ -40,7 +41,12 @@ const AuthCode: FCT = ({ phoneNumber }) => {
   const handleAuthCodeSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault()
     setErrorMessage("")
-    submitLoginRequest(event.currentTarget.authCode.value)
+    await recordTrace({
+      spanName: "auth-code-login",
+      fnName: submitLoginRequest.name,
+      exception: errorMessage,
+      fn: () => submitLoginRequest(event.currentTarget.authCode.value),
+    })
   }
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {

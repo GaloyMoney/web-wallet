@@ -53,7 +53,7 @@ const Send: FCT = ({ to }) => {
 
   return (
     <div className="send">
-      <Header page="send-bitcoin" />
+      <Header page="send" />
 
       <div className="page-title">{translate("Send Bitcoin")}</div>
 

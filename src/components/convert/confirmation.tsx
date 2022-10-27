@@ -6,7 +6,7 @@ import { translate } from "store"
 import useMyUpdates from "hooks/use-my-updates"
 
 import Link from "components/link"
-import { ConversionData } from "components/pages/conversion-flow"
+import { ConversionData } from "components/pages/convert"
 
 const ConversionConfirmation: React.FC<{
   conversionInput: ConversionData

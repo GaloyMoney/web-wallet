@@ -3,15 +3,15 @@ import { KratosFlowData } from "kratos/index"
 
 import Contacts from "components/pages/contacts"
 import Home from "components/pages/home"
-import LoginEmail from "components/pages/login-email"
-import LoginPhone from "components/pages/login-phone"
+import LoginEmail from "components/login/email"
+import LoginPhone from "components/login/phone"
 import Receive from "components/pages/receive"
 import Recovery from "components/pages/recovery"
 import Register from "components/pages/register"
 import Send from "components/pages/send"
 import Settings from "components/pages/settings"
 import Transactions from "components/pages/transactions"
-import ConversionFlow from "components/pages/conversion-flow"
+import ConversionFlow from "components/pages/convert"
 
 // Note: The component property is skipped by the serialize function
 // It's only used on the front-end

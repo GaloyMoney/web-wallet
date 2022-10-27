@@ -13,11 +13,7 @@ import useMainQuery from "hooks/use-main-query"
 import useMyUpdates from "hooks/use-my-updates"
 
 import Header from "components/header"
-import {
-  ConversionData,
-  ConvertAmount,
-  WalletDescriptor,
-} from "components/pages/conversion-flow"
+import { ConversionData, ConvertAmount, WalletDescriptor } from "components/pages/convert"
 
 const ConversionInput: React.FC<{
   navigateToNextStep: (data: ConversionData) => void
@@ -179,7 +175,7 @@ const ConversionInput: React.FC<{
 
   return (
     <div className="conversion-flow">
-      <Header page="conversion-flow" />
+      <Header page="convert" />
 
       <div className="page-title">{translate("Convert")}</div>
 

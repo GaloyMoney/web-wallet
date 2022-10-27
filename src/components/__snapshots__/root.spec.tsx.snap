@@ -518,7 +518,7 @@ exports[`Root appRoutes renders Receive and matches snapshot 1`] = `
       class="receive"
     >
       <div
-        class="header-container receive-bitcoin-header"
+        class="header-container receive-header"
       >
         <div
           class="header"
@@ -720,7 +720,7 @@ exports[`Root appRoutes renders Send and matches snapshot 1`] = `
       class="send"
     >
       <div
-        class="header-container send-bitcoin-header"
+        class="header-container send-header"
       >
         <div
           class="header"
@@ -993,7 +993,7 @@ exports[`Root appRoutes renders Send with a destination and matches snapshot 1`]
       class="send"
     >
       <div
-        class="header-container send-bitcoin-header"
+        class="header-container send-header"
       >
         <div
           class="header"

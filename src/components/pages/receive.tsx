@@ -59,7 +59,7 @@ const Receive: NoPropsFCT = () => {
 
   return (
     <div className="receive">
-      <Header page="receive-bitcoin" />
+      <Header page="receive" />
 
       <div className="page-title">{translate("Receive Bitcoin")}</div>
 

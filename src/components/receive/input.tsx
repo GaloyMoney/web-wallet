@@ -11,8 +11,9 @@ import {
   Spinner,
 } from "@galoymoney/react"
 
-import useMyUpdates from "hooks/use-my-updates"
 import { translate } from "store/index"
+import useMyUpdates from "hooks/use-my-updates"
+
 import { ReceiveScreenInput } from "components/pages/receive"
 
 type FCT = React.FC<{

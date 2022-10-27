@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from "react"
 import { SelfServiceRecoveryFlow, SubmitSelfServiceRecoveryFlowBody } from "@ory/client"
 
 import { config, translate, history } from "store/index"
+
 import {
   KratosSdk,
   handleFlowError,
@@ -11,8 +12,8 @@ import {
   KratosError,
 } from "kratos/index"
 
-import { Messages } from "components/kratos"
 import Link from "components/link"
+import { Messages } from "components/kratos"
 
 type FCT = React.FC<{
   flowData?: KratosFlowData

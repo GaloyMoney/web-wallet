@@ -3,10 +3,10 @@ import { useState } from "react"
 import { formatCurrencyAmount, useMutation } from "@galoymoney/client"
 
 import { translate } from "store"
-
-import { ConversionData } from "components/pages/conversion-flow"
 import useMyUpdates from "hooks/use-my-updates"
+
 import Link from "components/link"
+import { ConversionData } from "components/pages/conversion-flow"
 
 const ConversionConfirmation: React.FC<{
   conversionInput: ConversionData

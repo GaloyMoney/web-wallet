@@ -11,8 +11,8 @@ import { SatFormat, Spinner, useCountdownTimer } from "@galoymoney/react"
 
 import { translate } from "store/index"
 
-import { LightningInvoice, OnChainInvoice } from "components/receive/invoice-details"
 import ErrorMessage from "components/error-message"
+import { LightningInvoice, OnChainInvoice } from "components/receive/invoice-details"
 
 const INVOICE_EXPIRE_INTERVAL = 60 * 60 * 1000
 

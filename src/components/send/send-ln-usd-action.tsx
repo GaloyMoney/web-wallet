@@ -2,9 +2,10 @@ import { MouseEvent, useEffect } from "react"
 
 import { GaloyGQL, useMutation } from "@galoymoney/client"
 
+import useMainQuery from "hooks/use-main-query"
+
 import SendActionDisplay from "components/send/send-action-display"
 import { SendActionProps } from "components/send/send-action"
-import useMainQuery from "hooks/use-main-query"
 
 export type SendLnUsdActionProps = SendActionProps & {
   fromWallet: GaloyGQL.Wallet

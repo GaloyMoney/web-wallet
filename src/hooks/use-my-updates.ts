@@ -1,5 +1,6 @@
-import { GaloyGQL, PriceCacheStore, useSubscription } from "@galoymoney/client"
 import { useMemo, useRef } from "react"
+
+import { GaloyGQL, PriceCacheStore, useSubscription } from "@galoymoney/client"
 
 import useMainQuery from "hooks/use-main-query"
 

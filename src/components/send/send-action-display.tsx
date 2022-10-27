@@ -4,7 +4,6 @@ import { formatUsd, GaloyGQL } from "@galoymoney/client"
 import { SatFormat, Spinner, SuccessCheckmark } from "@galoymoney/react"
 
 import { translate } from "store/index"
-
 import useMyUpdates from "hooks/use-my-updates"
 
 type FeeAmount = {

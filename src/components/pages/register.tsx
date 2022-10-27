@@ -15,9 +15,9 @@ import {
   KratosError,
 } from "kratos/index"
 
+import Icon from "components/icon"
 import Link from "components/link"
 import { Messages } from "components/kratos"
-import Icon from "components/icon"
 
 type FCT = React.FC<{
   flowData?: KratosFlowData

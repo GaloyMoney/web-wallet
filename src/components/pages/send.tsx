@@ -5,11 +5,11 @@ import { GaloyGQL, PaymentType } from "@galoymoney/client"
 import { translate } from "store/index"
 import useMainQuery from "hooks/use-main-query"
 
-import Link from "components/link"
 import Header from "components/header"
-import SendDestination from "components/send/send-destination"
+import Link from "components/link"
 import SendAmountLabel from "components/send/send-amount-label"
 import SendConfirm from "components/send/send-confirm"
+import SendDestination from "components/send/send-destination"
 
 export type SendScreenInput = {
   view?: "destination" | "amount" | "confirm"

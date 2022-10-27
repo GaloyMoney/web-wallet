@@ -1,4 +1,5 @@
 import * as React from "react"
+
 import { useAuthContext } from "store"
 
 const AuthWrapper: React.FC<{ children: React.ReactNode; destination?: string }> = ({

@@ -3,12 +3,12 @@ import { useState } from "react"
 import { translate, useAuthContext, useAppState } from "store/index"
 
 import Balance from "components/balance"
-import WalletsHeader from "components/wallets-header"
+import DiscardableMessage from "components/discardable-message"
+import Icon from "components/icon"
 import Link from "components/link"
 import LoginLink from "components/login-link"
 import LogoutLink from "components/logout-link"
-import DiscardableMessage from "components/discardable-message"
-import Icon from "components/icon"
+import WalletsHeader from "components/wallets-header"
 
 const headerNavPages = ["home"] as const
 

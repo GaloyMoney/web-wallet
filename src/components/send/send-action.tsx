@@ -1,5 +1,8 @@
 import { useCallback } from "react"
 
+import { Spinner } from "@galoymoney/react"
+import { formatSats, formatUsd } from "@galoymoney/client"
+
 import { translate, useAppDispatcher } from "store/index"
 import useMainQuery from "hooks/use-main-query"
 
@@ -30,8 +33,6 @@ import SendOnChainAction, {
 } from "components/send/send-onchain-action"
 
 import { SendScreenInput } from "components/pages/send"
-import { Spinner } from "@galoymoney/react"
-import { formatSats, formatUsd } from "@galoymoney/client"
 
 export type SendActionProps = SendScreenInput & {
   btcWalletId: string

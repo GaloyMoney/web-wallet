@@ -1,12 +1,12 @@
 import { formatUsd } from "@galoymoney/client"
 import { SatFormat } from "@galoymoney/react"
 
-import Link from "components/link"
-import Icon from "components/icon"
-
+import { NoPropsFCT } from "store/index"
 import useMainQuery from "hooks/use-main-query"
 import useMyUpdates from "hooks/use-my-updates"
-import { NoPropsFCT } from "store/index"
+
+import Link from "components/link"
+import Icon from "components/icon"
 
 const WalletsHeader: NoPropsFCT = () => {
   const { btcWalletBalance, usdWalletBalance, wallets } = useMainQuery()

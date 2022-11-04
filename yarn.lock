@@ -532,10 +532,10 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@galoymoney/client@^0.1.52":
-  version "0.1.52"
-  resolved "https://registry.yarnpkg.com/@galoymoney/client/-/client-0.1.52.tgz#88b37ef6323ea4be477888416a142d719e1e6c96"
-  integrity sha512-v0Pm7vSNyHeXr4vc5Y5FxcV19LCil9zK0Ol7ee4+RK8MOoZX8vwbC5Ib6V7Bmt2GaWirRObrwO+UEYEjp2svfw==
+"@galoymoney/client@^0.1.57":
+  version "0.1.57"
+  resolved "https://registry.yarnpkg.com/@galoymoney/client/-/client-0.1.57.tgz#17b8cd0623a3bf9d110ce248c4c3a09d698409f3"
+  integrity sha512-h0RrgakzcvL9qN+MKeSkOqlQ1AURu7rjZ/HBitgb1rdrwj7mTO+Vp3ppAnU/XNk8/qbnaAYdw5tgmN52i8+2TQ==
 
 "@galoymoney/react@^0.1.14":
   version "0.1.14"

@@ -2,7 +2,13 @@ import express from "express"
 
 import { serverRenderer } from "renderers/server"
 import { checkRoute, routeRequiresAuth } from "server/routes"
-import { handleRegister, handleLogin, handleRecovery, handleLogout } from "kratos/index"
+import {
+  handleRegister,
+  handleLogin,
+  handleRecovery,
+  handleLogout,
+  // handleWhoAmI,
+} from "kratos/index"
 import { config } from "store/index"
 
 const ssrRouter = express.Router({ caseSensitive: true })
@@ -50,16 +56,8 @@ ssrRouter.get("/*", async (req, res) => {
     if (routePath === "/logout") {
       req.session = req.session || {}
       req.session.authSession = undefined
-      if (config.kratosFeatureFlag) {
-        const logoutResult = await handleLogout(req)
-        return res.redirect(logoutResult.redirectTo)
-      }
-
-      return res.redirect("/")
-    }
-
-    if (!config.kratosFeatureFlag) {
-      return res.status(404).send("Resource not found")
+      const logoutResult = await handleLogout(req)
+      return res.redirect(logoutResult.redirectTo)
     }
 
     let flowData = undefined

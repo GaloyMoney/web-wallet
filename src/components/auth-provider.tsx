@@ -1,6 +1,5 @@
 import { useMemo, useState, ReactNode, useEffect, useCallback } from "react"
 import { useErrorHandler } from "react-error-boundary"
-import axios from "axios"
 
 import { GaloyClient, GaloyProvider, postRequest } from "@galoymoney/client"
 
@@ -11,8 +10,6 @@ import {
   config,
   createClient,
   storage,
-  useAppDispatcher,
-  useRequest,
 } from "store/index"
 
 const galoySessionName = "galoy-session"
@@ -29,13 +26,9 @@ const persistSession = (session: AuthSession) => {
   }
 }
 
-const getPersistedSession = (sessionData?: {
-  galoyJwtToken?: string
-  identity?: AuthIdentity
-}): AuthSession => {
-  if (sessionData?.galoyJwtToken && sessionData?.identity) {
-    const { galoyJwtToken, identity } = sessionData
-    return { galoyJwtToken, identity }
+const getPersistedSession = (sessionData?: { identity?: AuthIdentity }): AuthSession => {
+  if (sessionData?.identity) {
+    return { identity: sessionData.identity }
   }
   if (config.isBrowser) {
     const session = storage.get(galoySessionName)
@@ -51,20 +44,12 @@ const getPersistedSession = (sessionData?: {
 type FCT = React.FC<{
   children: ReactNode
   galoyClient?: GaloyClient<unknown>
-  galoyJwtToken?: string
   authIdentity?: AuthIdentity
 }>
 
-export const AuthProvider: FCT = ({
-  children,
-  galoyClient,
-  galoyJwtToken,
-  authIdentity,
-}) => {
-  const request = useRequest()
-  const dispatch = useAppDispatcher()
+export const AuthProvider: FCT = ({ children, galoyClient, authIdentity }) => {
   const [authSession, setAuthSession] = useState<AuthSession>(() =>
-    getPersistedSession({ galoyJwtToken, identity: authIdentity }),
+    getPersistedSession({ identity: authIdentity }),
   )
 
   const setAuth = useCallback((session: AuthSession) => {
@@ -76,33 +61,6 @@ export const AuthProvider: FCT = ({
 
     setAuthSession(session)
   }, [])
-
-  const syncSession = useCallback(async () => {
-    const resp = await axios.post(config.galoyAuthEndpoint, {}, { withCredentials: true })
-
-    if (resp.data.error) {
-      // TODO: logout?
-      return new Error(resp.data.error?.message || "INVALID_AUTH_TOKEN_RESPONSE")
-    }
-
-    const authToken = resp.data.authToken
-    const session = await request.post(config.authEndpoint, { authToken })
-
-    session.identity.accountStatus = resp.data.accountStatus
-
-    if (
-      !session ||
-      !session.galoyJwtToken ||
-      session.identity.id !== resp.data.kratosUserId
-    ) {
-      // TODO: logout?
-      return new Error("INVALID_AUTH_TOKEN_RESPONSE")
-    }
-
-    setAuth(session.galoyJwtToken ? session : null)
-    dispatch({ type: "kratos-login", authIdentity: session.identity })
-    return true
-  }, [dispatch, request, setAuth])
 
   useEffect(() => {
     const persistedSession = getPersistedSession()
@@ -123,7 +81,6 @@ export const AuthProvider: FCT = ({
       return galoyClient
     }
     return createClient({
-      authToken: authSession?.galoyJwtToken,
       onError: ({ graphQLErrors, networkError }) => {
         if (graphQLErrors) {
           console.debug("[GraphQL errors]:", graphQLErrors)
@@ -135,7 +92,7 @@ export const AuthProvider: FCT = ({
             "result" in networkError &&
             networkError.result.errors?.[0]?.code === "INVALID_AUTHENTICATION"
           ) {
-            postRequest(authSession?.galoyJwtToken)("/api/logout").then(() => {
+            postRequest("/api/logout").then(() => {
               setAuth(null)
             })
           } else {
@@ -144,16 +101,14 @@ export const AuthProvider: FCT = ({
         }
       },
     })
-  }, [galoyClient, authSession?.galoyJwtToken, setAuth, handleError])
+  }, [galoyClient, setAuth, handleError])
 
   return (
     <AuthContext.Provider
       value={{
-        isAuthenticated: Boolean(authSession?.galoyJwtToken),
-        galoyJwtToken: authSession?.galoyJwtToken,
+        isAuthenticated: Boolean(authSession?.identity),
         authIdentity: authSession?.identity,
         setAuthSession: setAuth,
-        syncSession,
       }}
     >
       <GaloyProvider client={client}>{children}</GaloyProvider>

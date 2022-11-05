@@ -10,7 +10,6 @@ jest.mock("../store/config", () => ({
   config: {
     isBrowser: false,
     walletName: "Galoy",
-    kratosFeatureFlag: true,
   },
   publicConfig: { walletName: "Galoy" },
 }))

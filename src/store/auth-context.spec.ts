@@ -8,6 +8,5 @@ describe("useAuthContext", () => {
 
     expect(result.current.isAuthenticated).toBe(false)
     expect(result.current.setAuthSession).toBeInstanceOf(Function)
-    expect(result.current.syncSession).toBeInstanceOf(Function)
   })
 })

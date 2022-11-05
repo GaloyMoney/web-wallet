@@ -1,6 +1,5 @@
 /* eslint-disable camelcase */
 import { useState, useEffect, useCallback } from "react"
-import { useErrorHandler } from "react-error-boundary"
 import { SelfServiceLoginFlow, SubmitSelfServiceLoginFlowBody } from "@ory/client"
 
 import {
@@ -11,7 +10,7 @@ import {
   KratosError,
 } from "kratos/index"
 
-import { config, translate, history, useAuthContext } from "store/index"
+import { config, translate, history, useRequest } from "store/index"
 
 import Icon from "components/icon"
 import Link from "components/link"
@@ -22,8 +21,8 @@ type FCT = React.FC<{
 }>
 
 const LoginEmail: FCT = ({ flowData: flowDataProp }) => {
-  const handleError = useErrorHandler()
-  const { syncSession } = useAuthContext()
+  const request = useRequest()
+
   const [flowData, setFlowData] = useState<SelfServiceLoginFlow | undefined>(
     flowDataProp?.loginData,
   )
@@ -69,23 +68,22 @@ const LoginEmail: FCT = ({ flowData: flowDataProp }) => {
       .catch(handleFlowError({ history, resetFlow }))
   }, [flowData, resetFlow])
 
-  const handlesyncSession = async (values: SubmitSelfServiceLoginFlowBody) => {
+  const submitLoginRequest = async (values: SubmitSelfServiceLoginFlowBody) => {
     const kratos = KratosSdk(config.kratosBrowserUrl)
     kratos
       .submitSelfServiceLoginFlow(String(flowData?.id), values, undefined, undefined, {
         withCredentials: true,
       })
       .then(async () => {
-        try {
-          const syncStatus = await syncSession()
-          if (syncStatus instanceof Error) {
-            handleError(syncStatus)
-            return
-          }
-          history.push("/")
-        } catch (err) {
-          console.error(err)
+        const data = await request.post("/api/login")
+
+        console.log("LOGIN DATA ", data)
+
+        if (data instanceof Error) {
+          console.log("LOGIN DATA ERROR", data)
         }
+
+        history.push("/?logedin")
       })
       .catch(handleFlowError({ history, resetFlow }))
       .catch((err: KratosError) => {
@@ -110,7 +108,7 @@ const LoginEmail: FCT = ({ flowData: flowDataProp }) => {
       password: event.currentTarget.password.value,
     }
 
-    handlesyncSession(values)
+    submitLoginRequest(values)
   }
 
   const nodes = getNodesForFlow(flowData)

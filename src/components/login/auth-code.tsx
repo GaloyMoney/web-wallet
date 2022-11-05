@@ -2,7 +2,7 @@ import { ChangeEvent, useState } from "react"
 
 import { Spinner } from "@galoymoney/react"
 
-import { config, translate, history, useRequest, useAuthContext } from "store/index"
+import { translate, history, useRequest, useAuthContext } from "store/index"
 
 import Icon from "components/icon"
 
@@ -17,7 +17,7 @@ const AuthCode: FCT = ({ phoneNumber }) => {
   const submitLoginRequest = async (authCode: string) => {
     setLoading(true)
 
-    const data = await request.post(config.authEndpoint, {
+    const data = await request.post("/login", {
       phoneNumber,
       authCode,
     })
@@ -29,11 +29,13 @@ const AuthCode: FCT = ({ phoneNumber }) => {
       return
     }
 
-    const session = {
-      galoyJwtToken: data?.galoyJwtToken,
-      identity: data?.identity,
-    }
-    setAuthSession(session.galoyJwtToken ? session : null)
+    setAuthSession(
+      data?.identity
+        ? {
+            identity: data?.identity,
+          }
+        : null,
+    )
     history.push("/")
   }
 

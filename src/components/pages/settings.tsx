@@ -27,8 +27,6 @@ type FCT = React.FC<{
 }>
 
 const SettingsPasswordUpdate: FCT = ({ flowData: flowDataProp }) => {
-  const { syncSession } = useAuthContext()
-
   const [flowData, setFlowData] = useState<SelfServiceSettingsFlow | undefined>(
     flowDataProp?.settingsData,
   )
@@ -39,7 +37,7 @@ const SettingsPasswordUpdate: FCT = ({ flowData: flowDataProp }) => {
   }, [])
 
   useEffect(() => {
-    if (flowData || !config.kratosFeatureFlag) {
+    if (flowData) {
       return
     }
 
@@ -60,7 +58,6 @@ const SettingsPasswordUpdate: FCT = ({ flowData: flowDataProp }) => {
         })
         .then(({ data }) => {
           setFlowData(data)
-          syncSession()
         })
         .catch(handleFlowError({ history, resetFlow }))
       return
@@ -74,7 +71,7 @@ const SettingsPasswordUpdate: FCT = ({ flowData: flowDataProp }) => {
       )
       .then(({ data }) => setFlowData(data))
       .catch(handleFlowError({ history, resetFlow }))
-  }, [flowData, resetFlow, syncSession])
+  }, [flowData, resetFlow])
 
   const handleKratosSettings = async (values: SubmitSelfServiceSettingsFlowBody) => {
     const kratos = KratosSdk(config.kratosBrowserUrl)
@@ -149,7 +146,7 @@ const SettingsMainScreen: NoPropsFCT = () => {
   return (
     <SettingsLayout>
       <div className="list">
-        {config.kratosFeatureFlag && <EmailSetting guestView={!isAuthenticated} />}
+        <EmailSetting guestView={!isAuthenticated} />
         <UsernameSetting guestView={!isAuthenticated} />
         <LanguageSetting guestView={!isAuthenticated} />
         <ColorThemeSetting />

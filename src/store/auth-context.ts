@@ -12,22 +12,18 @@ export type AuthIdentity = {
 }
 
 export type AuthSession = {
-  galoyJwtToken: string
   identity: AuthIdentity
 } | null
 
 type AuthContextType = {
   isAuthenticated: boolean
-  galoyJwtToken?: string
   authIdentity?: AuthIdentity
   setAuthSession: (session: AuthSession) => void
-  syncSession: () => Promise<true | Error>
 }
 
 export const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   setAuthSession: () => {},
-  syncSession: () => Promise.resolve(true),
 })
 
 export const useAuthContext: () => AuthContextType = () => {

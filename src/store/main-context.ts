@@ -7,7 +7,6 @@ import {
   postRequest,
 } from "@galoymoney/client"
 
-import { useAuthContext } from "store/auth-context"
 import { config } from "store/config"
 import { GwwActionType, GwwContextType } from "store/index"
 
@@ -29,10 +28,8 @@ export const useAppDispatcher = () => {
 }
 
 export const useRequest = () => {
-  const { galoyJwtToken } = useAuthContext()
-
   return {
-    post: postRequest(galoyJwtToken),
+    post: postRequest,
   }
 }
 

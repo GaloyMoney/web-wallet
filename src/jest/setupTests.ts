@@ -4,7 +4,6 @@ if (typeof window !== "undefined") {
       GwwConfig: {
         graphqlUrl: "https://api.staging.galoy.io/graphql",
         network: "testnet",
-        kratosFeatureFlag: true,
       },
     },
   })

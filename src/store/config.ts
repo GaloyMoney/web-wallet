@@ -17,11 +17,9 @@ if (!isBrowser) {
     "GRAPHQL_URL",
     "GRAPHQL_SUBSCRIPTION_URL",
     "AUTH_ENDPOINT",
+    "KRATOS_API_URL",
+    "KRATOS_BROWSER_URL",
   ]
-
-  if (process.env.KRATOS_FEATURE_FLAG === "true") {
-    requiredEnvVars.push("KRATOS_API_URL", "KRATOS_BROWSER_URL", "GALOY_AUTH_ENDPOINT")
-  }
 
   requiredEnvVars.forEach((envVar) => {
     if (!process.env[envVar]) {
@@ -73,10 +71,7 @@ export const config: configType = isBrowser
       graphqlUrl: process.env.GRAPHQL_URL as string,
       graphqlSubscriptionUrl: process.env.GRAPHQL_SUBSCRIPTION_URL as string,
 
-      authEndpoint: process.env.AUTH_ENDPOINT as string,
-      kratosFeatureFlag: Boolean(process.env.KRATOS_FEATURE_FLAG === "true" || false),
       kratosBrowserUrl: process.env.KRATOS_BROWSER_URL as string,
-      galoyAuthEndpoint: process.env.GALOY_AUTH_ENDPOINT as string,
     }
 
 const publicConfigKeys = [
@@ -86,10 +81,7 @@ const publicConfigKeys = [
   "graphqlUrl",
   "graphqlSubscriptionUrl",
   "network",
-  "authEndpoint",
-  "kratosFeatureFlag",
   "kratosBrowserUrl",
-  "galoyAuthEndpoint",
 ] as const
 
 export const publicConfig = Object.fromEntries(

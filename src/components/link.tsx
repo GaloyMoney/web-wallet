@@ -2,11 +2,11 @@ import * as React from "react"
 
 import { checkAuthRoute, ValidPath } from "server/routes"
 
-import { history, config } from "store/index"
+import { history } from "store/index"
 
 const navigateTo = (to: string) => {
   const authRoute = checkAuthRoute(to)
-  if (authRoute instanceof Error || !config.kratosFeatureFlag) {
+  if (authRoute instanceof Error) {
     history.push(to)
   } else {
     window.location.href = to

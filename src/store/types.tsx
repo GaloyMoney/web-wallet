@@ -13,10 +13,7 @@ export type GwwConfigType = {
   graphqlUrl: string
   graphqlSubscriptionUrl: string
   network: Network
-  authEndpoint: string
-  kratosFeatureFlag: boolean
   kratosBrowserUrl: string
-  galoyAuthEndpoint: string
 }
 
 declare global {

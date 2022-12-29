@@ -43,7 +43,11 @@ const networkMap = (graphqlUrl: string): Network => {
   }
 
   if (graphqlUrl.match("testnet")) {
-    return "testnet"
+    return "signet"
+  }
+
+  if (graphqlUrl.match("signet")) {
+    return "signet"
   }
 
   return "regtest"

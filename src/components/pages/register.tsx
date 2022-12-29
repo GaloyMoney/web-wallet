@@ -109,11 +109,11 @@ const Register: FCT = ({ flowData: flowDataProp }) => {
 
     const values = {
       method: "password",
-      csrf_token: event.currentTarget.csrf_token.value,
+      csrf_token: event.currentTarget?.csrf_token.value || "",
       traits: {
-        email: event.currentTarget["traits.email"].value,
+        email: event.currentTarget["traits.email"]?.value || "",
       },
-      password: event.currentTarget.password.value,
+      password: event.currentTarget?.password?.value || "",
     }
 
     handleKratosRegister(values)
@@ -128,18 +128,18 @@ const Register: FCT = ({ flowData: flowDataProp }) => {
           <input
             type="hidden"
             name="csrf_token"
-            value={nodes?.csrf_token.attributes.value}
+            value={nodes?.csrf_token.attributes?.value || ""}
           />
           <div className="input-container">
             <div className="">{translate("Email")}</div>
             <input
               name="traits.email"
               type="email"
-              defaultValue={nodes?.["traits.email"].value}
+              defaultValue={nodes?.["traits.email"]?.value || ""}
               autoComplete="email"
               required
             />
-            <Messages messages={nodes?.["traits.email"].messages} />
+            <Messages messages={nodes?.["traits.email"]?.messages || ""} />
           </div>
           <div className="input-container">
             <div className="">{translate("Password")}</div>
@@ -149,7 +149,7 @@ const Register: FCT = ({ flowData: flowDataProp }) => {
               autoComplete="current-password"
               required
             />
-            <Messages messages={nodes?.password.messages} />
+            <Messages messages={nodes?.password?.messages || ""} />
           </div>
           <Messages messages={flowData?.ui?.messages} />
           <div className="button-container">

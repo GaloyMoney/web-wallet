@@ -92,14 +92,14 @@ export const AuthProvider: FCT = ({
 
     if (
       !session ||
-      !session.galoyJwtToken ||
+      // !session.galoyJwtToken ||
       session.identity.id !== resp.data.kratosUserId
     ) {
       // TODO: logout?
       return new Error("INVALID_AUTH_TOKEN_RESPONSE")
     }
 
-    setAuth(session.galoyJwtToken ? session : null)
+    setAuth(session.identity.id ? session : null)
     dispatch({ type: "kratos-login", authIdentity: session.identity })
     return true
   }, [dispatch, request, setAuth])

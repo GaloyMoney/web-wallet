@@ -9,3 +9,4 @@ yarn-error.log
 .vscode/
 .DS_Store
 src/modules
+.yalc

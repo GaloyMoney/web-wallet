@@ -44,6 +44,35 @@ const loginUsingKratos = async ({
   return res.send(authSession)
 }
 
+const loginUsingKratosCookie = async ({
+  req,
+  res,
+}: {
+  req: Request
+  res: Response
+}) => {
+  const kratosSession = await handleWhoAmI(req)
+  if (!kratosSession) {
+    return res.status(401).send("Invalid cookie")
+  }
+
+  const authSession = {
+    galoyJwtToken: kratosSession?.identity.id,
+    identity: {
+      id: kratosSession?.identity.id,
+      uid: kratosSession?.identity.id,
+      uidc: kratosSession?.identity.id,
+      emailAddress: kratosSession.identity.traits.email,
+      firstName: kratosSession.identity.traits.name?.first,
+      lastName: kratosSession.identity.traits.name?.last,
+    },
+  }
+
+  req.session = req.session || {}
+  req.session.authSession = authSession
+  return res.send(authSession)
+}
+
 const loginUsingPhoneNumber = async ({
   phoneNumber,
   authCode,
@@ -96,11 +125,12 @@ apiRouter.post("/login", async (req: Request, res: Response) => {
       phoneNumber = "",
       authCode = "",
     }: { authToken: string; phoneNumber: string; authCode: string } = req.body
-    if (authToken) {
-      return await loginUsingKratos({ authToken, req, res })
-    } else if (phoneNumber || authCode) {
-      return await loginUsingPhoneNumber({ phoneNumber, authCode, req, res })
-    }
+    return await loginUsingKratosCookie({ req, res })
+    // if (authToken) {
+    //   return await loginUsingKratos({ authToken, req, res })
+    // } else if (phoneNumber || authCode) {
+    //   return await loginUsingPhoneNumber({ phoneNumber, authCode, req, res })
+    // }
     // No auth token or phone number and auth code
     return res
       .status(400)

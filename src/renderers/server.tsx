@@ -1,6 +1,6 @@
 import { Request } from "express"
 
-import { renderToStringWithData } from "@galoymoney/client"
+import { renderToStringWithData } from "@apollo/client/react/ssr"
 
 import { appRoutes, AuthRoutePath, authRoutes, RoutePath, ValidPath } from "server/routes"
 import { publicConfig, GwwStateType, createClient } from "store/index"

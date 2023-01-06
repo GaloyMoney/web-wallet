@@ -1,6 +1,8 @@
 import express from "express"
 import * as jwt from "jsonwebtoken"
 
+import type { DocumentNode } from "@apollo/client"
+
 import { MUTATIONS } from "@galoymoney/client"
 
 import { createClient } from "store/index"
@@ -54,7 +56,7 @@ const loginUsingPhoneNumber = async ({
   const { data } = await createClient({
     headers: req.headers,
   }).mutate({
-    mutation: MUTATIONS.userLogin,
+    mutation: MUTATIONS.userLogin as unknown as DocumentNode,
     variables: { input: { phone: phoneNumber, code: authCode } },
   })
 

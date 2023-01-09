@@ -6,7 +6,7 @@ import {
   SubmitSelfServiceRegistrationFlowBody,
 } from "@ory/client"
 
-import { config, translate, history, useAuthContext, KratosCookieResp } from "store/index"
+import { config, translate, history, useAuthContext } from "store/index"
 import {
   KratosSdk,
   handleFlowError,
@@ -26,8 +26,6 @@ type FCT = React.FC<{
 const Register: FCT = ({ flowData: flowDataProp }) => {
   const handleError = useErrorHandler()
   const { syncSession } = useAuthContext()
-  const [ phone, setPhone ] = useState("")
-  const [ code, setCode ] = useState("")
 
   const [flowData, setFlowData] = useState<SelfServiceRegistrationFlow | undefined>(
     flowDataProp?.registrationData,
@@ -123,38 +121,6 @@ const Register: FCT = ({ flowData: flowDataProp }) => {
 
   const nodes = getNodesForFlow(flowData)
 
-  const loginCookie = async () => {
-
-    if (!phone || !code){
-      // TODO validation
-      return
-    }
-    const resp = await fetch("http://localhost:4002/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        phone,
-        code,
-      }),
-      credentials:"include",
-      redirect: "follow"
-    })
-    const kratosCookieResp: KratosCookieResp = await resp.json()
-
-    try {
-      const syncStatus = await syncSession(kratosCookieResp)
-      if (syncStatus instanceof Error) {
-        handleError(syncStatus)
-        return
-      }
-      history.push("/")
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
   return (
     <>
       <div className="register-form auth-form">
@@ -199,13 +165,6 @@ const Register: FCT = ({ flowData: flowDataProp }) => {
           <Icon name="login" />
           {translate("Login")}
         </Link>
-      </div>
-      <div>
-        <label htmlFor="phone"><b>Phone</b></label>
-        <input type="text" placeholder="Phone" name="phone" required onChange={event => setPhone(event.target.value)} />
-        <label htmlFor="code"><b>Code</b></label>
-        <input type="code" placeholder="Code" name="code" required onChange={ event => setCode(event.target.value)}/>
-        <button type="submit" onClick={loginCookie}>Login Cookie</button>
       </div>
     </>
   )

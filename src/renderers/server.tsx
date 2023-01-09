@@ -53,8 +53,6 @@ export const serverRenderer =
     flowData?: KratosFlowData
   }): Promise<Error | ServerRenderResponse> => {
     try {
-      const galoyJwtToken = req.session?.authSession?.galoyJwtToken
-
       const GwwState: GwwStateType = {
         path,
         props: extractAllowedProps({ path, props: req.query }),
@@ -66,17 +64,9 @@ export const serverRenderer =
       }
 
       const galoyClient = createClient({
-        authToken: galoyJwtToken,
         headers: req.headers,
       })
-      const App = (
-        <SSRRoot
-          client={galoyClient}
-          GwwState={GwwState}
-          galoyJwtToken={galoyJwtToken}
-          flowData={flowData}
-        />
-      )
+      const App = <SSRRoot client={galoyClient} GwwState={GwwState} flowData={flowData} />
 
       const initialMarkup = await renderToStringWithData(App)
       const ssrData = galoyClient.extract()

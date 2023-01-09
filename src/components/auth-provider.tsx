@@ -10,6 +10,7 @@ import {
   AuthSession,
   config,
   createClient,
+  KratosCookieResp,
   storage,
   useAppDispatcher,
   useRequest,
@@ -77,7 +78,22 @@ export const AuthProvider: FCT = ({
     setAuthSession(session)
   }, [])
 
-  const syncSession = useCallback(async () => {
+  const syncSession = useCallback(async ( kratosCookieResp?: KratosCookieResp ) => {
+
+    if (kratosCookieResp){
+      const sessionIdentity = {
+        id: kratosCookieResp.kratosUserId,
+        uid: kratosCookieResp.kratosUserId,
+        phoneNumber: kratosCookieResp.phone
+      }
+      setAuth({
+        galoyJwtToken: "",
+        identity: sessionIdentity
+      })
+      dispatch({ type: "kratos-login", authIdentity: sessionIdentity })
+      return true
+    }
+
     const resp = await axios.post(config.galoyAuthEndpoint, {}, { withCredentials: true })
 
     if (resp.data.error) {

@@ -129,7 +129,7 @@ const Register: FCT = ({ flowData: flowDataProp }) => {
       // TODO validation
       return
     }
-    const resp = await fetch("http://localhost:4002/auth/cookieLogin", {
+    const resp = await fetch("http://localhost:4002/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

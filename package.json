@@ -55,7 +55,7 @@
     "@types/serialize-javascript": "^5.0.2",
     "@types/supertest": "^2.0.12",
     "autoprefixer": "^10.4.7",
-    "axios": "^0.27.2",
+    "axios": "^1.2.2",
     "bitcoinjs-lib": "5.2.0",
     "body-parser": "^1.20.1",
     "bolt11": "^1.4.0",

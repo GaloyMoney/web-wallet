@@ -1,13 +1,14 @@
 import { useMemo, useState, ReactNode, useEffect, useCallback } from "react"
 import { useErrorHandler } from "react-error-boundary"
 
-import { GaloyClient, GaloyProvider, postRequest } from "@galoymoney/client"
+import { GaloyClient, GaloyProvider } from "@galoymoney/client"
 
 import {
   AuthContext,
   AuthIdentity,
   AuthSession,
   config,
+  ajax,
   createClient,
   storage,
   useAppDispatcher,
@@ -66,7 +67,7 @@ export const AuthProvider: FCT = ({ children, galoyClient, authIdentity }) => {
   }, [])
 
   const syncSession = useCallback(async () => {
-    const session = await postRequest(config.authEndpoint)
+    const session = await ajax.post(config.authEndpoint)
 
     if (!session) {
       return new Error("INVALID_AUTH_TOKEN_RESPONSE")
@@ -77,19 +78,19 @@ export const AuthProvider: FCT = ({ children, galoyClient, authIdentity }) => {
     return true
   }, [dispatch, setAuth])
 
-  useEffect(() => {
-    const persistedSession = getPersistedSession()
+  // useEffect(() => {
+  //   const persistedSession = getPersistedSession()
 
-    if (
-      (authIdentity?.uid || persistedSession) &&
-      persistedSession?.identity?.uid !== authIdentity?.uid
-    ) {
-      postRequest(config.galoyAuthEndpoint + "/logout").then(() => {
-        setAuth(null)
-        window.location.href = "/logout"
-      })
-    }
-  }, [authIdentity?.uid, setAuth])
+  //   if (
+  //     (authIdentity?.uid || persistedSession) &&
+  //     persistedSession?.identity?.uid !== authIdentity?.uid
+  //   ) {
+  //     ajax.get(config.galoyAuthEndpoint + "/logout").then(() => {
+  //       setAuth(null)
+  //       window.location.href = "/logout"
+  //     })
+  //   }
+  // }, [authIdentity?.uid, setAuth])
 
   const handleError = useErrorHandler()
   const client = useMemo(() => {
@@ -101,24 +102,14 @@ export const AuthProvider: FCT = ({ children, galoyClient, authIdentity }) => {
       onError: ({ graphQLErrors, networkError }) => {
         if (graphQLErrors) {
           console.debug("[GraphQL errors]:", graphQLErrors)
-          // handleError(graphQLErrors[0].message)
         }
         if (networkError) {
           console.debug("[Network error]:", networkError)
-          if (
-            "result" in networkError &&
-            networkError.result.errors?.[0]?.code === "INVALID_AUTHENTICATION"
-          ) {
-            postRequest("/api/logout").then(() => {
-              setAuth(null)
-            })
-          } else {
-            handleError(networkError)
-          }
+          handleError(networkError)
         }
       },
     })
-  }, [galoyClient, setAuth, handleError])
+  }, [galoyClient, handleError])
 
   return (
     <AuthContext.Provider

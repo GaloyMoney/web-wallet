@@ -1,4 +1,4 @@
-import { useMemo, useState, ReactNode, useEffect, useCallback } from "react"
+import { useMemo, useState, ReactNode, useCallback } from "react"
 import { useErrorHandler } from "react-error-boundary"
 
 import { GaloyClient, GaloyProvider } from "@galoymoney/client"
@@ -77,20 +77,6 @@ export const AuthProvider: FCT = ({ children, galoyClient, authIdentity }) => {
     dispatch({ type: "kratos-login", authIdentity: session.identity })
     return true
   }, [dispatch, setAuth])
-
-  // useEffect(() => {
-  //   const persistedSession = getPersistedSession()
-
-  //   if (
-  //     (authIdentity?.uid || persistedSession) &&
-  //     persistedSession?.identity?.uid !== authIdentity?.uid
-  //   ) {
-  //     ajax.get(config.galoyAuthEndpoint + "/logout").then(() => {
-  //       setAuth(null)
-  //       window.location.href = "/logout"
-  //     })
-  //   }
-  // }, [authIdentity?.uid, setAuth])
 
   const handleError = useErrorHandler()
   const client = useMemo(() => {

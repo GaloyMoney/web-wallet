@@ -27,7 +27,7 @@ export const useAppDispatcher = () => {
 }
 
 export const createClient = config.isBrowser
-  ? createGaloyClient({ config, initData: window.__G_DATA.ssrData })
+  ? createGaloyClient({ config })
   : createGaloyServerClient({ config })
 
 export const createAdminClient = createGaloyServerAdminClient({ config })

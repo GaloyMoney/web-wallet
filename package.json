@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.3",
-    "@galoymoney/client": "^0.1.62",
+    "@galoymoney/client": "0.1.62",
     "@galoymoney/react": "^0.1.14",
     "@opentelemetry/api": "^1.1.0",
     "@opentelemetry/core": "^1.5.0",
@@ -55,7 +55,7 @@
     "@types/serialize-javascript": "^5.0.2",
     "@types/supertest": "^2.0.12",
     "autoprefixer": "^10.4.7",
-    "axios": "^0.27.2",
+    "axios": "^1.2.2",
     "bitcoinjs-lib": "5.2.0",
     "body-parser": "^1.20.1",
     "bolt11": "^1.4.0",

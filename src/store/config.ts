@@ -45,9 +45,10 @@ const networkMap = (graphqlUrl: string): Network => {
   if (graphqlUrl.match("signet")) {
     return "signet"
   }
-  
+
   if (graphqlUrl.match("testnet")) {
-    return "testnet"
+    // FIXME: remove casting
+    return "testnet" as Network
   }
 
   return "regtest"

@@ -1,3 +1,5 @@
+import "cross-fetch/polyfill"
+
 const get = async (path: string, params?: Record<string, string | number | boolean>) => {
   try {
     const url = new URL(path)

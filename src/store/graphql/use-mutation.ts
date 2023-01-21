@@ -6,33 +6,33 @@ import {
 } from "@apollo/client"
 import { useCallback } from "react"
 
-import { GaloyGQL, joinErrorsMessages } from "../../../galoy-client/src/index"
+import { GaloyGQL, joinErrorsMessages } from "store/graphql//index"
 
-import accountUpdateDefaultWalletId from "./mutations/account-update-default-wallet-id"
-import captchaCreateChallenge from "./mutations/captcha-create-challenge"
-import captchaRequestAuthCode from "./mutations/captcha-request-auth-code"
-import deviceNotificationTokenCreate from "./mutations/device-notification-token-create"
-import intraLedgerPaymentSend from "./mutations/intra-ledger-paymest-send"
-import intraLedgerUsdPaymentSend from "./mutations/intra-ledger-usd-payment-send"
-import lnInvoiceCreate from "./mutations/ln-invoice-create"
-import lnInvoiceCreateOnBehalfOfRecipient from "./mutations/ln-invoice-create-on-behalf-of-recipient"
-import lnInvoiceFeeProbe from "./mutations/ln-invoice-fee-probe"
-import lnInvoicePaymentSend from "./mutations/ln-invoice-payment-send"
-import lnNoAmountInvoiceCreate from "./mutations/ln-no-amount-invoice-create"
-import lnNoAmountInvoiceFeeProbe from "./mutations/ln-no-amount-invoice-fee-probe"
-import lnNoAmountInvoicePaymentSend from "./mutations/ln-no-amount-invoice-payment-send"
-import lnNoAmountUsdInvoiceFeeProbe from "./mutations/ln-no-amount-usd-invoice-fee-probe"
-import lnNoAmountUsdInvoicePaymentSend from "./mutations/ln-no-amount-usd-invoice-payment-send"
-import lnUsdInvoiceCreate from "./mutations/ln-usd-invoice-create"
-import lnUsdInvoiceCreateOnBehalfOfRecipient from "./mutations/ln-usd-invoice-create-on-behalf-of-recipient"
-import lnUsdInvoiceFeeProbe from "./mutations/ln-usd-invoice-fee-probe"
-import onChainAddressCurrent from "./mutations/on-chain-address-current"
-import onChainPaymentSend from "./mutations/on-chain-payment-send"
-import userContactUpdateAlias from "./mutations/user-contact-update-alias"
-import userLogin from "./mutations/user-login"
-import userQuizQuestionUpdateCompleted from "./mutations/user-quiz-question-update-completed"
-import userUpdateLanguage from "./mutations/user-update-language"
-import userUpdateUsername from "./mutations/user-update-username"
+import accountUpdateDefaultWalletId from "store/graphql//mutations/account-update-default-wallet-id"
+import captchaCreateChallenge from "store/graphql//mutations/captcha-create-challenge"
+import captchaRequestAuthCode from "store/graphql//mutations/captcha-request-auth-code"
+import deviceNotificationTokenCreate from "store/graphql//mutations/device-notification-token-create"
+import intraLedgerPaymentSend from "store/graphql//mutations/intra-ledger-paymest-send"
+import intraLedgerUsdPaymentSend from "store/graphql//mutations/intra-ledger-usd-payment-send"
+import lnInvoiceCreate from "store/graphql//mutations/ln-invoice-create"
+import lnInvoiceCreateOnBehalfOfRecipient from "store/graphql//mutations/ln-invoice-create-on-behalf-of-recipient"
+import lnInvoiceFeeProbe from "store/graphql//mutations/ln-invoice-fee-probe"
+import lnInvoicePaymentSend from "store/graphql//mutations/ln-invoice-payment-send"
+import lnNoAmountInvoiceCreate from "store/graphql//mutations/ln-no-amount-invoice-create"
+import lnNoAmountInvoiceFeeProbe from "store/graphql//mutations/ln-no-amount-invoice-fee-probe"
+import lnNoAmountInvoicePaymentSend from "store/graphql//mutations/ln-no-amount-invoice-payment-send"
+import lnNoAmountUsdInvoiceFeeProbe from "store/graphql//mutations/ln-no-amount-usd-invoice-fee-probe"
+import lnNoAmountUsdInvoicePaymentSend from "store/graphql//mutations/ln-no-amount-usd-invoice-payment-send"
+import lnUsdInvoiceCreate from "store/graphql//mutations/ln-usd-invoice-create"
+import lnUsdInvoiceCreateOnBehalfOfRecipient from "store/graphql//mutations/ln-usd-invoice-create-on-behalf-of-recipient"
+import lnUsdInvoiceFeeProbe from "store/graphql//mutations/ln-usd-invoice-fee-probe"
+import onChainAddressCurrent from "store/graphql//mutations/on-chain-address-current"
+import onChainPaymentSend from "store/graphql//mutations/on-chain-payment-send"
+import userContactUpdateAlias from "store/graphql//mutations/user-contact-update-alias"
+import userLogin from "store/graphql//mutations/user-login"
+import userQuizQuestionUpdateCompleted from "store/graphql//mutations/user-quiz-question-update-completed"
+import userUpdateLanguage from "store/graphql//mutations/user-update-language"
+import userUpdateUsername from "store/graphql//mutations/user-update-username"
 
 export const MUTATIONS = {
   accountUpdateDefaultWalletId,
@@ -75,18 +75,20 @@ const useMutationWrapper = <TData = unknown, TVars = unknown, TFunc = unknown>(
     config,
   )
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const errors = (result?.data as any)?.[mutationName]?.errors
   const errorsMessage = result?.error?.message || joinErrorsMessages(errors)
 
   const sendMutation = useCallback(
     async (options?: MutationFunctionOptions<TData, TVars>) => {
       const mutationResult = await mutationFunction(options)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const mutationErrors = (mutationResult?.data as any)?.[mutationName]?.errors
       const mutationErrorsMessage =
         result?.error?.message || joinErrorsMessages(mutationErrors)
       return { ...mutationResult, errorsMessage: mutationErrorsMessage }
     },
-    [mutationFunction, mutationName],
+    [mutationFunction, mutationName, result?.error?.message],
   )
 
   return [sendMutation as unknown as TFunc, { ...result, errorsMessage }]

@@ -1,13 +1,14 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import {
   useSubscription as useApolloSubscription,
   SubscriptionHookOptions,
   SubscriptionResult,
 } from "@apollo/client"
 
-import { GaloyGQL, joinErrorsMessages } from "../../../galoy-client/src/index"
+import { GaloyGQL, joinErrorsMessages } from "store/graphql/index"
 
-import myUpdates from "./subscriptions/my-updates"
-import lnInvoicePaymentStatus from "./subscriptions/ln-invoice-payment-status"
+import myUpdates from "store/graphql/subscriptions/my-updates"
+import lnInvoicePaymentStatus from "store/graphql/subscriptions/ln-invoice-payment-status"
 
 export const SUBSCRIPTIONS = {
   myUpdates,
@@ -28,6 +29,7 @@ const useSubscriptionWrapper = <TData = unknown, TVars = unknown>(
   )
 
   const { data, error } = result
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const errors = (data as any)?.[subscriptionName]?.errors
   const errorsMessage = error?.message || joinErrorsMessages(errors)
 

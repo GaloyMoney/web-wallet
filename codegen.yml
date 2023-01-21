@@ -12,6 +12,7 @@ generates:
         AuthToken: "string"
         CentAmount: "number"
         ContactAlias: "string"
+        DisplayCurrency: "string"
         Hex32Bytes: "string"
         Language: "string"
         LnPaymentPreImage: "string"
@@ -25,12 +26,12 @@ generates:
         Phone: "string"
         SafeInt: "number"
         SatAmount: "number"
+        Seconds: "number"
         SignedAmount: "number"
         TargetConfirmations: "number"
         Timestamp: "number"
         Username: "string"
         WalletId: "string"
-        Seconds: "number"
     plugins:
       - add:
           content: |

@@ -4,7 +4,7 @@ import {
   createGaloyClient,
   createGaloyServerAdminClient,
   createGaloyServerClient,
-} from "@galoymoney/client"
+} from "store/client"
 
 import { config } from "store/config"
 import { GwwActionType, GwwContextType } from "store/index"

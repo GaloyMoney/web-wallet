@@ -24,6 +24,8 @@ export namespace GaloyGQL {
     CentAmount: number
     /** An alias name that a user can set for a wallet (with which they have transactions) */
     ContactAlias: string
+    /** Display currency of an account */
+    DisplayCurrency: string
     /** Hex-encoded string of 32 bytes */
     Hex32Bytes: string
     Language: string
@@ -62,6 +64,7 @@ export namespace GaloyGQL {
   export type Account = {
     readonly csvTransactions: Scalars["String"]
     readonly defaultWalletId: Scalars["WalletId"]
+    readonly displayCurrency: Scalars["DisplayCurrency"]
     readonly id: Scalars["ID"]
     readonly limits: AccountLimits
     readonly transactions?: Maybe<TransactionConnection>
@@ -105,6 +108,16 @@ export namespace GaloyGQL {
 
   export type AccountUpdateDefaultWalletIdPayload = {
     readonly __typename?: "AccountUpdateDefaultWalletIdPayload"
+    readonly account?: Maybe<ConsumerAccount>
+    readonly errors: ReadonlyArray<Error>
+  }
+
+  export type AccountUpdateDisplayCurrencyInput = {
+    readonly currency: Scalars["DisplayCurrency"]
+  }
+
+  export type AccountUpdateDisplayCurrencyPayload = {
+    readonly __typename?: "AccountUpdateDisplayCurrencyPayload"
     readonly account?: Maybe<ConsumerAccount>
     readonly errors: ReadonlyArray<Error>
   }
@@ -187,8 +200,11 @@ export namespace GaloyGQL {
     /** return CSV stream, base64 encoded, of the list of transactions in the wallet */
     readonly csvTransactions: Scalars["String"]
     readonly defaultWalletId: Scalars["WalletId"]
+    readonly displayCurrency: Scalars["DisplayCurrency"]
     readonly id: Scalars["ID"]
     readonly limits: AccountLimits
+    /** List the quiz questions of the consumer account */
+    readonly quiz: ReadonlyArray<Quiz>
     /** A list of all transactions associated with walletIds optionally passed. */
     readonly transactions?: Maybe<TransactionConnection>
     readonly wallets: ReadonlyArray<Wallet>
@@ -479,6 +495,7 @@ export namespace GaloyGQL {
   export type Mutation = {
     readonly __typename?: "Mutation"
     readonly accountUpdateDefaultWalletId: AccountUpdateDefaultWalletIdPayload
+    readonly accountUpdateDisplayCurrency: AccountUpdateDisplayCurrencyPayload
     readonly captchaCreateChallenge: CaptchaCreateChallengePayload
     readonly captchaRequestAuthCode: SuccessPayload
     readonly deviceNotificationTokenCreate: SuccessPayload
@@ -558,9 +575,13 @@ export namespace GaloyGQL {
     readonly onChainAddressCurrent: OnChainAddressPayload
     readonly onChainPaymentSend: PaymentSendPayload
     readonly onChainPaymentSendAll: PaymentSendPayload
+    readonly onChainUsdPaymentSend: PaymentSendPayload
+    readonly quizCompleted: QuizCompletedPayload
     /** @deprecated will be moved to AccountContact */
     readonly userContactUpdateAlias: UserContactUpdateAliasPayload
     readonly userLogin: AuthTokenPayload
+    readonly userLogout: AuthTokenPayload
+    /** @deprecated Use QuizCompletedMutation instead */
     readonly userQuizQuestionUpdateCompleted: UserQuizQuestionUpdateCompletedPayload
     readonly userRequestAuthCode: SuccessPayload
     readonly userUpdateLanguage: UserUpdateLanguagePayload
@@ -570,6 +591,10 @@ export namespace GaloyGQL {
 
   export type MutationAccountUpdateDefaultWalletIdArgs = {
     input: AccountUpdateDefaultWalletIdInput
+  }
+
+  export type MutationAccountUpdateDisplayCurrencyArgs = {
+    input: AccountUpdateDisplayCurrencyInput
   }
 
   export type MutationCaptchaRequestAuthCodeArgs = {
@@ -656,12 +681,24 @@ export namespace GaloyGQL {
     input: OnChainPaymentSendAllInput
   }
 
+  export type MutationOnChainUsdPaymentSendArgs = {
+    input: OnChainUsdPaymentSendInput
+  }
+
+  export type MutationQuizCompletedArgs = {
+    input: QuizCompletedInput
+  }
+
   export type MutationUserContactUpdateAliasArgs = {
     input: UserContactUpdateAliasInput
   }
 
   export type MutationUserLoginArgs = {
     input: UserLoginInput
+  }
+
+  export type MutationUserLogoutArgs = {
+    input: UserLogoutInput
   }
 
   export type MutationUserQuizQuestionUpdateCompletedArgs = {
@@ -735,6 +772,20 @@ export namespace GaloyGQL {
     readonly walletId: Scalars["WalletId"]
   }
 
+  export type OnChainUsdPaymentSendInput = {
+    readonly address: Scalars["OnChainAddress"]
+    readonly amount: Scalars["CentAmount"]
+    readonly memo?: InputMaybe<Scalars["Memo"]>
+    readonly targetConfirmations?: InputMaybe<Scalars["TargetConfirmations"]>
+    readonly walletId: Scalars["WalletId"]
+  }
+
+  export type OnChainUsdTxFee = {
+    readonly __typename?: "OnChainUsdTxFee"
+    readonly amount: Scalars["CentAmount"]
+    readonly targetConfirmations: Scalars["TargetConfirmations"]
+  }
+
   export type OneDayAccountLimit = AccountLimit & {
     readonly __typename?: "OneDayAccountLimit"
     /** The rolling time interval value in seconds for the current 24 hour period. */
@@ -772,7 +823,7 @@ export namespace GaloyGQL {
   export type Price = {
     readonly __typename?: "Price"
     readonly base: Scalars["SafeInt"]
-    readonly currencyUnit: ExchangeCurrencyUnit
+    readonly currencyUnit: Scalars["String"]
     readonly formattedAmount: Scalars["String"]
     readonly offset: Scalars["Int"]
   }
@@ -823,6 +874,8 @@ export namespace GaloyGQL {
     readonly me?: Maybe<User>
     readonly mobileVersions?: Maybe<ReadonlyArray<Maybe<MobileVersions>>>
     readonly onChainTxFee: OnChainTxFee
+    readonly onChainUsdTxFee: OnChainUsdTxFee
+    /** @deprecated TODO: remove. we don't need a non authenticated version of this query. the users can only do the query while authenticated */
     readonly quizQuestions?: Maybe<ReadonlyArray<Maybe<QuizQuestion>>>
     /** @deprecated will be migrated to AccountDefaultWalletId */
     readonly userDefaultWalletId: Scalars["WalletId"]
@@ -832,6 +885,10 @@ export namespace GaloyGQL {
   export type QueryAccountDefaultWalletArgs = {
     username: Scalars["Username"]
     walletCurrency?: InputMaybe<WalletCurrency>
+  }
+
+  export type QueryBtcPriceArgs = {
+    currency?: Scalars["DisplayCurrency"]
   }
 
   export type QueryBtcPriceListArgs = {
@@ -849,12 +906,37 @@ export namespace GaloyGQL {
     walletId: Scalars["WalletId"]
   }
 
+  export type QueryOnChainUsdTxFeeArgs = {
+    address: Scalars["OnChainAddress"]
+    amount: Scalars["CentAmount"]
+    targetConfirmations?: InputMaybe<Scalars["TargetConfirmations"]>
+    walletId: Scalars["WalletId"]
+  }
+
   export type QueryUserDefaultWalletIdArgs = {
     username: Scalars["Username"]
   }
 
   export type QueryUsernameAvailableArgs = {
     username: Scalars["Username"]
+  }
+
+  export type Quiz = {
+    readonly __typename?: "Quiz"
+    /** The reward in Satoshis for the quiz question */
+    readonly amount: Scalars["SatAmount"]
+    readonly completed: Scalars["Boolean"]
+    readonly id: Scalars["ID"]
+  }
+
+  export type QuizCompletedInput = {
+    readonly id: Scalars["ID"]
+  }
+
+  export type QuizCompletedPayload = {
+    readonly __typename?: "QuizCompletedPayload"
+    readonly errors: ReadonlyArray<Error>
+    readonly quiz?: Maybe<Quiz>
   }
 
   export type QuizQuestion = {
@@ -868,6 +950,10 @@ export namespace GaloyGQL {
     readonly __typename?: "SatAmountPayload"
     readonly amount?: Maybe<Scalars["SatAmount"]>
     readonly errors: ReadonlyArray<Error>
+  }
+
+  export type SatPriceInput = {
+    readonly currency?: Scalars["DisplayCurrency"]
   }
 
   export type SettlementVia =
@@ -899,6 +985,8 @@ export namespace GaloyGQL {
     readonly lnInvoicePaymentStatus: LnInvoicePaymentStatusPayload
     readonly myUpdates: MyUpdatesPayload
     readonly price: PricePayload
+    /** Returns the price of 1 satoshi */
+    readonly satPrice: PricePayload
   }
 
   export type SubscriptionLnInvoicePaymentStatusArgs = {
@@ -907,6 +995,10 @@ export namespace GaloyGQL {
 
   export type SubscriptionPriceArgs = {
     input: PriceInput
+  }
+
+  export type SubscriptionSatPriceArgs = {
+    input: SatPriceInput
   }
 
   export type SuccessPayload = {
@@ -1028,7 +1120,7 @@ export namespace GaloyGQL {
     readonly phone?: Maybe<Scalars["Phone"]>
     /**
      * List the quiz questions the user may have completed.
-     * @deprecated will be moved to Accounts
+     * @deprecated use Quiz from Account instead
      */
     readonly quizQuestions: ReadonlyArray<UserQuizQuestion>
     /**
@@ -1078,6 +1170,10 @@ export namespace GaloyGQL {
   export type UserLoginInput = {
     readonly code: Scalars["OneTimeAuthCode"]
     readonly phone: Scalars["Phone"]
+  }
+
+  export type UserLogoutInput = {
+    readonly authToken: Scalars["AuthToken"]
   }
 
   export type UserQuizQuestion = {
@@ -1197,7 +1293,7 @@ export namespace GaloyGQL {
               readonly __typename?: "Price"
               readonly base: number
               readonly offset: number
-              readonly currencyUnit: ExchangeCurrencyUnit
+              readonly currencyUnit: string
               readonly formattedAmount: string
             }
             readonly initiationVia:
@@ -1268,7 +1364,7 @@ export namespace GaloyGQL {
           readonly __typename?: "Price"
           readonly base: number
           readonly offset: number
-          readonly currencyUnit: ExchangeCurrencyUnit
+          readonly currencyUnit: string
           readonly formattedAmount: string
         }
         readonly initiationVia:
@@ -1775,7 +1871,7 @@ export namespace GaloyGQL {
         readonly __typename?: "Price"
         readonly base: number
         readonly offset: number
-        readonly currencyUnit: ExchangeCurrencyUnit
+        readonly currencyUnit: string
         readonly formattedAmount: string
       }
     } | null> | null
@@ -1816,6 +1912,19 @@ export namespace GaloyGQL {
     } | null
   }
 
+  export type CurrencyListQueryVariables = Exact<{ [key: string]: never }>
+
+  export type CurrencyListQuery = {
+    readonly __typename?: "Query"
+    readonly currencyList?: ReadonlyArray<{
+      readonly __typename?: "Currency"
+      readonly code: string
+      readonly symbol: string
+      readonly name: string
+      readonly flag: string
+    } | null> | null
+  }
+
   export type DefaultWalletCsvTransactionsQueryVariables = Exact<{
     defaultWalletId: Scalars["WalletId"]
   }>
@@ -1849,7 +1958,7 @@ export namespace GaloyGQL {
       readonly __typename?: "Price"
       readonly base: number
       readonly offset: number
-      readonly currencyUnit: ExchangeCurrencyUnit
+      readonly currencyUnit: string
       readonly formattedAmount: string
     } | null
     readonly me?: {
@@ -1888,7 +1997,7 @@ export namespace GaloyGQL {
                 readonly __typename?: "Price"
                 readonly base: number
                 readonly offset: number
-                readonly currencyUnit: ExchangeCurrencyUnit
+                readonly currencyUnit: string
                 readonly formattedAmount: string
               }
               readonly initiationVia:
@@ -2005,7 +2114,7 @@ export namespace GaloyGQL {
                 readonly __typename?: "Price"
                 readonly base: number
                 readonly offset: number
-                readonly currencyUnit: ExchangeCurrencyUnit
+                readonly currencyUnit: string
                 readonly formattedAmount: string
               }
               readonly initiationVia:
@@ -2081,7 +2190,7 @@ export namespace GaloyGQL {
                 readonly __typename?: "Price"
                 readonly base: number
                 readonly offset: number
-                readonly currencyUnit: ExchangeCurrencyUnit
+                readonly currencyUnit: string
                 readonly formattedAmount: string
               }
               readonly initiationVia:
@@ -2161,7 +2270,7 @@ export namespace GaloyGQL {
                       readonly __typename?: "Price"
                       readonly base: number
                       readonly offset: number
-                      readonly currencyUnit: ExchangeCurrencyUnit
+                      readonly currencyUnit: string
                       readonly formattedAmount: string
                     }
                     readonly initiationVia:
@@ -2225,7 +2334,7 @@ export namespace GaloyGQL {
                       readonly __typename?: "Price"
                       readonly base: number
                       readonly offset: number
-                      readonly currencyUnit: ExchangeCurrencyUnit
+                      readonly currencyUnit: string
                       readonly formattedAmount: string
                     }
                     readonly initiationVia:
@@ -2347,7 +2456,7 @@ export namespace GaloyGQL {
                   readonly __typename?: "Price"
                   readonly base: number
                   readonly offset: number
-                  readonly currencyUnit: ExchangeCurrencyUnit
+                  readonly currencyUnit: string
                   readonly formattedAmount: string
                 }
                 readonly initiationVia:
@@ -2426,7 +2535,7 @@ export namespace GaloyGQL {
             readonly __typename?: "Price"
             readonly base: number
             readonly offset: number
-            readonly currencyUnit: ExchangeCurrencyUnit
+            readonly currencyUnit: string
             readonly formattedAmount: string
             readonly type: "Price"
           }

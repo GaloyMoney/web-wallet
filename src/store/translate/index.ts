@@ -1,12 +1,12 @@
 import I18n from "i18n-js"
 
-import { LANG_ES_MAIN, TranslationKey } from "@galoymoney/client"
+import ES from "store/translate/es"
 
 I18n.fallbacks = true
-I18n.translations = { es: LANG_ES_MAIN }
+I18n.translations = { es: ES }
 
 export type GaloyTranslate = (
-  scope: keyof typeof LANG_ES_MAIN,
+  scope: keyof typeof ES,
   options?: I18n.TranslateOptions | undefined,
 ) => string
 
@@ -36,5 +36,3 @@ export const getLocale = (): string => {
 }
 
 export { toNumber as toLocaleNumber } from "i18n-js"
-
-export { TranslationKey }

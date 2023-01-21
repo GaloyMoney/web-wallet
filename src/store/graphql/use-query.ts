@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import {
   QueryResult,
   QueryHookOptions,
@@ -7,22 +8,22 @@ import {
 } from "@apollo/client"
 import { useCallback, useState } from "react"
 
-import accountDefaultWallet from "./queries/account-default-wallet"
-import btcPriceList from "./queries/btc-price-list"
-import businessMapMarkers from "./queries/business-map-markers"
-import contacts from "./queries/contacts"
-import getWalletCsvTransactions from "./queries/get-wallet-csv-transactions"
-import main from "./queries/main"
-import onChainTxFee from "./queries/on-chain-tx-fee"
-import quizQuestions from "./queries/quiz-questions"
-import transactionList from "./queries/transaction-list"
-import transactionListForContact from "./queries/transaction-list-for-contact"
-import transactionListForDefaultAccount from "./queries/transaction-list-for-default-account"
-import userDefaultWalletId from "./queries/user-default-wallet-id"
-import usernameAvailable from "./queries/username-available"
-import currencyList from "./queries/currency-list"
+import accountDefaultWallet from "store/graphql/queries/account-default-wallet"
+import btcPriceList from "store/graphql/queries/btc-price-list"
+import businessMapMarkers from "store/graphql/queries/business-map-markers"
+import contacts from "store/graphql/queries/contacts"
+import getWalletCsvTransactions from "store/graphql/queries/get-wallet-csv-transactions"
+import main from "store/graphql/queries/main"
+import onChainTxFee from "store/graphql/queries/on-chain-tx-fee"
+import quizQuestions from "store/graphql/queries/quiz-questions"
+import transactionList from "store/graphql/queries/transaction-list"
+import transactionListForContact from "store/graphql/queries/transaction-list-for-contact"
+import transactionListForDefaultAccount from "store/graphql/queries/transaction-list-for-default-account"
+import userDefaultWalletId from "store/graphql/queries/user-default-wallet-id"
+import usernameAvailable from "store/graphql/queries/username-available"
+import currencyList from "store/graphql/queries/currency-list"
 
-import { GaloyGQL, joinErrorsMessages } from "../../../galoy-client/src/index"
+import { GaloyGQL, joinErrorsMessages } from "store/graphql/index"
 
 export const QUERIES = {
   accountDefaultWallet,
@@ -52,6 +53,7 @@ const useQueryWrapper = <TData = unknown, TVars = unknown>(
   const result = useApolloQuery<TData, TVars>(QUERIES[queryName], config)
 
   const { data, error } = result
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const errors = (data as any)?.[queryName]?.errors
   const errorsMessage = error?.message || joinErrorsMessages(errors)
 
@@ -176,10 +178,12 @@ const useDelayedQueryWrapper = <TData = unknown, TVars = unknown>(
         })
         setLoading(false)
         const { data, error } = result
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const errors = (data as any)?.[queryName]?.errors
         const errorsMessage = error?.message || joinErrorsMessages(errors)
 
         return { ...result, loading, errorsMessage }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         setLoading(false)
         return Promise.resolve({
@@ -191,7 +195,7 @@ const useDelayedQueryWrapper = <TData = unknown, TVars = unknown>(
         })
       }
     },
-    [client, queryName],
+    [client, config, loading, queryName],
   )
 
   return [

@@ -120,12 +120,7 @@ module.exports = {
     "no-plusplus": "error",
     "no-promise-executor-return": "error",
     "no-proto": "error",
-    "no-restricted-imports": [
-      "error",
-      {
-        patterns: [".*"],
-      },
-    ],
+    "no-restricted-imports": ["error", { patterns: ["import*.*"] }],
     "no-return-assign": "error",
     "no-return-await": "error",
     "no-script-url": "error",

@@ -1,5 +1,6 @@
 import { gql, useApolloClient } from "@apollo/client"
-import { GaloyGQL } from "./types"
+
+import { GaloyGQL } from "store/graphql/types"
 
 const joinErrorsMessages = (errors?: Array<GaloyGQL.Error>) => {
   return errors?.map((err) => err.message).join(", ")

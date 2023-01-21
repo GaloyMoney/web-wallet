@@ -30,52 +30,6 @@ export const useResetClient = () => {
   }
 }
 
-export const getRequest =
-  (headers: Record<string, string>) =>
-  async (path: string, params: Record<string, string> = {}) => {
-    try {
-      const url = new URL(path)
-      url.search = new URLSearchParams(params).toString()
-
-      const response = await fetch(url.toString(), {
-        method: "get",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          ...headers,
-        },
-      })
-
-      const data = await response.json()
-
-      return data.error ? new Error(data.error) : data
-    } catch (err) {
-      return err
-    }
-  }
-
-export const postRequest =
-  (authToken: string | undefined) =>
-  async (path: string, variables: Record<string, string | number | boolean> = {}) => {
-    try {
-      const response = await fetch(path, {
-        method: "post",
-        body: JSON.stringify(variables),
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          "authorization": authToken ? `Bearer ${authToken}` : "",
-        },
-      })
-
-      const data = await response.json()
-
-      return data.error ? new Error(data.error) : data
-    } catch (err) {
-      return err
-    }
-  }
-
 const defaultErrorCallback: ErrorLink.ErrorHandler = ({
   graphQLErrors,
   networkError,

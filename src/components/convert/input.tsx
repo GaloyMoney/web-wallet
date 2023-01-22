@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
 
-import { formatSats, formatUsd, GaloyGQL } from "@galoymoney/client"
+import { formatSats, formatUsd } from "@galoymoney/client"
 import {
   FormattedNumberInput,
   Icon,
@@ -8,7 +8,7 @@ import {
   Spinner,
 } from "@galoymoney/react"
 
-import { translate } from "store/index"
+import { translate, GaloyGQL } from "store/index"
 import useMainQuery from "hooks/use-main-query"
 import useMyUpdates from "hooks/use-my-updates"
 

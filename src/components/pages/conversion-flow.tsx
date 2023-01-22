@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import { GaloyGQL } from "@galoymoney/client"
+import { GaloyGQL } from "store/index"
 
 import ConversionInput from "components/convert/input"
 import ConversionConfirmation from "components/convert/confirmation"

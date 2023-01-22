@@ -1,12 +1,11 @@
 import { useState } from "react"
 
-import { translate, NoPropsFCT, useAppDispatcher } from "store/index"
+import { translate, GaloyGQL, NoPropsFCT, useAppDispatcher } from "store/index"
 
 import Header from "components/header"
 import InvoiceOverview from "components/receive/overview"
 import InvoiceInput from "components/receive/input"
 import useMainQuery from "hooks/use-main-query"
-import { GaloyGQL } from "@galoymoney/client"
 import { SuccessCheckmark } from "@galoymoney/react"
 
 export type ReceiveScreenInput = {

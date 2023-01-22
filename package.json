@@ -106,6 +106,7 @@
     "webpack-cli": "^5.0.1"
   },
   "devDependencies": {
+    "@jest/globals": "^29.3.1",
     "@typescript-eslint/eslint-plugin": "^5.48.2",
     "@typescript-eslint/parser": "^5.48.2",
     "babel-jest": "^29.3.1",

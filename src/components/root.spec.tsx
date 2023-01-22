@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom/extend-expect"
 
 import { render } from "@testing-library/react"
-import { MockedProvider } from "@galoymoney/client"
+import { MockedProvider } from "@apollo/client/testing"
 
 import RootComponent from "./root-component"
 

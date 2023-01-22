@@ -1,8 +1,8 @@
 import { useState } from "react"
 
-import { GaloyGQL, PaymentType } from "@galoymoney/client"
+import { PaymentType } from "@galoymoney/client"
 
-import { translate } from "store/index"
+import { translate, GaloyGQL } from "store/index"
 import useMainQuery from "hooks/use-main-query"
 
 import Link from "components/link"

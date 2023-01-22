@@ -1,8 +1,6 @@
 import { useCallback, useEffect } from "react"
 
-import { useMutation } from "@galoymoney/client"
-
-import { translate } from "store/index"
+import { translate, useMutation } from "store/index"
 import useMyUpdates from "hooks/use-my-updates"
 import useMainQuery from "hooks/use-main-query"
 

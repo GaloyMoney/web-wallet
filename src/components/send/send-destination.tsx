@@ -3,9 +3,9 @@ import React, { useCallback, useEffect, useMemo } from "react"
 import {
   parsePaymentDestination,
   ValidPaymentResponse,
-  useDelayedQuery,
   formatUsd,
 } from "@galoymoney/client"
+
 import {
   DebouncedInput,
   OnTextValueChange,
@@ -14,7 +14,7 @@ import {
   SatFormat,
 } from "@galoymoney/react"
 
-import { config, translate } from "store/index"
+import { config, translate, useDelayedQuery } from "store/index"
 import useMainQuery from "hooks/use-main-query"
 import useMyUpdates from "hooks/use-my-updates"
 
@@ -27,7 +27,7 @@ type FCT = React.FC<{
 }>
 
 const SendDestination: FCT = ({ input, setInput }) => {
-  const { pubKey, btcWalletId, username } = useMainQuery()
+  const { btcWalletId, username } = useMainQuery()
   const { satsToUsd, usdToSats } = useMyUpdates()
 
   const [userDefaultWalletIdQuery, { loading }] = useDelayedQuery.userDefaultWalletId()
@@ -90,13 +90,12 @@ const SendDestination: FCT = ({ input, setInput }) => {
         const parsedDestination = parsePaymentDestination({
           destination: input.destination,
           network: config.network,
-          pubKey,
         })
         setInputFromParsedDestination(parsedDestination)
       }
     }
     parseInput()
-  }, [btcWalletId, input.destination, pubKey, setInputFromParsedDestination])
+  }, [btcWalletId, input.destination, setInputFromParsedDestination])
 
   const handleDestinationUpdate: OnTextValueChange = useCallback(() => {
     setInput((currInput) => ({
@@ -145,7 +144,6 @@ const SendDestination: FCT = ({ input, setInput }) => {
         const parsedDestination = parsePaymentDestination({
           destination,
           network: config.network,
-          pubKey,
         })
 
         if (parsedDestination.valid) {
@@ -159,7 +157,7 @@ const SendDestination: FCT = ({ input, setInput }) => {
       }
       return false
     },
-    [pubKey],
+    [],
   )
 
   return (

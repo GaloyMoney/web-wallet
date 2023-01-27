@@ -1,7 +1,7 @@
 import { useMemo, useState, ReactNode, useCallback } from "react"
 import { useErrorHandler } from "react-error-boundary"
 
-import { GaloyClient, GaloyProvider } from "store/client"
+import { GaloyClient, GaloyProvider } from "@/store/client"
 
 import {
   AuthContext,
@@ -12,7 +12,7 @@ import {
   createClient,
   storage,
   useAppDispatcher,
-} from "store/index"
+} from "@/store/index"
 
 const galoySessionName = "galoy-session"
 

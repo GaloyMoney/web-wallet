@@ -3,9 +3,9 @@ import { useState } from "react"
 import { formatForLocale, formatUsd, truncatedDisplay } from "@galoymoney/client"
 import { SatFormat } from "@galoymoney/react"
 
-import { GaloyGQL, config, translate, getLocale } from "store/index"
+import { GaloyGQL, config, translate, getLocale } from "@/store/index"
 
-import Icon from "components/icon"
+import Icon from "@/components/icon"
 
 export const BLOCKCHAIN_EXPLORER_URL = "https://mempool.space/tx/"
 

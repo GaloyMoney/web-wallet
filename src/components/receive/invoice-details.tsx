@@ -5,10 +5,10 @@ import copy from "copy-to-clipboard"
 import { formatUsd, satsToBTC } from "@galoymoney/client"
 import { SatFormat } from "@galoymoney/react"
 
-import { translate, GaloyGQL } from "store/index"
+import { translate, GaloyGQL } from "@/store/index"
 
-import useMyUpdates from "hooks/use-my-updates"
-import useMainQuery from "hooks/use-main-query"
+import useMyUpdates from "@/hooks/use-my-updates"
+import useMainQuery from "@/hooks/use-main-query"
 
 type LightningInvoiceFCT = React.FC<{
   invoice: Pick<GaloyGQL.LnInvoice, "paymentHash" | "paymentRequest">

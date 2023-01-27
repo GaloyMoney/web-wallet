@@ -1,7 +1,7 @@
 import { useMemo, useRef } from "react"
 
-import { GaloyGQL, PriceCacheStore, useSubscription } from "store/index"
-import useMainQuery from "hooks/use-main-query"
+import { GaloyGQL, PriceCacheStore, useSubscription } from "@/store/index"
+import useMainQuery from "@/hooks/use-main-query"
 
 export type PriceData = {
   formattedAmount: string

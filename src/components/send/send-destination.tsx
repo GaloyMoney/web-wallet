@@ -14,12 +14,12 @@ import {
   SatFormat,
 } from "@galoymoney/react"
 
-import { config, translate, useDelayedQuery } from "store/index"
-import useMainQuery from "hooks/use-main-query"
-import useMyUpdates from "hooks/use-my-updates"
+import { config, translate, useDelayedQuery } from "@/store/index"
+import useMainQuery from "@/hooks/use-main-query"
+import useMyUpdates from "@/hooks/use-my-updates"
 
-import { SendScreenInput } from "components/pages/send"
-import SendAction from "components/send/send-action"
+import { SendScreenInput } from "@/components/pages/send"
+import SendAction from "@/components/send/send-action"
 
 type FCT = React.FC<{
   input: SendScreenInput

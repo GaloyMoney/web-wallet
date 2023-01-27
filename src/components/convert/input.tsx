@@ -8,16 +8,16 @@ import {
   Spinner,
 } from "@galoymoney/react"
 
-import { translate, GaloyGQL } from "store/index"
-import useMainQuery from "hooks/use-main-query"
-import useMyUpdates from "hooks/use-my-updates"
+import { translate, GaloyGQL } from "@/store/index"
+import useMainQuery from "@/hooks/use-main-query"
+import useMyUpdates from "@/hooks/use-my-updates"
 
-import Header from "components/header"
+import Header from "@/components/header"
 import {
   ConversionData,
   ConvertAmount,
   WalletDescriptor,
-} from "components/pages/conversion-flow"
+} from "@/components/pages/conversion-flow"
 
 const ConversionInput: React.FC<{
   navigateToNextStep: (data: ConversionData) => void

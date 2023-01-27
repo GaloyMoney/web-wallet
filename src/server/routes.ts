@@ -1,20 +1,18 @@
-import { config } from "store/index"
-import { KratosFlowData } from "kratos/index"
+import { config } from "@/store/index"
+import { KratosFlowData } from "@/kratos/index"
 
-import Contacts from "components/pages/contacts"
-import Home from "components/pages/home"
-import LoginEmail from "components/pages/login-email"
-import LoginPhone from "components/pages/login-phone"
-import Receive from "components/pages/receive"
-import Recovery from "components/pages/recovery"
-import Register from "components/pages/register"
-import Send from "components/pages/send"
-import Settings from "components/pages/settings"
-import Transactions from "components/pages/transactions"
-import ConversionFlow from "components/pages/conversion-flow"
+import Contacts from "@/components/pages/contacts"
+import Home from "@/components/pages/home"
+import LoginEmail from "@/components/pages/login-email"
+import LoginPhone from "@/components/pages/login-phone"
+import Receive from "@/components/pages/receive"
+import Recovery from "@/components/pages/recovery"
+import Register from "@/components/pages/register"
+import Send from "@/components/pages/send"
+import Settings from "@/components/pages/settings"
+import Transactions from "@/components/pages/transactions"
+import ConversionFlow from "@/components/pages/conversion-flow"
 
-// Note: The component property is skipped by the serialize function
-// It's only used on the front-end
 const appRoutesDef = {
   "/": {
     component: Home,
@@ -52,7 +50,7 @@ const appRoutesDef = {
 
 // Allow SMS login without kratos
 if (!config.kratosFeatureFlag) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any , @typescript-eslint/no-extra-semi
   ;(appRoutesDef as any)["/login"] = {
     component: LoginPhone,
     title: `Login to ${config.walletName} Web Wallet`,

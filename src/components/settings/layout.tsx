@@ -1,4 +1,4 @@
-import Header from "components/header"
+import Header from "@/components/header"
 
 const SettingsLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (

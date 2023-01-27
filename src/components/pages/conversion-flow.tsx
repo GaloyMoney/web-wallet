@@ -1,10 +1,10 @@
 import { useState } from "react"
 
-import { GaloyGQL } from "store/index"
+import { GaloyGQL } from "@/store/index"
 
-import ConversionInput from "components/convert/input"
-import ConversionConfirmation from "components/convert/confirmation"
-import ConversionStatus from "components/convert/status"
+import ConversionInput from "@/components/convert/input"
+import ConversionConfirmation from "@/components/convert/confirmation"
+import ConversionStatus from "@/components/convert/status"
 
 export type ConvertAmount<T extends GaloyGQL.WalletCurrency> = {
   id: number

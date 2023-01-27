@@ -3,11 +3,11 @@ import { useMemo } from "react"
 import { formatUsd } from "@galoymoney/client"
 import { SatFormat } from "@galoymoney/react"
 
-import { translate } from "store/index"
-import useMyUpdates from "hooks/use-my-updates"
+import { translate } from "@/store/index"
+import useMyUpdates from "@/hooks/use-my-updates"
 
-import { SendScreenInput } from "components/pages/send"
-import SendAction from "components/send/send-action"
+import { SendScreenInput } from "@/components/pages/send"
+import SendAction from "@/components/send/send-action"
 
 type FCT = React.FC<{ input: SendScreenInput }>
 

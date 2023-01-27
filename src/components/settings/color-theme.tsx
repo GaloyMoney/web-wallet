@@ -7,9 +7,9 @@ import {
   NoPropsFCT,
   setColorTheme,
   storage,
-} from "store/index"
+} from "@/store/index"
 
-import Icon from "components/icon"
+import Icon from "@/components/icon"
 
 const ColorThemeSetting: NoPropsFCT = () => {
   const [colorTheme, setColorThemeState] = useState<ColorTheme>("DEFAULT")

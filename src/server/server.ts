@@ -5,10 +5,10 @@ import morgan from "morgan"
 import serialize from "serialize-javascript"
 import rateLimit from "express-rate-limit"
 
-import { config, helmetConfig } from "store/index"
+import { config, helmetConfig } from "@/store/index"
 
-import apiRouter from "server/api-router"
-import ssrRouter from "server/ssr-router"
+import apiRouter from "@/server/api-router"
+import mainRouter from "@/server/main"
 
 const app = express()
 app.enable("trust proxy")
@@ -55,7 +55,7 @@ const limiter = rateLimit({
 app.use(limiter)
 
 app.use("/api", apiRouter)
-app.use("/", ssrRouter)
+app.use("/", mainRouter)
 
 app.listen(config.port as number, config.host as string, () => {
   console.info(`Running on http://${config.host}:${config.port}...`)

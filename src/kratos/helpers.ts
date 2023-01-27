@@ -1,4 +1,4 @@
-import { KratosFlowData } from "kratos/server"
+import { KratosFlowData } from "@/kratos/server"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const isQuerySet = (query: any): query is string =>
@@ -18,7 +18,7 @@ export const getUrlForFlow = ({
   kratosBrowserUrl,
   query,
 }: {
-  flow: typeof KratosFlow[keyof typeof KratosFlow]
+  flow: (typeof KratosFlow)[keyof typeof KratosFlow]
   kratosBrowserUrl: string
   query?: URLSearchParams
 }) =>

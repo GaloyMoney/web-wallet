@@ -28,6 +28,7 @@ type AuthContextType = {
 
 export const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setAuthSession: () => {},
   syncSession: () => Promise.resolve(true),
 })

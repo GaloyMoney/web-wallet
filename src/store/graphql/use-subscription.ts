@@ -5,10 +5,10 @@ import {
   SubscriptionResult,
 } from "@apollo/client"
 
-import { GaloyGQL, joinErrorsMessages } from "store/graphql/index"
+import { GaloyGQL, joinErrorsMessages } from "@/store/graphql/index"
 
-import myUpdates from "store/graphql/subscriptions/my-updates"
-import lnInvoicePaymentStatus from "store/graphql/subscriptions/ln-invoice-payment-status"
+import myUpdates from "@/store/graphql/subscriptions/my-updates"
+import lnInvoicePaymentStatus from "@/store/graphql/subscriptions/ln-invoice-payment-status"
 
 export const SUBSCRIPTIONS = {
   myUpdates,

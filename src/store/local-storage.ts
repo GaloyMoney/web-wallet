@@ -1,4 +1,4 @@
-import { config } from "store/config"
+import { config } from "@/store/config"
 
 export const storage = {
   get(name: string) {

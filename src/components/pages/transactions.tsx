@@ -3,10 +3,10 @@ import { useCallback, useRef } from "react"
 import { isThisMonth, isToday, isYesterday } from "@galoymoney/client"
 import { Spinner } from "@galoymoney/react"
 
-import { translate, GaloyGQL, useQuery } from "store/index"
+import { translate, GaloyGQL, useQuery } from "@/store/index"
 
-import Header from "components/header"
-import TransactionItem from "components/transactions/item"
+import Header from "@/components/header"
+import TransactionItem from "@/components/transactions/item"
 
 const TRANSACTIONS_PER_PAGE = 25
 const EMPTY_CONNECTION = {

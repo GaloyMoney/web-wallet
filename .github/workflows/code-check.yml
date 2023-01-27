@@ -13,4 +13,4 @@ jobs:
           node-version: 18
       - run: yarn install
       - name: Run check code
-        run: . ./.envrc && yarn code:check
+        run: yarn code:check

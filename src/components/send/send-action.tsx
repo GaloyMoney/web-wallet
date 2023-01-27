@@ -1,35 +1,35 @@
 import { useCallback } from "react"
 
-import { translate, useAppDispatcher } from "store/index"
-import useMainQuery from "hooks/use-main-query"
+import { translate, useAppDispatcher } from "@/store/index"
+import useMainQuery from "@/hooks/use-main-query"
 
-import { ButtonLink } from "components/link"
+import { ButtonLink } from "@/components/link"
 
 import SendIntraLedgerAction, {
   SendIntraLedgerActionProps,
-} from "components/send/send-intra-ledger-action"
+} from "@/components/send/send-intra-ledger-action"
 import SendIntraLedgerUsdAction, {
   SendIntraLedgerUsdActionProps,
-} from "components/send/send-intra-ledger-usd-action"
+} from "@/components/send/send-intra-ledger-usd-action"
 
 import {
   SendLnActionProps,
   SendLnInvoiceAction,
   SendLnNoAmountActionProps,
   SendLnNoAmountInvoiceAction,
-} from "components/send/send-ln-action"
+} from "@/components/send/send-ln-action"
 import {
   SendLnUsdActionProps,
   SendLnUsdInvoiceAction,
   SendLnNoAmountUsdActionProps,
   SendLnNoAmountUsdInvoiceAction,
-} from "components/send/send-ln-usd-action"
+} from "@/components/send/send-ln-usd-action"
 
 import SendOnChainAction, {
   SendOnChainActionProps,
-} from "components/send/send-onchain-action"
+} from "@/components/send/send-onchain-action"
 
-import { SendScreenInput } from "components/pages/send"
+import { SendScreenInput } from "@/components/pages/send"
 import { Spinner } from "@galoymoney/react"
 import { formatSats, formatUsd } from "@galoymoney/client"
 

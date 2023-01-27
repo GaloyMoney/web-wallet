@@ -2,26 +2,26 @@
 import { useCallback, useEffect, useState } from "react"
 import { SelfServiceSettingsFlow, SubmitSelfServiceSettingsFlowBody } from "@ory/client"
 
-import { translate } from "store/translate"
+import { translate } from "@/store/translate"
 
-import { config, history, NoPropsFCT, useAuthContext } from "store/index"
+import { config, history, NoPropsFCT, useAuthContext } from "@/store/index"
 import {
   KratosSdk,
   handleFlowError,
   getNodesForFlow,
   KratosFlowData,
   KratosError,
-} from "kratos/index"
+} from "@/kratos/index"
 
-import SettingsLayout from "components/settings/layout"
-import ColorThemeSetting from "components/settings/color-theme"
-import LanguageSetting from "components/settings/language"
-import UsernameSetting from "components/settings/username"
-import EmailSetting from "components/settings/email"
-import { Messages } from "components/kratos"
-import LoginLink from "components/login-link"
-import LogoutLink from "components/logout-link"
-import Link from "components/link"
+import SettingsLayout from "@/components/settings/layout"
+import ColorThemeSetting from "@/components/settings/color-theme"
+import LanguageSetting from "@/components/settings/language"
+import UsernameSetting from "@/components/settings/username"
+import EmailSetting from "@/components/settings/email"
+import { Messages } from "@/components/kratos"
+import LoginLink from "@/components/login-link"
+import LogoutLink from "@/components/logout-link"
+import Link from "@/components/link"
 
 type FCT = React.FC<{
   flowData?: KratosFlowData

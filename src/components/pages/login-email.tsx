@@ -9,12 +9,12 @@ import {
   getNodesForFlow,
   KratosFlowData,
   KratosError,
-} from "kratos/index"
-import { config, translate, history, useAuthContext } from "store/index"
+} from "@/kratos/index"
+import { config, translate, history, useAuthContext } from "@/store/index"
 
-import Link from "components/link"
-import { Messages } from "components/kratos"
-import Icon from "components/icon"
+import Link from "@/components/link"
+import { Messages } from "@/components/kratos"
+import Icon from "@/components/icon"
 
 type FCT = React.FC<{
   flowData?: KratosFlowData

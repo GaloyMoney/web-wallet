@@ -2,9 +2,9 @@ import { memo, useCallback, useEffect, useState } from "react"
 
 import { Spinner } from "@galoymoney/react"
 
-import { translate, useMutation } from "store/index"
+import { translate, useMutation } from "@/store/index"
 
-import AuthCode from "components/login/auth-code"
+import AuthCode from "@/components/login/auth-code"
 
 const CaptchaChallengeComponent: React.FC<{ phoneNumber: string }> = ({
   phoneNumber,

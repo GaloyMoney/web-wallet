@@ -1,7 +1,7 @@
 import { renderHook, act } from "@testing-library/react"
 import { useReducer } from "react"
 
-import { ValidPath } from "server/routes"
+import { ValidPath } from "@/server/routes"
 
 import { mainReducer } from "./reducer"
 

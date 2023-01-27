@@ -590,7 +590,7 @@ button {
   }
 }
 
-#root {
+#__next {
   .menu {
     background-color: var(--color-menu-bg);
     border-left: 1px solid var(--color-borders);

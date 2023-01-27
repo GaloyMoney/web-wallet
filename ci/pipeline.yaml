@@ -122,36 +122,11 @@ jobs:
                 - name: repo
               outputs:
                 - name: image
-              params:
-                CONTEXT: repo
-                BUILD_ARG_CUSTOM_MODULES: default
               run:
                 path: build
           - put: edge-image
             params:
               image: image/image.tar
-        - do:
-          - task: build-mobile-layout-image
-            privileged: true
-            config:
-              platform: linux
-              image_resource:
-                type: registry-image
-                source:
-                  repository: vito/oci-build-task
-              inputs:
-                - name: repo
-              outputs:
-                - name: image
-              params:
-                CONTEXT: repo
-                BUILD_ARG_CUSTOM_MODULES: mobile
-              run:
-                path: build
-          - put: mobile-layout-edge-image
-            params:
-              image: image/image.tar
-
 
   - name: release
     serial: true

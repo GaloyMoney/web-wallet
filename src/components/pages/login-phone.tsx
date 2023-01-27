@@ -1,9 +1,9 @@
 import { useCallback, useState } from "react"
 
-import { translate } from "store/index"
+import { translate } from "@/store/index"
 import { PhoneNumberInput } from "@galoymoney/react"
 
-import { CaptchaChallenge } from "components/login/captcha-callenge"
+import { CaptchaChallenge } from "@/components/login/captcha-callenge"
 
 type FCT = React.FC<unknown>
 

@@ -1,8 +1,8 @@
 import { getNodeLabel } from "@ory/integrations/ui"
 
-import { NodeInputProps } from "components/kratos/helpers"
+import { NodeInputProps } from "@/components/kratos/helpers"
 
-import Button from "components/kratos/Button"
+import Button from "@/components/kratos/Button"
 
 export const NodeInputButton = ({
   node,

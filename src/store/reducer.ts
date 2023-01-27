@@ -1,6 +1,6 @@
-import { ValidPath } from "server/routes"
-import { AuthIdentity } from "store/auth-context"
-import { KratosFlowData } from "kratos/index"
+import { ValidPath } from "@/server/routes"
+import { AuthIdentity } from "@/store/auth-context"
+import { KratosFlowData } from "@/kratos/index"
 
 export type GwwStateType = {
   key: number

@@ -6,7 +6,8 @@ public/vendor/
 build/
 coverage/
 .vscode
-.gvars.json
+
+.next/
 
 **/*.yaml
 **/*.yml

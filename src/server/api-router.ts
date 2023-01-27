@@ -1,6 +1,6 @@
 import express from "express"
 
-import { handleWhoAmI } from "kratos/index"
+import { handleWhoAmI } from "@/kratos/index"
 import { Request, Response } from "express-serve-static-core"
 
 const apiRouter = express.Router({ caseSensitive: true })

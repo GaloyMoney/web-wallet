@@ -1,19 +1,19 @@
 import { useState } from "react"
 
-import { translate, useAuthContext, useAppState } from "store/index"
+import { translate, useAuthContext, useAppState } from "@/store/index"
 
-import Balance from "components/balance"
-import WalletsHeader from "components/wallets-header"
-import Link from "components/link"
-import LoginLink from "components/login-link"
-import LogoutLink from "components/logout-link"
-import DiscardableMessage from "components/discardable-message"
-import Icon from "components/icon"
+import Balance from "@/components/balance"
+import WalletsHeader from "@/components/wallets-header"
+import Link from "@/components/link"
+import LoginLink from "@/components/login-link"
+import LogoutLink from "@/components/logout-link"
+import DiscardableMessage from "@/components/discardable-message"
+import Icon from "@/components/icon"
 
 const headerNavPages = ["home"] as const
 
 type Page =
-  | typeof headerNavPages[number]
+  | (typeof headerNavPages)[number]
   | "conversion-flow"
   | "send-bitcoin"
   | "receive-bitcoin"

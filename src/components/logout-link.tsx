@@ -5,9 +5,9 @@ import {
   config,
   ajax,
   useResetClient,
-} from "store/index"
+} from "@/store/index"
 
-import Icon from "components/icon"
+import Icon from "@/components/icon"
 
 const LogoutLink: NoPropsFCT = () => {
   const { setAuthSession } = useAuthContext()

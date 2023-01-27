@@ -1,6 +1,6 @@
 import { History } from "history"
 
-import { KratosError } from "kratos/server"
+import { KratosError } from "@/kratos/server"
 
 // A small function to help us deal with errors coming from fetching a flow.
 export const handleFlowError = ({

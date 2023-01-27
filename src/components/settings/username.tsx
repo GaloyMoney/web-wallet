@@ -1,9 +1,9 @@
 import { Spinner } from "@galoymoney/react"
 
-import { translate, useMutation } from "store/index"
-import useMainQuery from "hooks/use-main-query"
+import { translate, useMutation } from "@/store/index"
+import useMainQuery from "@/hooks/use-main-query"
 
-import Icon from "components/icon"
+import Icon from "@/components/icon"
 
 const UsernameInput: React.FC<{ lightningAddressDomain: string }> = ({
   lightningAddressDomain,

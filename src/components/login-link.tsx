@@ -1,7 +1,7 @@
-import { translate } from "store/index"
+import { translate } from "@/store/index"
 
-import Link from "components/link"
-import Icon from "components/icon"
+import Link from "@/components/link"
+import Icon from "@/components/icon"
 
 const LoginLink = () => (
   <Link to="/login">

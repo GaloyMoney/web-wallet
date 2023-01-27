@@ -1,9 +1,9 @@
 import { formatUsd } from "@galoymoney/client"
 import { SatFormat, Spinner } from "@galoymoney/react"
 
-import useMainQuery from "hooks/use-main-query"
-import useMyUpdates from "hooks/use-my-updates"
-import { translate, history, useAuthContext, NoPropsFCT } from "store/index"
+import useMainQuery from "@/hooks/use-main-query"
+import useMyUpdates from "@/hooks/use-my-updates"
+import { translate, history, useAuthContext, NoPropsFCT } from "@/store/index"
 
 const navigateToHome = () => {
   history.push("/")

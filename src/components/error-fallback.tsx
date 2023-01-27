@@ -1,6 +1,7 @@
 import { FallbackProps } from "react-error-boundary"
+import Link from "next/link"
 
-import { config, translate } from "store/index"
+import { config, translate } from "@/store/index"
 
 type FCT = React.FC<FallbackProps>
 
@@ -23,7 +24,7 @@ const ErrorFallback: FCT = ({ error }) => {
         {translate("Email Support")}
       </a>
       <div className="separator">|</div>
-      <a href="/">{translate("Reload Application")}</a>
+      <Link href="/">{translate("Reload Application")}</Link>
       <div className="separator">|</div>
       <a href="/logout">{translate("Logout")}</a>
     </div>

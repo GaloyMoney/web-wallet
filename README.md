@@ -10,7 +10,7 @@ With a default installation, this web application can be accessed with `wallet.d
 
 ## Config
 
-The project depends on a few environment variables to be set. The `.envrc` root file has a list of them.
+The project depends on a few environment variables to be set. The `.env.local` root file has a list of them.
 
 ## How to run this repo locally?
 
@@ -20,10 +20,7 @@ In the project directory:
 yarn install
 
 # In a terminal
-yarn dev:bundler
-
-# In another terminal
-yarn dev:server
+yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -36,8 +33,8 @@ In the project directory:
 yarn install
 
 # To build the app under the `build` folder
-yarn build:all
+yarn build
 
 # To start the app
-yarn prod:start
+yarn start
 ```

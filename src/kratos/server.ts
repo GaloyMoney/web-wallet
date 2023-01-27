@@ -9,8 +9,8 @@ import {
 } from "@ory/client"
 import { Request } from "express"
 
-import { KratosSdk } from "kratos/sdk"
-import { getUrlForFlow, isQuerySet, KratosFlow } from "kratos/helpers"
+import { KratosSdk } from "@/kratos/sdk"
+import { getUrlForFlow, isQuerySet, KratosFlow } from "@/kratos/helpers"
 import { AxiosError } from "axios"
 
 export type KratosFlowData = {

@@ -1,6 +1,6 @@
 import { UiText } from "@ory/client"
 
-import { translateUnknown } from "store/index"
+import { translateUnknown } from "@/store/index"
 
 interface MessageProps {
   message: UiText

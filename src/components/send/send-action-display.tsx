@@ -3,9 +3,9 @@ import { MouseEvent } from "react"
 import { formatUsd } from "@galoymoney/client"
 import { SatFormat, Spinner, SuccessCheckmark } from "@galoymoney/react"
 
-import { GaloyGQL, translate } from "store/index"
+import { GaloyGQL, translate } from "@/store/index"
 
-import useMyUpdates from "hooks/use-my-updates"
+import useMyUpdates from "@/hooks/use-my-updates"
 
 type FeeAmount = {
   amount: number | undefined

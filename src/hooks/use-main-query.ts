@@ -1,4 +1,4 @@
-import { setLocale, useAppState, useAuthContext, GaloyGQL, useQuery } from "store/index"
+import { setLocale, useAppState, useAuthContext, GaloyGQL, useQuery } from "@/store/index"
 
 // FIX: should come from the client
 type Language = "" | "en-US" | "es-SV"

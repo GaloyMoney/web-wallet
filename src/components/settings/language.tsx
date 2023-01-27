@@ -1,9 +1,9 @@
 import { ChangeEvent } from "react"
 
-import useMainQuery from "hooks/use-main-query"
-import { setLocale, translate, useAppState, useMutation } from "store/index"
+import useMainQuery from "@/hooks/use-main-query"
+import { setLocale, translate, useAppState, useMutation } from "@/store/index"
 
-import Icon from "components/icon"
+import Icon from "@/components/icon"
 
 const languageLabels = {
   "DEFAULT": "Default (OS)",

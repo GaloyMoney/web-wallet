@@ -9,12 +9,12 @@ import {
   authRoutes,
   checkAuthRoute,
   ValidPath,
-} from "server/routes"
+} from "@/server/routes"
 
-import { KratosFlowData } from "kratos/index"
-import useMainQuery from "hooks/use-main-query"
+import { KratosFlowData } from "@/kratos/index"
+import useMainQuery from "@/hooks/use-main-query"
 
-import ErrorFallback from "components/error-fallback"
+import ErrorFallback from "@/components/error-fallback"
 
 type FCT = React.FC<{
   path: ValidPath

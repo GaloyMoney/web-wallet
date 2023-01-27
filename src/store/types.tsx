@@ -2,7 +2,7 @@ import * as React from "react"
 
 import { Network } from "@galoymoney/client"
 
-import { GwwStateType } from "store/reducer"
+import { GwwStateType } from "@/store/reducer"
 
 // Glabol
 
@@ -32,7 +32,6 @@ declare global {
   interface Window {
     __G_DATA: {
       GwwState: GwwStateType
-      GwwConfig: GwwConfigType
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     initGeetest: (...args: any[]) => void

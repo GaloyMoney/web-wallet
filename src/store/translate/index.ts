@@ -1,7 +1,7 @@
 // @ts-expect-error something is wrong with i18n-js direct import
 import { I18n } from "i18n-js/dist/require"
 
-import ES from "store/translate/es"
+import ES from "@/store/translate/es"
 
 const i18n = new I18n({
   es: ES,

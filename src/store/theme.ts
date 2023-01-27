@@ -1,4 +1,4 @@
-import { storage } from "store/local-storage"
+import { storage } from "@/store/local-storage"
 
 export const colorThemeLabels = {
   DEFAULT: "Default (OS)",

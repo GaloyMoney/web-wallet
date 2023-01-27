@@ -1,10 +1,10 @@
 import { MouseEvent } from "react"
 
-import { useMutation, useQuery } from "store/index"
+import { useMutation, useQuery } from "@/store/index"
 
-import SendActionDisplay from "components/send/send-action-display"
-import { SendActionProps } from "components/send/send-action"
-import useMainQuery from "hooks/use-main-query"
+import SendActionDisplay from "@/components/send/send-action-display"
+import { SendActionProps } from "@/components/send/send-action"
+import useMainQuery from "@/hooks/use-main-query"
 
 export type SendOnChainActionProps = SendActionProps & {
   address: string

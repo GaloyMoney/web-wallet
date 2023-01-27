@@ -1,6 +1,6 @@
-import { translate, useAuthContext } from "store/index"
+import { translate, useAuthContext } from "@/store/index"
 
-import Icon from "components/icon"
+import Icon from "@/components/icon"
 
 type FCT = React.FC<{ guestView: boolean }>
 

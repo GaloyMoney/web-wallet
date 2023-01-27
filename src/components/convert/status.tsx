@@ -2,10 +2,10 @@ import { useEffect } from "react"
 
 import { SuccessCheckmark } from "@galoymoney/react"
 
-import { translate, history, translateUnknown } from "store/index"
-import useMainQuery from "hooks/use-main-query"
+import { translate, history, translateUnknown } from "@/store/index"
+import useMainQuery from "@/hooks/use-main-query"
 
-import Link from "components/link"
+import Link from "@/components/link"
 
 const CALLBACK_DELAY = 3_000
 

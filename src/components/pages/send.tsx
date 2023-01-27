@@ -2,14 +2,14 @@ import { useState } from "react"
 
 import { PaymentType } from "@galoymoney/client"
 
-import { translate, GaloyGQL } from "store/index"
-import useMainQuery from "hooks/use-main-query"
+import { translate, GaloyGQL } from "@/store/index"
+import useMainQuery from "@/hooks/use-main-query"
 
-import Link from "components/link"
-import Header from "components/header"
-import SendDestination from "components/send/send-destination"
-import SendAmountLabel from "components/send/send-amount-label"
-import SendConfirm from "components/send/send-confirm"
+import Link from "@/components/link"
+import Header from "@/components/header"
+import SendDestination from "@/components/send/send-destination"
+import SendAmountLabel from "@/components/send/send-amount-label"
+import SendConfirm from "@/components/send/send-confirm"
 
 export type SendScreenInput = {
   view?: "destination" | "amount" | "confirm"

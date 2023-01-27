@@ -1,6 +1,6 @@
 import { useEffect, useReducer } from "react"
 
-import { ValidPath } from "server/routes"
+import { ValidPath } from "@/server/routes"
 
 import {
   GaloyClient,
@@ -9,11 +9,11 @@ import {
   GwwStateType,
   history,
   mainReducer,
-} from "store/index"
-import { KratosFlowData } from "kratos/index"
+} from "@/store/index"
+import { KratosFlowData } from "@/kratos/index"
 
-import { AuthProvider } from "components/auth-provider"
-import RootComponent from "components/root-component"
+import { AuthProvider } from "@/components/auth-provider"
+import RootComponent from "@/components/root-component"
 
 type RootFCT = React.FC<{ GwwState: GwwStateType }>
 

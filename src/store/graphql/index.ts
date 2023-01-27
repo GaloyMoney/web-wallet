@@ -1,6 +1,6 @@
 import { gql, useApolloClient } from "@apollo/client"
 
-import { GaloyGQL } from "store/graphql/types"
+import { GaloyGQL } from "@/store/graphql/types"
 
 const joinErrorsMessages = (errors?: Array<GaloyGQL.Error>) => {
   return errors?.map((err) => err.message).join(", ")
@@ -27,7 +27,9 @@ export const PriceCacheStore = () => {
   }
 }
 
-export { GaloyGQL, joinErrorsMessages }
+export type { GaloyGQL }
+
+export { joinErrorsMessages }
 
 export * from "./use-query"
 export * from "./use-mutation"

@@ -4,14 +4,14 @@ import {
   createGaloyClient,
   createGaloyServerAdminClient,
   createGaloyServerClient,
-} from "store/client"
+} from "@/store/client"
 
-import { config } from "store/config"
-import { GwwActionType, GwwContextType } from "store/index"
+import { config } from "@/store/config"
+import { GwwContextType } from "@/store/index"
 
 export const GwwContext = createContext<GwwContextType>({
   state: { key: 0, path: "/" },
-  dispatch: (_action: GwwActionType) => {
+  dispatch: () => {
     // Do nothing
   },
 })

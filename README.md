@@ -20,10 +20,7 @@ In the project directory:
 yarn install
 
 # In a terminal
-yarn dev:bundler
-
-# In another terminal
-yarn dev:server
+yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -36,8 +33,8 @@ In the project directory:
 yarn install
 
 # To build the app under the `build` folder
-yarn build:all
+yarn build
 
 # To start the app
-yarn prod:start
+yarn start
 ```

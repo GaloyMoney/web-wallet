@@ -1,4 +1,4 @@
-import { translate, translateUnknown } from "store/index"
+import { translate, translateUnknown } from "@/store/index"
 
 type FCT = React.FC<{ message?: string }>
 

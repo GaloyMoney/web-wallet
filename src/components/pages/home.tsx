@@ -1,7 +1,7 @@
-import { translate, useAuthContext, NoPropsFCT } from "store/index"
+import { translate, useAuthContext, NoPropsFCT } from "@/store/index"
 
-import Header from "components/header"
-import TransactionList from "components/transactions/list"
+import Header from "@/components/header"
+import TransactionList from "@/components/transactions/list"
 
 const Home: NoPropsFCT = () => {
   const { isAuthenticated } = useAuthContext()

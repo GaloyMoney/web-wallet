@@ -1,12 +1,12 @@
 import { useCallback, useEffect } from "react"
 
-import { translate, useMutation } from "store/index"
-import useMyUpdates from "hooks/use-my-updates"
-import useMainQuery from "hooks/use-main-query"
+import { translate, useMutation } from "@/store/index"
+import useMyUpdates from "@/hooks/use-my-updates"
+import useMainQuery from "@/hooks/use-main-query"
 
-import InvoiceGenerator from "components/receive/invoice-generator"
-import Link, { ButtonLink } from "components/link"
-import { ReceiveScreenInput } from "components/pages/receive"
+import InvoiceGenerator from "@/components/receive/invoice-generator"
+import Link, { ButtonLink } from "@/components/link"
+import { ReceiveScreenInput } from "@/components/pages/receive"
 
 type FCT = React.FC<{
   input: ReceiveScreenInput
@@ -34,7 +34,7 @@ const InvoiceOverview: FCT = ({ input, setInput, toggleWallet }) => {
   }, [input.wallet, generateBtcAddress, input.layer])
 
   useEffect(() => {
-    if (satsToUsd && input.wallet.walletCurrency !== "USD") {
+    if (satsToUsd && input?.wallet?.walletCurrency !== "USD") {
       setInput((currInput) => ({
         ...currInput,
         usdAmount: satsToUsd(currInput.satAmount as number),

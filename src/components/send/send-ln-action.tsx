@@ -1,10 +1,10 @@
 import { MouseEvent, useEffect } from "react"
 
-import { useMutation } from "store/index"
+import { useMutation } from "@/store/index"
 
-import SendActionDisplay from "components/send/send-action-display"
-import { SendActionProps } from "components/send/send-action"
-import useMainQuery from "hooks/use-main-query"
+import SendActionDisplay from "@/components/send/send-action-display"
+import { SendActionProps } from "@/components/send/send-action"
+import useMainQuery from "@/hooks/use-main-query"
 
 export type SendLnActionProps = SendActionProps & {
   paymentRequest: string

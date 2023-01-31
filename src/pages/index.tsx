@@ -1,6 +1,7 @@
 import Head from "next/head"
 
 import dynamic from "next/dynamic"
+import { publicConfig } from "@/store"
 const App = dynamic(() => import("@/components/index"), {
   ssr: false,
 })
@@ -17,4 +18,8 @@ export default function Root() {
       <App />
     </>
   )
+}
+
+export async function getServerSideProps() {
+  return { props: { publicConfig } }
 }

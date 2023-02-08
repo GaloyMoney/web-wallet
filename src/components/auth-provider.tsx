@@ -86,6 +86,15 @@ export const AuthProvider: FCT = ({ children, galoyClient, authIdentity }) => {
     }
     return createClient({
       onError: ({ graphQLErrors, networkError }) => {
+        if (networkError && networkError.message.includes("Failed to fetch")) {
+          fetch(config.galoyAuthEndpoint + "/clearCookies", {
+            method: 'GET',
+            redirect: 'follow',
+            credentials: 'include'
+          })
+          localStorage.clear()
+          location.href = "/"
+        }
         if (graphQLErrors) {
           console.debug("[GraphQL errors]:", graphQLErrors)
         }

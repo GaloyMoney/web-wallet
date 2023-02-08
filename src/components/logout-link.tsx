@@ -13,6 +13,12 @@ const LogoutLink: NoPropsFCT = () => {
     ajax.get(config.galoyAuthEndpoint + "/logout").then(() => {
       resetClient()
       setAuthSession(null)
+      fetch(config.galoyAuthEndpoint + "/clearCookies", {
+        method: 'GET',
+        redirect: 'follow',
+        credentials: 'include'
+      })
+      localStorage.clear()
       window.location.href = "/logout"
     })
   }

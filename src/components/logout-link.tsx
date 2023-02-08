@@ -14,9 +14,9 @@ const LogoutLink: NoPropsFCT = () => {
       resetClient()
       setAuthSession(null)
       fetch(config.galoyAuthEndpoint + "/clearCookies", {
-        method: 'GET',
-        redirect: 'follow',
-        credentials: 'include'
+        method: "GET",
+        redirect: "follow",
+        credentials: "include",
       })
       localStorage.clear()
       window.location.href = "/logout"

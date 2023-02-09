@@ -93,7 +93,6 @@ export const AuthProvider: FCT = ({ children, galoyClient, authIdentity }) => {
             credentials: "include",
           })
           localStorage.clear()
-          location.href = "/"
         }
         if (graphQLErrors) {
           console.debug("[GraphQL errors]:", graphQLErrors)

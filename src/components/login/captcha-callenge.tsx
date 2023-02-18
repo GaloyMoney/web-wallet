@@ -1,9 +1,8 @@
 import { memo, useCallback, useEffect, useState } from "react"
 
-import { useMutation } from "@galoymoney/client"
 import { Spinner } from "@galoymoney/react"
 
-import { translate } from "store/index"
+import { translate, useMutation } from "store/index"
 
 import AuthCode from "components/login/auth-code"
 

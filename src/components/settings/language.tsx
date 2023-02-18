@@ -1,9 +1,7 @@
 import { ChangeEvent } from "react"
 
-import { useMutation } from "@galoymoney/client"
-
 import useMainQuery from "hooks/use-main-query"
-import { setLocale, translate, useAppState } from "store/index"
+import { setLocale, translate, useAppState, useMutation } from "store/index"
 
 import Icon from "components/icon"
 

@@ -1,7 +1,6 @@
-import { useMutation } from "@galoymoney/client"
 import { Spinner } from "@galoymoney/react"
 
-import { translate } from "store/index"
+import { translate, useMutation } from "store/index"
 import useMainQuery from "hooks/use-main-query"
 
 import Icon from "components/icon"

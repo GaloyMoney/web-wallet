@@ -1,17 +1,22 @@
-import I18n from "i18n-js"
+// @ts-expect-error something is wrong with i18n-js direct import
+import { I18n } from "i18n-js/dist/require"
 
-import { LANG_ES_MAIN, TranslationKey } from "@galoymoney/client"
+import ES from "store/translate/es"
 
-I18n.fallbacks = true
-I18n.translations = { es: LANG_ES_MAIN }
+const i18n = new I18n({
+  es: ES,
+})
+
+i18n.defaultLocale = "en"
+i18n.locale = "en"
 
 export type GaloyTranslate = (
-  scope: keyof typeof LANG_ES_MAIN,
+  scope: keyof typeof ES,
   options?: I18n.TranslateOptions | undefined,
 ) => string
 
 export const translate: GaloyTranslate = (scope, options) => {
-  const translation = I18n.t(scope, { defaultValue: scope, ...options })
+  const translation = i18n.t(scope, { defaultValue: scope, ...options })
   return translation
 }
 
@@ -21,20 +26,16 @@ export type GaloyTranslateUnknown = (
 ) => string
 
 export const translateUnknown: GaloyTranslateUnknown = (scope, options) => {
-  const translation = I18n.t(scope, { defaultValue: scope, ...options })
+  const translation = i18n.t(scope, { defaultValue: scope, ...options })
   return translation
 }
 
 export const setLocale = (language: string | undefined): void => {
-  if (language && language !== "DEFAULT" && I18n.locale !== language) {
-    I18n.locale = language
+  if (language && language !== "DEFAULT" && i18n.locale !== language) {
+    i18n.locale = language
   }
 }
 
 export const getLocale = (): string => {
-  return I18n.locale
+  return i18n.locale
 }
-
-export { toNumber as toLocaleNumber } from "i18n-js"
-
-export { TranslationKey }

@@ -1,6 +1,6 @@
 import { MouseEvent, useEffect } from "react"
 
-import { useMutation } from "@galoymoney/client"
+import { useMutation } from "store/index"
 
 import SendActionDisplay from "components/send/send-action-display"
 import { SendActionProps } from "components/send/send-action"

@@ -1,7 +1,7 @@
 import { useMemo, useState, ReactNode, useCallback } from "react"
 import { useErrorHandler } from "react-error-boundary"
 
-import { GaloyClient, GaloyProvider } from "@galoymoney/client"
+import { GaloyClient, GaloyProvider } from "store/client"
 
 import {
   AuthContext,

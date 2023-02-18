@@ -1,6 +1,11 @@
-import { useResetClient } from "@galoymoney/client"
-
-import { translate, useAuthContext, NoPropsFCT, config, ajax } from "store/index"
+import {
+  translate,
+  useAuthContext,
+  NoPropsFCT,
+  config,
+  ajax,
+  useResetClient,
+} from "store/index"
 
 import Icon from "components/icon"
 

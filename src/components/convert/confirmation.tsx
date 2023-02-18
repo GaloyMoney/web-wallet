@@ -1,8 +1,8 @@
 import { useState } from "react"
 
-import { formatCurrencyAmount, useMutation } from "@galoymoney/client"
+import { formatCurrencyAmount } from "@galoymoney/client"
 
-import { translate } from "store"
+import { translate, useMutation } from "store/index"
 
 import { ConversionData } from "components/pages/conversion-flow"
 import useMyUpdates from "hooks/use-my-updates"

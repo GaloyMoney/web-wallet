@@ -2,10 +2,11 @@ import { useEffect, useState } from "react"
 import { QRCode } from "react-qrcode-logo"
 import copy from "copy-to-clipboard"
 
-import { formatUsd, GaloyGQL, satsToBTC } from "@galoymoney/client"
+import { formatUsd, satsToBTC } from "@galoymoney/client"
 import { SatFormat } from "@galoymoney/react"
 
-import { translate } from "store/index"
+import { translate, GaloyGQL } from "store/index"
+
 import useMyUpdates from "hooks/use-my-updates"
 import useMainQuery from "hooks/use-main-query"
 

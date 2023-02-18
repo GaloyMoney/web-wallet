@@ -1,0 +1,46 @@
+overwrite: true
+schema: "https://raw.githubusercontent.com/GaloyMoney/galoy/main/src/graphql/main/schema.graphql"
+documents: "src/store/graphql/*/*.ts"
+generates:
+  src/graphql/types.ts:
+    config:
+      enumsAsTypes: true
+      immutableTypes: true
+      strictScalars: true
+      scalars:
+        AccountApiKeyLabel: "string"
+        AuthToken: "string"
+        CentAmount: "number"
+        ContactAlias: "string"
+        DisplayCurrency: "string"
+        Hex32Bytes: "string"
+        Language: "string"
+        LnPaymentPreImage: "string"
+        LnPaymentRequest: "string"
+        LnPaymentSecret: "string"
+        Memo: "string"
+        OnChainAddress: "string"
+        OnChainTxHash: "string"
+        OneTimeAuthCode: "string"
+        PaymentHash: "string"
+        Phone: "string"
+        SafeInt: "number"
+        SatAmount: "number"
+        Seconds: "number"
+        SignedAmount: "number"
+        TargetConfirmations: "number"
+        Timestamp: "number"
+        Username: "string"
+        WalletId: "string"
+    plugins:
+      - add:
+          content: |
+            /* eslint-disable no-use-before-define */
+            /* eslint-disable max-lines */
+            /* eslint-disable @typescript-eslint/no-namespace */
+            export namespace GaloyGQL {
+      - add:
+          placement: append
+          content: "}"
+      - "typescript"
+      - "typescript-operations"

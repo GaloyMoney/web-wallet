@@ -19,7 +19,9 @@ const LogoutLink: NoPropsFCT = () => {
         credentials: "include",
       })
       localStorage.clear()
-      window.location.href = "/logout"
+      if (!window.location.pathname.includes("login")){
+        window.location.href = "/logout"
+      }
     })
   }
 

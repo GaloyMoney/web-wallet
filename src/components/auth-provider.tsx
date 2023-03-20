@@ -94,7 +94,7 @@ export const AuthProvider: FCT = ({ children, galoyClient, authIdentity }) => {
           }).finally(() => {
             localStorage.clear()
             sessionStorage.clear()
-            if (!window.location.pathname.includes("login")){
+            if (!window.location.pathname.includes("login")) {
               window.location.replace("/login")
             }
           })

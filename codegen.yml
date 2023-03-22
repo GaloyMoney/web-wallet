@@ -4,8 +4,8 @@ documents:
   - "src/**/*.ts"
   - "src/**/*.tsx"
 generates:
-  app/graphql/generated.ts:
-    schema: "app/graphql/local-schema.gql"
+  src/graphql/generated.ts:
+    schema: "src/graphql/local-schema.gql"
     plugins:
       - typescript
       - typescript-operations

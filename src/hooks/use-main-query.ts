@@ -11,13 +11,13 @@ const useMainQuery = () => {
 
   let mainHeaders = {}
   if (!isAuthenticated) {
-    mainHeaders = {credentials: "omit"}
+    mainHeaders = { credentials: "omit" }
   }
 
   const { data, refetch } = useQuery.main({
     variables: { isAuthenticated, recentTransactions: 5 },
     context: {
-      headers: {...mainHeaders},
+      headers: { ...mainHeaders },
     },
     onCompleted: (completed) => {
       setLocale(completed?.me?.language ?? defaultLanguage)

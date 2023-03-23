@@ -485,8 +485,6 @@ exports[`Root appRoutes renders Home and matches snapshot 1`] = `
           </a>
         </div>
       </div>
-      <p />
-      <p />
       <div
         class="recent-transactions"
       />

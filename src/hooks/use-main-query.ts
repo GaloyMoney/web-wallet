@@ -9,12 +9,14 @@ const useMainQuery = () => {
   const { isAuthenticated } = useAuthContext()
   const { defaultLanguage } = useAppState()
 
-  const { data, refetch } = isAuthenticated ? useQuery.main({
-    variables: { isAuthenticated, recentTransactions: 5 },
-    onCompleted: (completed) => {
-      setLocale(completed?.me?.language ?? defaultLanguage)
-    },
-  }) : {data: null, refetch: () => {}}
+  const { data, refetch } = isAuthenticated
+    ? useQuery.main({
+        variables: { isAuthenticated, recentTransactions: 5 },
+        onCompleted: (completed) => {
+          setLocale(completed?.me?.language ?? defaultLanguage)
+        },
+      })
+    : { data: null, refetch: () => {} }
 
   const pubKey = data?.globals?.nodesIds?.[0] ?? ""
   const lightningAddressDomain = data?.globals?.lightningAddressDomain

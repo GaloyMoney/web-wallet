@@ -1,19 +1,63 @@
 import { memo, useCallback, useEffect, useState } from "react"
 
-import { useMutation } from "@galoymoney/client"
 import { Spinner } from "@galoymoney/react"
 
 import { translate } from "store/index"
 
 import AuthCode from "components/login/auth-code"
+import { gql } from "@apollo/client"
+import {
+  useCaptchaCreateChallengeMutation,
+  useCaptchaRequestAuthCodeMutation,
+} from "graphql/generated"
+
+gql`
+  mutation captchaCreateChallenge {
+    captchaCreateChallenge {
+      errors {
+        __typename
+        message
+      }
+      result {
+        __typename
+        id
+        challengeCode
+        newCaptcha
+        failbackMode
+      }
+      __typename
+    }
+  }
+`
+
+gql`
+  mutation captchaRequestAuthCode($input: CaptchaRequestAuthCodeInput!) {
+    captchaRequestAuthCode(input: $input) {
+      errors {
+        __typename
+        message
+      }
+      success
+      __typename
+    }
+  }
+`
 
 const CaptchaChallengeComponent: React.FC<{ phoneNumber: string }> = ({
   phoneNumber,
 }) => {
   const [createCaptchaChallenge, { loading: createLoading }] =
-    useMutation.captchaCreateChallenge()
+    useCaptchaCreateChallengeMutation({
+      context: {
+        credentials: "omit",
+      },
+    })
   const [requestCaptchaAuthCode, { loading: requestLoading }] =
-    useMutation.captchaRequestAuthCode()
+    useCaptchaRequestAuthCodeMutation({
+      context: {
+        credentials: "omit",
+      },
+    })
 
   const [captchaState, setCaptchaState] = useState<{
     status: "loading" | "ready" | "success" | "error"
@@ -25,7 +69,7 @@ const CaptchaChallengeComponent: React.FC<{ phoneNumber: string }> = ({
     (captchaObj: any) => {
       const onSuccess = async () => {
         const result = captchaObj.getValidate()
-        const { errorsMessage } = await requestCaptchaAuthCode({
+        const { data, errors } = await requestCaptchaAuthCode({
           variables: {
             input: {
               phone: phoneNumber,
@@ -37,7 +81,13 @@ const CaptchaChallengeComponent: React.FC<{ phoneNumber: string }> = ({
           },
         })
 
-        setCaptchaState({ status: errorsMessage ? "error" : "success", errorsMessage })
+        const status = data?.captchaRequestAuthCode.success ? "success" : "error"
+        let errorsMessage = undefined
+        if (status === "error") {
+          errorsMessage = errors?.[0]?.message
+        }
+
+        setCaptchaState({ status, errorsMessage })
       }
       captchaObj.appendTo("#captcha")
       captchaObj
@@ -59,10 +109,10 @@ const CaptchaChallengeComponent: React.FC<{ phoneNumber: string }> = ({
 
   useEffect(() => {
     const initCaptcha = async () => {
-      const { data, errorsMessage } = await createCaptchaChallenge()
+      const { data, errors } = await createCaptchaChallenge()
 
       const result = data?.captchaCreateChallenge?.result
-      if (!errorsMessage && result) {
+      if (!errors && result) {
         const { id, challengeCode, newCaptcha, failbackMode } = result
         window.initGeetest(
           {

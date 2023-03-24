@@ -1375,6 +1375,42 @@ export const WalletCurrency = {
 } as const
 
 export type WalletCurrency = typeof WalletCurrency[keyof typeof WalletCurrency]
+export type CaptchaCreateChallengeMutationVariables = Exact<{ [key: string]: never }>
+
+export type CaptchaCreateChallengeMutation = {
+  readonly __typename: "Mutation"
+  readonly captchaCreateChallenge: {
+    readonly __typename: "CaptchaCreateChallengePayload"
+    readonly errors: ReadonlyArray<{
+      readonly __typename: "GraphQLApplicationError"
+      readonly message: string
+    }>
+    readonly result?: {
+      readonly __typename: "CaptchaCreateChallengeResult"
+      readonly id: string
+      readonly challengeCode: string
+      readonly newCaptcha: boolean
+      readonly failbackMode: boolean
+    } | null
+  }
+}
+
+export type CaptchaRequestAuthCodeMutationVariables = Exact<{
+  input: CaptchaRequestAuthCodeInput
+}>
+
+export type CaptchaRequestAuthCodeMutation = {
+  readonly __typename: "Mutation"
+  readonly captchaRequestAuthCode: {
+    readonly __typename: "SuccessPayload"
+    readonly success?: boolean | null
+    readonly errors: ReadonlyArray<{
+      readonly __typename: "GraphQLApplicationError"
+      readonly message: string
+    }>
+  }
+}
+
 export type BtcPriceListQueryVariables = Exact<{
   range: PriceGraphRange
 }>
@@ -1721,6 +1757,121 @@ export const MeFragmentDoc = gql`
   }
   ${TransactionListFragmentDoc}
 `
+export const CaptchaCreateChallengeDocument = gql`
+  mutation captchaCreateChallenge {
+    captchaCreateChallenge {
+      errors {
+        __typename
+        message
+      }
+      result {
+        __typename
+        id
+        challengeCode
+        newCaptcha
+        failbackMode
+      }
+      __typename
+    }
+  }
+`
+export type CaptchaCreateChallengeMutationFn = Apollo.MutationFunction<
+  CaptchaCreateChallengeMutation,
+  CaptchaCreateChallengeMutationVariables
+>
+
+/**
+ * __useCaptchaCreateChallengeMutation__
+ *
+ * To run a mutation, you first call `useCaptchaCreateChallengeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCaptchaCreateChallengeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [captchaCreateChallengeMutation, { data, loading, error }] = useCaptchaCreateChallengeMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCaptchaCreateChallengeMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CaptchaCreateChallengeMutation,
+    CaptchaCreateChallengeMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    CaptchaCreateChallengeMutation,
+    CaptchaCreateChallengeMutationVariables
+  >(CaptchaCreateChallengeDocument, options)
+}
+export type CaptchaCreateChallengeMutationHookResult = ReturnType<
+  typeof useCaptchaCreateChallengeMutation
+>
+export type CaptchaCreateChallengeMutationResult =
+  Apollo.MutationResult<CaptchaCreateChallengeMutation>
+export type CaptchaCreateChallengeMutationOptions = Apollo.BaseMutationOptions<
+  CaptchaCreateChallengeMutation,
+  CaptchaCreateChallengeMutationVariables
+>
+export const CaptchaRequestAuthCodeDocument = gql`
+  mutation captchaRequestAuthCode($input: CaptchaRequestAuthCodeInput!) {
+    captchaRequestAuthCode(input: $input) {
+      errors {
+        __typename
+        message
+      }
+      success
+      __typename
+    }
+  }
+`
+export type CaptchaRequestAuthCodeMutationFn = Apollo.MutationFunction<
+  CaptchaRequestAuthCodeMutation,
+  CaptchaRequestAuthCodeMutationVariables
+>
+
+/**
+ * __useCaptchaRequestAuthCodeMutation__
+ *
+ * To run a mutation, you first call `useCaptchaRequestAuthCodeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCaptchaRequestAuthCodeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [captchaRequestAuthCodeMutation, { data, loading, error }] = useCaptchaRequestAuthCodeMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCaptchaRequestAuthCodeMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CaptchaRequestAuthCodeMutation,
+    CaptchaRequestAuthCodeMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    CaptchaRequestAuthCodeMutation,
+    CaptchaRequestAuthCodeMutationVariables
+  >(CaptchaRequestAuthCodeDocument, options)
+}
+export type CaptchaRequestAuthCodeMutationHookResult = ReturnType<
+  typeof useCaptchaRequestAuthCodeMutation
+>
+export type CaptchaRequestAuthCodeMutationResult =
+  Apollo.MutationResult<CaptchaRequestAuthCodeMutation>
+export type CaptchaRequestAuthCodeMutationOptions = Apollo.BaseMutationOptions<
+  CaptchaRequestAuthCodeMutation,
+  CaptchaRequestAuthCodeMutationVariables
+>
 export const BtcPriceListDocument = gql`
   query btcPriceList($range: PriceGraphRange!) {
     btcPriceList(range: $range) {

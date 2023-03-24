@@ -22,7 +22,7 @@ const TransactionList: NoPropsFCT = () => {
   const transactionsRef = useRef<GaloyGQL.TransactionConnection>(EMPTY_CONNECTION)
 
   if (!transactionsRef.current.edges && transactions) {
-    // TODO: remove this ts-ignore when the types are fixed
+    // TODO: remove this when migration to graphql-codegen is done
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     transactionsRef.current = transactions

@@ -69,7 +69,7 @@ const CaptchaChallengeComponent: React.FC<{ phoneNumber: string }> = ({
     (captchaObj: any) => {
       const onSuccess = async () => {
         const result = captchaObj.getValidate()
-        const { data, errors } = await requestCaptchaAuthCode({
+        const { data } = await requestCaptchaAuthCode({
           variables: {
             input: {
               phone: phoneNumber,
@@ -84,7 +84,7 @@ const CaptchaChallengeComponent: React.FC<{ phoneNumber: string }> = ({
         const status = data?.captchaRequestAuthCode.success ? "success" : "error"
         let errorsMessage = undefined
         if (status === "error") {
-          errorsMessage = errors?.[0]?.message
+          errorsMessage = data?.captchaRequestAuthCode.errors?.[0]?.message
         }
 
         setCaptchaState({ status, errorsMessage })
@@ -109,10 +109,11 @@ const CaptchaChallengeComponent: React.FC<{ phoneNumber: string }> = ({
 
   useEffect(() => {
     const initCaptcha = async () => {
-      const { data, errors } = await createCaptchaChallenge()
+      const { data } = await createCaptchaChallenge()
 
       const result = data?.captchaCreateChallenge?.result
-      if (!errors && result) {
+      const errorsMessage = data?.captchaCreateChallenge?.errors?.[0]?.message
+      if (!errorsMessage && result) {
         const { id, challengeCode, newCaptcha, failbackMode } = result
         window.initGeetest(
           {

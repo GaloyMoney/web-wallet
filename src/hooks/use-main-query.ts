@@ -4,7 +4,7 @@ import { GaloyGQL } from "@galoymoney/client"
 import { setLocale, useAppState, useAuthContext } from "store/index"
 import { useMainQuery as useMainQueryGenerated } from "graphql/generated"
 
-// TODO: move away from big gql queries
+// TODO: move away from big gql queries in the future
 gql`
   query main($isAuthenticated: Boolean!, $recentTransactions: Int) {
     globals {
@@ -119,18 +119,6 @@ const useMainQuery = () => {
   const { isAuthenticated } = useAuthContext()
   const { defaultLanguage } = useAppState()
 
-  // OLD WAY using galoy-client
-  // const { data, refetch } = useQuery.main({
-  //   variables: { isAuthenticated, recentTransactions: 5 },
-  //   context: {
-  //     headers: { ...mainHeaders },
-  //   },
-  //   onCompleted: (completed) => {
-  //     setLocale(completed?.me?.language ?? defaultLanguage)
-  //   },
-  // })
-
-  // NEW WAY using graphql-codegen
   const { data, refetch } = useMainQueryGenerated({
     variables: { isAuthenticated, recentTransactions: 10 },
     onCompleted: (completed) => {
@@ -147,7 +135,7 @@ const useMainQuery = () => {
 
   const me = data?.me
 
-  // TODO FIX: this is a hack to get the type right
+  // TODO: remove this when migration to graphql-codegen is done
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const wallets = (data?.me?.defaultAccount?.wallets ?? []) as Array<GaloyGQL.Wallet>

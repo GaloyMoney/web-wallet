@@ -5,7 +5,6 @@ import TransactionList from "components/transactions/list"
 import { gql } from "@apollo/client"
 import { useBtcPriceListQuery } from "graphql/generated"
 
-
 gql`
   query btcPriceList($range: PriceGraphRange!) {
     btcPriceList(range: $range) {

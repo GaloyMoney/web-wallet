@@ -1,14 +1,34 @@
-import { truncatedDisplay, useQuery } from "@galoymoney/client"
+import { gql } from "@apollo/client"
 import { Spinner } from "@galoymoney/react"
-
+import { truncatedDisplay } from "@galoymoney/client"
+import { useContactsQuery } from "graphql/generated"
 import { translate, history, useAuthContext, NoPropsFCT } from "store/index"
 
 import ErrorMessage from "components/error-message"
 import Header from "components/header"
 import Icon from "components/icon"
 
+gql`
+  query contacts {
+    me {
+      id
+      contacts {
+        username
+        alias
+        transactionsCount
+        __typename
+      }
+      __typename
+    }
+  }
+`
+
 const ContactsList: NoPropsFCT = () => {
-  const { loading, errorsMessage, data } = useQuery.contacts()
+  const { data, loading, error } = useContactsQuery({
+    context: {
+      credentials: "include",
+    },
+  })
 
   const handleSendBitcoin = (contactUsername: string) => {
     history.push(`/send?to=${contactUsername}`)
@@ -22,7 +42,7 @@ const ContactsList: NoPropsFCT = () => {
     <div className="list">
       {loading && <Spinner size="big" />}
 
-      {errorsMessage && <ErrorMessage message={errorsMessage} />}
+      {error && <ErrorMessage message={error.message} />}
 
       {data?.me?.contacts.length === 0 && (
         <div className="no-data">{translate("No Contacts")}</div>

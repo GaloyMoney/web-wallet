@@ -16,7 +16,7 @@ COPY ./*.js ./
 RUN CUSTOM_MODULES=${CUSTOM_MODULES} yarn build:node && yarn build:files && yarn build:bundler
 
 
-FROM gcr.io/distroless/nodejs:20
+FROM gcr.io/distroless/nodejs20-debian11
 
 ARG CUSTOM_MODULES="default"
 

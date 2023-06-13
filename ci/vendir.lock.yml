@@ -2,14 +2,14 @@ apiVersion: vendir.k14s.io/v1alpha1
 directories:
 - contents:
   - git:
-      commitTitle: 'fix: rust helpers'
-      sha: 32ff38a66a0ffa588dc1b9e245a38e83b097da32
+      commitTitle: 'feat: test-on-docker accepts extra params'
+      sha: 8f0a58965090a6089790103c06dc2d29d0518de3
     path: .
   path: ../.github/workflows/vendor
 - contents:
   - git:
-      commitTitle: 'fix: rust helpers'
-      sha: 32ff38a66a0ffa588dc1b9e245a38e83b097da32
+      commitTitle: 'feat: test-on-docker accepts extra params'
+      sha: 8f0a58965090a6089790103c06dc2d29d0518de3
     path: .
   path: ./vendor
 kind: LockConfig

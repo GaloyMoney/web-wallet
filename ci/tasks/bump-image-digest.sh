@@ -28,5 +28,5 @@ fi
   git merge --no-edit ${BRANCH}
   git add -A
   git status
-  git commit -m "Bump web-wallet image to '${digest}'"
+  git commit -m "chore(deps): bump web-wallet image to '${digest}'"
 )

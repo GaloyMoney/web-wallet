@@ -142,7 +142,7 @@ const InvoiceOverview: FCT = ({ input, setInput, toggleWallet }) => {
         {input.wallet?.walletCurrency === "BTC" && (
           <div className="receive-action" onClick={togglePaymentLayer}>
             {input.layer === "lightning"
-              ? translate("Use a Bitcoin on-chain adddress")
+              ? translate("Use a Bitcoin on-chain address")
               : translate("Use a Lightning invoice")}
           </div>
         )}

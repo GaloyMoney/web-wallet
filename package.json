@@ -30,7 +30,7 @@
     "@galoymoney/react": "^0.1.14",
     "@opentelemetry/api": "^1.1.0",
     "@opentelemetry/core": "^1.5.0",
-    "@opentelemetry/exporter-jaeger": "^1.5.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.40.0",
     "@opentelemetry/instrumentation": "^0.31.0",
     "@opentelemetry/instrumentation-http": "^0.31.0",
     "@opentelemetry/resources": "^1.5.0",

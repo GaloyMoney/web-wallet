@@ -80,23 +80,85 @@ type FCT = React.FC<{ guestView: boolean }>
 const EmailSetting: FCT = ({ guestView }) => {
   const [emailAddress, setEmailAddress] = React.useState("")
   const [emailRegistrationId, setEmailRegistrationId] = React.useState("")
-  const [step, setStep] = React.useState<
-    "emailExists" | "enterEmail" | "enterCode" | "emailComplete" | "deleteEmail"
-  >("enterEmail")
   const [loading, setLoading] = React.useState(true)
   const [setEmailMutation] = useUserEmailRegistrationInitiateMutation()
   const [emailVerify] = useUserEmailRegistrationValidateMutation()
   const [errorMessage, setErrorMessage] = React.useState<string>("")
   const [emailDeleteMutation] = useUserEmailDeleteMutation()
+  const [step, setStep] = React.useState<
+    | "emailExists"
+    | "enterEmail"
+    | "enterCode"
+    | "emailComplete"
+    | "deleteEmail"
+    | "resendCode"
+  >("enterEmail")
+
+  const submitEmail = async (emailInput: string) => {
+    try {
+      const { data: emailMutationData } = await setEmailMutation({
+        variables: { input: { email: emailInput } },
+      })
+      const errors = emailMutationData?.userEmailRegistrationInitiate.errors
+      if (errors && errors.length > 0) {
+        setErrorMessage(errors[0].message)
+        return
+      }
+      const emailRegistrationKey =
+        emailMutationData?.userEmailRegistrationInitiate.emailRegistrationId
+      if (emailRegistrationKey) {
+        setEmailRegistrationId(emailRegistrationKey)
+        setStep("enterCode")
+      } else {
+        setErrorMessage("Missing Email Registration Id")
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        setErrorMessage(err.message)
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const deleteEmail = async () => {
+    try {
+      setErrorMessage("")
+      setLoading(true)
+      await emailDeleteMutation()
+      setEmailAddress("")
+      setStep("enterEmail")
+    } catch (err) {
+      let message = ""
+      if (err instanceof Error) {
+        message = err?.message
+      }
+      setErrorMessage(message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const resendCode = async (emailInput: string) => {
+    await emailDeleteMutation()
+    submitEmail(emailInput)
+  }
 
   const { data } = useEmailQuery({
     onCompleted: (emailData) => {
       setLoading(false)
-      if (emailData?.me?.email?.address && !emailData?.me?.email?.verified) {
+      const hasEmail = Boolean(emailData?.me?.email?.address)
+      const isVerified = Boolean(emailData?.me?.email?.verified)
+      if (hasEmail && !isVerified) {
         setStep("enterCode")
+      } else if (hasEmail && isVerified) {
+        setStep("emailComplete")
       }
     },
   })
+
+  const email = data?.me?.email?.address
+  const emailSetButUnverified = Boolean(email) && (!data?.me?.email?.verified || false)
 
   const submit: React.FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault()
@@ -106,32 +168,7 @@ const EmailSetting: FCT = ({ guestView }) => {
         const emailInput = event.currentTarget.email.value
         setEmailAddress(emailInput)
         setLoading(true)
-        try {
-          const { data: emailMutationData } = await setEmailMutation({
-            variables: { input: { email: emailInput } },
-          })
-
-          const errors = emailMutationData?.userEmailRegistrationInitiate.errors
-          if (errors && errors.length > 0) {
-            setErrorMessage(errors[0].message)
-            return
-          }
-
-          const emailRegistrationKey =
-            emailMutationData?.userEmailRegistrationInitiate.emailRegistrationId
-          if (emailRegistrationKey) {
-            setEmailRegistrationId(emailRegistrationKey)
-            setStep("enterCode")
-          } else {
-            setErrorMessage("Missing Email Registration Id")
-          }
-        } catch (err) {
-          if (err instanceof Error) {
-            setErrorMessage(err.message)
-          }
-        } finally {
-          setLoading(false)
-        }
+        submitEmail(emailInput)
         break
       }
       case "enterCode": {
@@ -157,24 +194,6 @@ const EmailSetting: FCT = ({ guestView }) => {
         }
         break
       }
-    }
-  }
-
-  const deleteEmail = async () => {
-    try {
-      setErrorMessage("")
-      setLoading(true)
-      await emailDeleteMutation()
-      setEmailAddress("")
-      setStep("enterEmail")
-    } catch (err) {
-      let message = ""
-      if (err instanceof Error) {
-        message = err?.message
-      }
-      setErrorMessage(message)
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -209,10 +228,21 @@ const EmailSetting: FCT = ({ guestView }) => {
           )}
           {step === "enterCode" && (
             <div>
-              {data?.me?.email?.address && !data?.me?.email?.verified && (
-                <div style={{ paddingRight: 6, paddingBottom: 6 }}>
-                  Not verified. Please enter code:
-                </div>
+              {emailSetButUnverified && email && (
+                <>
+                  {emailRegistrationId ? (
+                    <div style={{ paddingRight: 6, paddingBottom: 6 }}>
+                      Not verified. Check email for code or &nbsp;
+                      <a onClick={() => resendCode(email)}> resend code</a>
+                    </div>
+                  ) : (
+                    <div style={{ paddingRight: 6, paddingBottom: 6 }}>
+                      Code is expired. &nbsp;
+                      <a onClick={() => resendCode(email)}> Resend code</a>
+                      &nbsp; then check email
+                    </div>
+                  )}
+                </>
               )}
               <div className="grouped-input-button">
                 <div className="input-label-right">
@@ -227,11 +257,6 @@ const EmailSetting: FCT = ({ guestView }) => {
           {errorMessage && <div className="error-hint">{errorMessage}</div>}
         </form>
       </div>
-      {step === "emailComplete" && (
-        <div className="action">
-          <Icon name="lock" />
-        </div>
-      )}
     </div>
   )
 }

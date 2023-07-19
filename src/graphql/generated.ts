@@ -25,8 +25,16 @@ export type Scalars = {
   CentAmount: number
   /** An alias name that a user can set for a wallet (with which they have transactions) */
   ContactAlias: string
+  /** A CCA2 country code (ex US, FR, etc) */
+  CountryCode: string
   /** Display currency of an account */
   DisplayCurrency: string
+  /** Email address */
+  EmailAddress: string
+  /** An id to be passed between registrationInitiate and registrationValidate for confirming email */
+  EmailRegistrationId: string
+  /** Feedback shared with our user */
+  Feedback: string
   /** Hex-encoded string of 32 bytes */
   Hex32Bytes: string
   Language: string
@@ -36,6 +44,8 @@ export type Scalars = {
   LnPaymentSecret: string
   /** Text field in a lightning payment transaction */
   Memo: string
+  /** (Positive) amount of minutes */
+  Minutes: number
   /** An address for an on-chain bitcoin destination */
   OnChainAddress: string
   OnChainTxHash: string
@@ -58,6 +68,12 @@ export type Scalars = {
   TargetConfirmations: number
   /** Timestamp field, serialized as Unix time (the number of seconds since the Unix epoch) */
   Timestamp: number
+  /** A time-based one-time password */
+  TotpCode: string
+  /** An id to be passed between set and verify for confirming totp */
+  TotpRegistrationId: string
+  /** A secret to generate time-based one-time password */
+  TotpSecret: string
   /** Unique identifier of a user */
   Username: string
   /** Unique identifier of a wallet */
@@ -69,6 +85,7 @@ export type Account = {
   readonly defaultWalletId: Scalars["WalletId"]
   readonly displayCurrency: Scalars["DisplayCurrency"]
   readonly id: Scalars["ID"]
+  readonly level: AccountLevel
   readonly limits: AccountLimits
   readonly realtimePrice: RealtimePrice
   readonly transactions?: Maybe<TransactionConnection>
@@ -87,6 +104,19 @@ export type AccountTransactionsArgs = {
   walletIds?: InputMaybe<ReadonlyArray<InputMaybe<Scalars["WalletId"]>>>
 }
 
+export type AccountDeletePayload = {
+  readonly __typename: "AccountDeletePayload"
+  readonly errors: ReadonlyArray<Error>
+  readonly success: Scalars["Boolean"]
+}
+
+export const AccountLevel = {
+  One: "ONE",
+  Two: "TWO",
+  Zero: "ZERO",
+} as const
+
+export type AccountLevel = (typeof AccountLevel)[keyof typeof AccountLevel]
 export type AccountLimit = {
   /** The rolling time interval in seconds that the limits would apply for. */
   readonly interval?: Maybe<Scalars["Seconds"]>
@@ -206,6 +236,7 @@ export type ConsumerAccount = Account & {
   readonly defaultWalletId: Scalars["WalletId"]
   readonly displayCurrency: Scalars["DisplayCurrency"]
   readonly id: Scalars["ID"]
+  readonly level: AccountLevel
   readonly limits: AccountLimits
   /** List the quiz questions of the consumer account */
   readonly quiz: ReadonlyArray<Quiz>
@@ -233,6 +264,12 @@ export type Coordinates = {
   readonly longitude: Scalars["Float"]
 }
 
+export type Country = {
+  readonly __typename: "Country"
+  readonly id: Scalars["CountryCode"]
+  readonly supportedAuthChannels: ReadonlyArray<PhoneCodeChannelType>
+}
+
 export type Currency = {
   readonly __typename: "Currency"
   readonly flag: Scalars["String"]
@@ -242,8 +279,23 @@ export type Currency = {
   readonly symbol: Scalars["String"]
 }
 
+export type DepositFeesInformation = {
+  readonly __typename: "DepositFeesInformation"
+  readonly minBankFee: Scalars["String"]
+  /** below this amount minBankFee will be charged */
+  readonly minBankFeeThreshold: Scalars["String"]
+  /** ratio to charge as basis points above minBankFeeThreshold amount */
+  readonly ratio: Scalars["String"]
+}
+
 export type DeviceNotificationTokenCreateInput = {
   readonly deviceToken: Scalars["String"]
+}
+
+export type Email = {
+  readonly __typename: "Email"
+  readonly address?: Maybe<Scalars["EmailAddress"]>
+  readonly verified?: Maybe<Scalars["Boolean"]>
 }
 
 export type Error = {
@@ -259,10 +311,20 @@ export const ExchangeCurrencyUnit = {
 
 export type ExchangeCurrencyUnit =
   (typeof ExchangeCurrencyUnit)[keyof typeof ExchangeCurrencyUnit]
+export type FeedbackSubmitInput = {
+  readonly feedback: Scalars["Feedback"]
+}
+
+export type FeesInformation = {
+  readonly __typename: "FeesInformation"
+  readonly deposit: DepositFeesInformation
+}
+
 /** Provides global settings for the application which might have an impact for the user. */
 export type Globals = {
   readonly __typename: "Globals"
   readonly buildInformation: BuildInformation
+  readonly feesInformation: FeesInformation
   /** The domain name for lightning addresses accepted by this Galoy instance */
   readonly lightningAddressDomain: Scalars["String"]
   readonly lightningAddressDomainAliases: ReadonlyArray<Scalars["String"]>
@@ -273,6 +335,8 @@ export type Globals = {
    * This can be used to know if an invoice belongs to one of our nodes.
    */
   readonly nodesIds: ReadonlyArray<Scalars["String"]>
+  /** A list of countries and their supported auth channels */
+  readonly supportedCountries: ReadonlyArray<Country>
 }
 
 export type GraphQlApplicationError = Error & {
@@ -334,6 +398,7 @@ export type IntraLedgerUsdPaymentSendInput = {
 }
 
 export const InvoicePaymentStatus = {
+  Expired: "EXPIRED",
   Paid: "PAID",
   Pending: "PENDING",
 } as const
@@ -351,6 +416,8 @@ export type LnInvoice = {
 export type LnInvoiceCreateInput = {
   /** Amount in satoshis. */
   readonly amount: Scalars["SatAmount"]
+  /** Optional invoice expiration time in minutes. */
+  readonly expiresIn?: InputMaybe<Scalars["Minutes"]>
   /** Optional memo for the lightning invoice. */
   readonly memo?: InputMaybe<Scalars["Memo"]>
   /** Wallet ID for a BTC wallet belonging to the current account. */
@@ -361,6 +428,8 @@ export type LnInvoiceCreateOnBehalfOfRecipientInput = {
   /** Amount in satoshis. */
   readonly amount: Scalars["SatAmount"]
   readonly descriptionHash?: InputMaybe<Scalars["Hex32Bytes"]>
+  /** Optional invoice expiration time in minutes. */
+  readonly expiresIn?: InputMaybe<Scalars["Minutes"]>
   /** Optional memo for the lightning invoice. */
   readonly memo?: InputMaybe<Scalars["Memo"]>
   /** Wallet ID for a BTC wallet which belongs to any account. */
@@ -405,6 +474,8 @@ export type LnNoAmountInvoice = {
 }
 
 export type LnNoAmountInvoiceCreateInput = {
+  /** Optional invoice expiration time in minutes. */
+  readonly expiresIn?: InputMaybe<Scalars["Minutes"]>
   /** Optional memo for the lightning invoice. */
   readonly memo?: InputMaybe<Scalars["Memo"]>
   /** ID for either a USD or BTC wallet belonging to the account of the current user. */
@@ -412,6 +483,8 @@ export type LnNoAmountInvoiceCreateInput = {
 }
 
 export type LnNoAmountInvoiceCreateOnBehalfOfRecipientInput = {
+  /** Optional invoice expiration time in minutes. */
+  readonly expiresIn?: InputMaybe<Scalars["Minutes"]>
   /** Optional memo for the lightning invoice. */
   readonly memo?: InputMaybe<Scalars["Memo"]>
   /** ID for either a USD or BTC wallet which belongs to the account of any user. */
@@ -468,6 +541,8 @@ export type LnUpdate = {
 export type LnUsdInvoiceCreateInput = {
   /** Amount in USD cents. */
   readonly amount: Scalars["CentAmount"]
+  /** Optional invoice expiration time in minutes. */
+  readonly expiresIn?: InputMaybe<Scalars["Minutes"]>
   /** Optional memo for the lightning invoice. */
   readonly memo?: InputMaybe<Scalars["Memo"]>
   /** Wallet ID for a USD wallet belonging to the current user. */
@@ -478,6 +553,8 @@ export type LnUsdInvoiceCreateOnBehalfOfRecipientInput = {
   /** Amount in USD cents. */
   readonly amount: Scalars["CentAmount"]
   readonly descriptionHash?: InputMaybe<Scalars["Hex32Bytes"]>
+  /** Optional invoice expiration time in minutes. */
+  readonly expiresIn?: InputMaybe<Scalars["Minutes"]>
   /** Optional memo for the lightning invoice. Acts as a note to the recipient. */
   readonly memo?: InputMaybe<Scalars["Memo"]>
   /** Wallet ID for a USD wallet which belongs to the account of any user. */
@@ -510,11 +587,13 @@ export type MobileVersions = {
 
 export type Mutation = {
   readonly __typename: "Mutation"
+  readonly accountDelete: AccountDeletePayload
   readonly accountUpdateDefaultWalletId: AccountUpdateDefaultWalletIdPayload
   readonly accountUpdateDisplayCurrency: AccountUpdateDisplayCurrencyPayload
   readonly captchaCreateChallenge: CaptchaCreateChallengePayload
   readonly captchaRequestAuthCode: SuccessPayload
   readonly deviceNotificationTokenCreate: SuccessPayload
+  readonly feedbackSubmit: SuccessPayload
   /**
    * Actions a payment which is internal to the ledger e.g. it does
    * not use onchain/lightning. Returns payment status (success,
@@ -530,13 +609,13 @@ export type Mutation = {
   /**
    * Returns a lightning invoice for an associated wallet.
    * When invoice is paid the value will be credited to a BTC wallet.
-   * Expires after 24 hours.
+   * Expires after 'expiresIn' or 24 hours.
    */
   readonly lnInvoiceCreate: LnInvoicePayload
   /**
    * Returns a lightning invoice for an associated wallet.
    * When invoice is paid the value will be credited to a BTC wallet.
-   * Expires after 24 hours.
+   * Expires after 'expiresIn' or 24 hours.
    */
   readonly lnInvoiceCreateOnBehalfOfRecipient: LnInvoicePayload
   readonly lnInvoiceFeeProbe: SatAmountPayload
@@ -549,13 +628,13 @@ export type Mutation = {
   /**
    * Returns a lightning invoice for an associated wallet.
    * Can be used to receive any supported currency value (currently USD or BTC).
-   * Expires after 24 hours.
+   * Expires after 'expiresIn' or 24 hours for BTC invoices or 5 minutes for USD invoices.
    */
   readonly lnNoAmountInvoiceCreate: LnNoAmountInvoicePayload
   /**
    * Returns a lightning invoice for an associated wallet.
    * Can be used to receive any supported currency value (currently USD or BTC).
-   * Expires after 24 hours.
+   * Expires after 'expiresIn' or 24 hours for BTC invoices or 5 minutes for USD invoices.
    */
   readonly lnNoAmountInvoiceCreateOnBehalfOfRecipient: LnNoAmountInvoicePayload
   readonly lnNoAmountInvoiceFeeProbe: SatAmountPayload
@@ -575,14 +654,14 @@ export type Mutation = {
   /**
    * Returns a lightning invoice denominated in satoshis for an associated wallet.
    * When invoice is paid the equivalent value at invoice creation will be credited to a USD wallet.
-   * Expires after 5 minutes (short expiry time because there is a USD/BTC exchange rate
+   * Expires after 'expiresIn' or 5 minutes (short expiry time because there is a USD/BTC exchange rate
    * associated with the amount).
    */
   readonly lnUsdInvoiceCreate: LnInvoicePayload
   /**
    * Returns a lightning invoice denominated in satoshis for an associated wallet.
    * When invoice is paid the equivalent value at invoice creation will be credited to a USD wallet.
-   * Expires after 5 minutes (short expiry time because there is a USD/BTC exchange rate
+   * Expires after 'expiresIn' or 5 minutes (short expiry time because there is a USD/BTC exchange rate
    *   associated with the amount).
    */
   readonly lnUsdInvoiceCreateOnBehalfOfRecipient: LnInvoicePayload
@@ -592,14 +671,24 @@ export type Mutation = {
   readonly onChainPaymentSend: PaymentSendPayload
   readonly onChainPaymentSendAll: PaymentSendPayload
   readonly onChainUsdPaymentSend: PaymentSendPayload
+  readonly onChainUsdPaymentSendAsBtcDenominated: PaymentSendPayload
   readonly quizCompleted: QuizCompletedPayload
   /** @deprecated will be moved to AccountContact */
   readonly userContactUpdateAlias: UserContactUpdateAliasPayload
+  readonly userEmailDelete: UserEmailDeletePayload
+  readonly userEmailRegistrationInitiate: UserEmailRegistrationInitiatePayload
+  readonly userEmailRegistrationValidate: UserEmailRegistrationValidatePayload
   readonly userLogin: AuthTokenPayload
+  readonly userLoginUpgrade: UpgradePayload
   readonly userLogout: AuthTokenPayload
+  readonly userPhoneDelete: UserPhoneDeletePayload
+  readonly userPhoneRegistrationInitiate: SuccessPayload
+  readonly userPhoneRegistrationValidate: UserPhoneRegistrationValidatePayload
   /** @deprecated Use QuizCompletedMutation instead */
   readonly userQuizQuestionUpdateCompleted: UserQuizQuestionUpdateCompletedPayload
   readonly userRequestAuthCode: SuccessPayload
+  readonly userTotpRegistrationInitiate: UserTotpRegistrationInitiatePayload
+  readonly userTotpRegistrationValidate: UserTotpRegistrationValidatePayload
   readonly userUpdateLanguage: UserUpdateLanguagePayload
   /** @deprecated Username will be moved to @Handle in Accounts. Also SetUsername naming should be used instead of UpdateUsername to reflect the idempotency of Handles */
   readonly userUpdateUsername: UserUpdateUsernamePayload
@@ -619,6 +708,10 @@ export type MutationCaptchaRequestAuthCodeArgs = {
 
 export type MutationDeviceNotificationTokenCreateArgs = {
   input: DeviceNotificationTokenCreateInput
+}
+
+export type MutationFeedbackSubmitArgs = {
+  input: FeedbackSubmitInput
 }
 
 export type MutationIntraLedgerPaymentSendArgs = {
@@ -701,6 +794,10 @@ export type MutationOnChainUsdPaymentSendArgs = {
   input: OnChainUsdPaymentSendInput
 }
 
+export type MutationOnChainUsdPaymentSendAsBtcDenominatedArgs = {
+  input: OnChainUsdPaymentSendAsBtcDenominatedInput
+}
+
 export type MutationQuizCompletedArgs = {
   input: QuizCompletedInput
 }
@@ -709,12 +806,32 @@ export type MutationUserContactUpdateAliasArgs = {
   input: UserContactUpdateAliasInput
 }
 
+export type MutationUserEmailRegistrationInitiateArgs = {
+  input: UserEmailRegistrationInitiateInput
+}
+
+export type MutationUserEmailRegistrationValidateArgs = {
+  input: UserEmailRegistrationValidateInput
+}
+
 export type MutationUserLoginArgs = {
   input: UserLoginInput
 }
 
+export type MutationUserLoginUpgradeArgs = {
+  input: UserLoginUpgradeInput
+}
+
 export type MutationUserLogoutArgs = {
   input: UserLogoutInput
+}
+
+export type MutationUserPhoneRegistrationInitiateArgs = {
+  input: UserPhoneRegistrationInitiateInput
+}
+
+export type MutationUserPhoneRegistrationValidateArgs = {
+  input: UserPhoneRegistrationValidateInput
 }
 
 export type MutationUserQuizQuestionUpdateCompletedArgs = {
@@ -723,6 +840,14 @@ export type MutationUserQuizQuestionUpdateCompletedArgs = {
 
 export type MutationUserRequestAuthCodeArgs = {
   input: UserRequestAuthCodeInput
+}
+
+export type MutationUserTotpRegistrationInitiateArgs = {
+  input: UserTotpRegistrationInitiateInput
+}
+
+export type MutationUserTotpRegistrationValidateArgs = {
+  input: UserTotpRegistrationValidateInput
 }
 
 export type MutationUserUpdateLanguageArgs = {
@@ -765,6 +890,8 @@ export type OnChainAddressPayload = {
 export type OnChainPaymentSendAllInput = {
   readonly address: Scalars["OnChainAddress"]
   readonly memo?: InputMaybe<Scalars["Memo"]>
+  readonly speed?: InputMaybe<PayoutSpeed>
+  /** @deprecated Ignored - will be replaced */
   readonly targetConfirmations?: InputMaybe<Scalars["TargetConfirmations"]>
   readonly walletId: Scalars["WalletId"]
 }
@@ -773,6 +900,8 @@ export type OnChainPaymentSendInput = {
   readonly address: Scalars["OnChainAddress"]
   readonly amount: Scalars["SatAmount"]
   readonly memo?: InputMaybe<Scalars["Memo"]>
+  readonly speed?: InputMaybe<PayoutSpeed>
+  /** @deprecated Ignored - will be replaced */
   readonly targetConfirmations?: InputMaybe<Scalars["TargetConfirmations"]>
   readonly walletId: Scalars["WalletId"]
 }
@@ -780,6 +909,7 @@ export type OnChainPaymentSendInput = {
 export type OnChainTxFee = {
   readonly __typename: "OnChainTxFee"
   readonly amount: Scalars["SatAmount"]
+  /** @deprecated Ignored - will be removed */
   readonly targetConfirmations: Scalars["TargetConfirmations"]
 }
 
@@ -794,10 +924,22 @@ export type OnChainUpdate = {
   readonly walletId: Scalars["WalletId"]
 }
 
+export type OnChainUsdPaymentSendAsBtcDenominatedInput = {
+  readonly address: Scalars["OnChainAddress"]
+  readonly amount: Scalars["SatAmount"]
+  readonly memo?: InputMaybe<Scalars["Memo"]>
+  readonly speed?: InputMaybe<PayoutSpeed>
+  /** @deprecated Ignored - will be replaced */
+  readonly targetConfirmations?: InputMaybe<Scalars["TargetConfirmations"]>
+  readonly walletId: Scalars["WalletId"]
+}
+
 export type OnChainUsdPaymentSendInput = {
   readonly address: Scalars["OnChainAddress"]
   readonly amount: Scalars["CentAmount"]
   readonly memo?: InputMaybe<Scalars["Memo"]>
+  readonly speed?: InputMaybe<PayoutSpeed>
+  /** @deprecated Ignored - will be replaced */
   readonly targetConfirmations?: InputMaybe<Scalars["TargetConfirmations"]>
   readonly walletId: Scalars["WalletId"]
 }
@@ -805,6 +947,7 @@ export type OnChainUsdPaymentSendInput = {
 export type OnChainUsdTxFee = {
   readonly __typename: "OnChainUsdTxFee"
   readonly amount: Scalars["CentAmount"]
+  /** @deprecated Ignored - will be removed */
   readonly targetConfirmations: Scalars["TargetConfirmations"]
 }
 
@@ -845,6 +988,11 @@ export const PaymentSendResult = {
 } as const
 
 export type PaymentSendResult = (typeof PaymentSendResult)[keyof typeof PaymentSendResult]
+export const PayoutSpeed = {
+  Fast: "FAST",
+} as const
+
+export type PayoutSpeed = (typeof PayoutSpeed)[keyof typeof PayoutSpeed]
 export const PhoneCodeChannelType = {
   Sms: "SMS",
   Whatsapp: "WHATSAPP",
@@ -947,6 +1095,7 @@ export type Query = {
   readonly mobileVersions?: Maybe<ReadonlyArray<Maybe<MobileVersions>>>
   readonly onChainTxFee: OnChainTxFee
   readonly onChainUsdTxFee: OnChainUsdTxFee
+  readonly onChainUsdTxFeeAsBtcDenominated: OnChainUsdTxFee
   /** @deprecated TODO: remove. we don't need a non authenticated version of this query. the users can only do the query while authenticated */
   readonly quizQuestions?: Maybe<ReadonlyArray<Maybe<QuizQuestion>>>
   /** Returns 1 Sat and 1 Usd Cent price for the given currency */
@@ -976,6 +1125,7 @@ export type QueryLnInvoicePaymentStatusArgs = {
 export type QueryOnChainTxFeeArgs = {
   address: Scalars["OnChainAddress"]
   amount: Scalars["SatAmount"]
+  speed?: InputMaybe<PayoutSpeed>
   targetConfirmations?: InputMaybe<Scalars["TargetConfirmations"]>
   walletId: Scalars["WalletId"]
 }
@@ -983,6 +1133,15 @@ export type QueryOnChainTxFeeArgs = {
 export type QueryOnChainUsdTxFeeArgs = {
   address: Scalars["OnChainAddress"]
   amount: Scalars["CentAmount"]
+  speed?: InputMaybe<PayoutSpeed>
+  targetConfirmations?: InputMaybe<Scalars["TargetConfirmations"]>
+  walletId: Scalars["WalletId"]
+}
+
+export type QueryOnChainUsdTxFeeAsBtcDenominatedArgs = {
+  address: Scalars["OnChainAddress"]
+  amount: Scalars["SatAmount"]
+  speed?: InputMaybe<PayoutSpeed>
   targetConfirmations?: InputMaybe<Scalars["TargetConfirmations"]>
   walletId: Scalars["WalletId"]
 }
@@ -1071,7 +1230,8 @@ export type SettlementViaLn = {
 
 export type SettlementViaOnChain = {
   readonly __typename: "SettlementViaOnChain"
-  readonly transactionHash: Scalars["OnChainTxHash"]
+  readonly transactionHash?: Maybe<Scalars["OnChainTxHash"]>
+  readonly vout?: Maybe<Scalars["Int"]>
 }
 
 export type Subscription = {
@@ -1173,6 +1333,13 @@ export const TxStatus = {
 } as const
 
 export type TxStatus = (typeof TxStatus)[keyof typeof TxStatus]
+export type UpgradePayload = {
+  readonly __typename: "UpgradePayload"
+  readonly authToken?: Maybe<Scalars["AuthToken"]>
+  readonly errors: ReadonlyArray<Error>
+  readonly success: Scalars["Boolean"]
+}
+
 /** A wallet belonging to an account which contains a USD balance and a list of transactions. */
 export type UsdWallet = Wallet & {
   readonly __typename: "UsdWallet"
@@ -1219,6 +1386,8 @@ export type User = {
   readonly contacts: ReadonlyArray<UserContact>
   readonly createdAt: Scalars["Timestamp"]
   readonly defaultAccount: Account
+  /** Email address */
+  readonly email?: Maybe<Email>
   readonly id: Scalars["ID"]
   /**
    * Preferred language for user.
@@ -1232,6 +1401,8 @@ export type User = {
    * @deprecated use Quiz from Account instead
    */
   readonly quizQuestions: ReadonlyArray<UserQuizQuestion>
+  /** Whether TOTP is enabled for this user. */
+  readonly totpEnabled: Scalars["Boolean"]
   /**
    * Optional immutable user friendly identifier.
    * @deprecated will be moved to @Handle in Account and Wallet
@@ -1276,13 +1447,68 @@ export type UserContactUpdateAliasPayload = {
   readonly errors: ReadonlyArray<Error>
 }
 
+export type UserEmailDeletePayload = {
+  readonly __typename: "UserEmailDeletePayload"
+  readonly errors: ReadonlyArray<Error>
+  readonly me?: Maybe<User>
+}
+
+export type UserEmailRegistrationInitiateInput = {
+  readonly email: Scalars["EmailAddress"]
+}
+
+export type UserEmailRegistrationInitiatePayload = {
+  readonly __typename: "UserEmailRegistrationInitiatePayload"
+  readonly emailRegistrationId?: Maybe<Scalars["EmailRegistrationId"]>
+  readonly errors: ReadonlyArray<Error>
+  readonly me?: Maybe<User>
+}
+
+export type UserEmailRegistrationValidateInput = {
+  readonly code: Scalars["OneTimeAuthCode"]
+  readonly emailRegistrationId: Scalars["EmailRegistrationId"]
+}
+
+export type UserEmailRegistrationValidatePayload = {
+  readonly __typename: "UserEmailRegistrationValidatePayload"
+  readonly errors: ReadonlyArray<Error>
+  readonly me?: Maybe<User>
+}
+
 export type UserLoginInput = {
+  readonly code: Scalars["OneTimeAuthCode"]
+  readonly phone: Scalars["Phone"]
+}
+
+export type UserLoginUpgradeInput = {
   readonly code: Scalars["OneTimeAuthCode"]
   readonly phone: Scalars["Phone"]
 }
 
 export type UserLogoutInput = {
   readonly authToken: Scalars["AuthToken"]
+}
+
+export type UserPhoneDeletePayload = {
+  readonly __typename: "UserPhoneDeletePayload"
+  readonly errors: ReadonlyArray<Error>
+  readonly me?: Maybe<User>
+}
+
+export type UserPhoneRegistrationInitiateInput = {
+  readonly channel?: InputMaybe<PhoneCodeChannelType>
+  readonly phone: Scalars["Phone"]
+}
+
+export type UserPhoneRegistrationValidateInput = {
+  readonly code: Scalars["OneTimeAuthCode"]
+  readonly phone: Scalars["Phone"]
+}
+
+export type UserPhoneRegistrationValidatePayload = {
+  readonly __typename: "UserPhoneRegistrationValidatePayload"
+  readonly errors: ReadonlyArray<Error>
+  readonly me?: Maybe<User>
 }
 
 export type UserQuizQuestion = {
@@ -1304,6 +1530,29 @@ export type UserQuizQuestionUpdateCompletedPayload = {
 export type UserRequestAuthCodeInput = {
   readonly channel?: InputMaybe<PhoneCodeChannelType>
   readonly phone: Scalars["Phone"]
+}
+
+export type UserTotpRegistrationInitiateInput = {
+  readonly authToken: Scalars["AuthToken"]
+}
+
+export type UserTotpRegistrationInitiatePayload = {
+  readonly __typename: "UserTotpRegistrationInitiatePayload"
+  readonly errors: ReadonlyArray<Error>
+  readonly totpRegistrationId?: Maybe<Scalars["TotpRegistrationId"]>
+  readonly totpSecret?: Maybe<Scalars["TotpSecret"]>
+}
+
+export type UserTotpRegistrationValidateInput = {
+  readonly authToken: Scalars["AuthToken"]
+  readonly totpCode: Scalars["TotpCode"]
+  readonly totpRegistrationId: Scalars["TotpRegistrationId"]
+}
+
+export type UserTotpRegistrationValidatePayload = {
+  readonly __typename: "UserTotpRegistrationValidatePayload"
+  readonly errors: ReadonlyArray<Error>
+  readonly me?: Maybe<User>
 }
 
 export type UserUpdate =
@@ -1429,6 +1678,92 @@ export type BtcPriceListQuery = {
   } | null> | null
 }
 
+export type UserEmailRegistrationInitiateMutationVariables = Exact<{
+  input: UserEmailRegistrationInitiateInput
+}>
+
+export type UserEmailRegistrationInitiateMutation = {
+  readonly __typename: "Mutation"
+  readonly userEmailRegistrationInitiate: {
+    readonly __typename: "UserEmailRegistrationInitiatePayload"
+    readonly emailRegistrationId?: string | null
+    readonly errors: ReadonlyArray<{
+      readonly __typename: "GraphQLApplicationError"
+      readonly message: string
+    }>
+    readonly me?: {
+      readonly __typename: "User"
+      readonly id: string
+      readonly email?: {
+        readonly __typename: "Email"
+        readonly address?: string | null
+        readonly verified?: boolean | null
+      } | null
+    } | null
+  }
+}
+
+export type UserEmailRegistrationValidateMutationVariables = Exact<{
+  input: UserEmailRegistrationValidateInput
+}>
+
+export type UserEmailRegistrationValidateMutation = {
+  readonly __typename: "Mutation"
+  readonly userEmailRegistrationValidate: {
+    readonly __typename: "UserEmailRegistrationValidatePayload"
+    readonly errors: ReadonlyArray<{
+      readonly __typename: "GraphQLApplicationError"
+      readonly message: string
+    }>
+    readonly me?: {
+      readonly __typename: "User"
+      readonly id: string
+      readonly email?: {
+        readonly __typename: "Email"
+        readonly address?: string | null
+        readonly verified?: boolean | null
+      } | null
+    } | null
+  }
+}
+
+export type UserEmailDeleteMutationVariables = Exact<{ [key: string]: never }>
+
+export type UserEmailDeleteMutation = {
+  readonly __typename: "Mutation"
+  readonly userEmailDelete: {
+    readonly __typename: "UserEmailDeletePayload"
+    readonly errors: ReadonlyArray<{
+      readonly __typename: "GraphQLApplicationError"
+      readonly message: string
+    }>
+    readonly me?: {
+      readonly __typename: "User"
+      readonly id: string
+      readonly email?: {
+        readonly __typename: "Email"
+        readonly address?: string | null
+        readonly verified?: boolean | null
+      } | null
+    } | null
+  }
+}
+
+export type EmailQueryVariables = Exact<{ [key: string]: never }>
+
+export type EmailQuery = {
+  readonly __typename: "Query"
+  readonly me?: {
+    readonly __typename: "User"
+    readonly totpEnabled: boolean
+    readonly email?: {
+      readonly __typename: "Email"
+      readonly address?: string | null
+      readonly verified?: boolean | null
+    } | null
+  } | null
+}
+
 export type MainQueryVariables = Exact<{
   isAuthenticated: Scalars["Boolean"]
   recentTransactions?: InputMaybe<Scalars["Int"]>
@@ -1507,7 +1842,7 @@ export type MainQuery = {
                 }
               | {
                   readonly __typename: "SettlementViaOnChain"
-                  readonly transactionHash: string
+                  readonly transactionHash?: string | null
                 }
           }
         }> | null
@@ -1589,7 +1924,7 @@ export type MeFragment = {
               }
             | {
                 readonly __typename: "SettlementViaOnChain"
-                readonly transactionHash: string
+                readonly transactionHash?: string | null
               }
         }
       }> | null
@@ -1660,7 +1995,7 @@ export type TransactionListFragment = {
           }
         | {
             readonly __typename: "SettlementViaOnChain"
-            readonly transactionHash: string
+            readonly transactionHash?: string | null
           }
     }
   }> | null
@@ -1928,6 +2263,224 @@ export type BtcPriceListQueryResult = Apollo.QueryResult<
   BtcPriceListQuery,
   BtcPriceListQueryVariables
 >
+export const UserEmailRegistrationInitiateDocument = gql`
+  mutation userEmailRegistrationInitiate($input: UserEmailRegistrationInitiateInput!) {
+    userEmailRegistrationInitiate(input: $input) {
+      errors {
+        message
+      }
+      emailRegistrationId
+      me {
+        id
+        email {
+          address
+          verified
+        }
+      }
+    }
+  }
+`
+export type UserEmailRegistrationInitiateMutationFn = Apollo.MutationFunction<
+  UserEmailRegistrationInitiateMutation,
+  UserEmailRegistrationInitiateMutationVariables
+>
+
+/**
+ * __useUserEmailRegistrationInitiateMutation__
+ *
+ * To run a mutation, you first call `useUserEmailRegistrationInitiateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUserEmailRegistrationInitiateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [userEmailRegistrationInitiateMutation, { data, loading, error }] = useUserEmailRegistrationInitiateMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUserEmailRegistrationInitiateMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UserEmailRegistrationInitiateMutation,
+    UserEmailRegistrationInitiateMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    UserEmailRegistrationInitiateMutation,
+    UserEmailRegistrationInitiateMutationVariables
+  >(UserEmailRegistrationInitiateDocument, options)
+}
+export type UserEmailRegistrationInitiateMutationHookResult = ReturnType<
+  typeof useUserEmailRegistrationInitiateMutation
+>
+export type UserEmailRegistrationInitiateMutationResult =
+  Apollo.MutationResult<UserEmailRegistrationInitiateMutation>
+export type UserEmailRegistrationInitiateMutationOptions = Apollo.BaseMutationOptions<
+  UserEmailRegistrationInitiateMutation,
+  UserEmailRegistrationInitiateMutationVariables
+>
+export const UserEmailRegistrationValidateDocument = gql`
+  mutation userEmailRegistrationValidate($input: UserEmailRegistrationValidateInput!) {
+    userEmailRegistrationValidate(input: $input) {
+      errors {
+        message
+      }
+      me {
+        id
+        email {
+          address
+          verified
+        }
+      }
+    }
+  }
+`
+export type UserEmailRegistrationValidateMutationFn = Apollo.MutationFunction<
+  UserEmailRegistrationValidateMutation,
+  UserEmailRegistrationValidateMutationVariables
+>
+
+/**
+ * __useUserEmailRegistrationValidateMutation__
+ *
+ * To run a mutation, you first call `useUserEmailRegistrationValidateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUserEmailRegistrationValidateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [userEmailRegistrationValidateMutation, { data, loading, error }] = useUserEmailRegistrationValidateMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUserEmailRegistrationValidateMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UserEmailRegistrationValidateMutation,
+    UserEmailRegistrationValidateMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    UserEmailRegistrationValidateMutation,
+    UserEmailRegistrationValidateMutationVariables
+  >(UserEmailRegistrationValidateDocument, options)
+}
+export type UserEmailRegistrationValidateMutationHookResult = ReturnType<
+  typeof useUserEmailRegistrationValidateMutation
+>
+export type UserEmailRegistrationValidateMutationResult =
+  Apollo.MutationResult<UserEmailRegistrationValidateMutation>
+export type UserEmailRegistrationValidateMutationOptions = Apollo.BaseMutationOptions<
+  UserEmailRegistrationValidateMutation,
+  UserEmailRegistrationValidateMutationVariables
+>
+export const UserEmailDeleteDocument = gql`
+  mutation userEmailDelete {
+    userEmailDelete {
+      errors {
+        message
+      }
+      me {
+        id
+        email {
+          address
+          verified
+        }
+      }
+    }
+  }
+`
+export type UserEmailDeleteMutationFn = Apollo.MutationFunction<
+  UserEmailDeleteMutation,
+  UserEmailDeleteMutationVariables
+>
+
+/**
+ * __useUserEmailDeleteMutation__
+ *
+ * To run a mutation, you first call `useUserEmailDeleteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUserEmailDeleteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [userEmailDeleteMutation, { data, loading, error }] = useUserEmailDeleteMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUserEmailDeleteMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UserEmailDeleteMutation,
+    UserEmailDeleteMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<UserEmailDeleteMutation, UserEmailDeleteMutationVariables>(
+    UserEmailDeleteDocument,
+    options,
+  )
+}
+export type UserEmailDeleteMutationHookResult = ReturnType<
+  typeof useUserEmailDeleteMutation
+>
+export type UserEmailDeleteMutationResult = Apollo.MutationResult<UserEmailDeleteMutation>
+export type UserEmailDeleteMutationOptions = Apollo.BaseMutationOptions<
+  UserEmailDeleteMutation,
+  UserEmailDeleteMutationVariables
+>
+export const EmailDocument = gql`
+  query email {
+    me {
+      email {
+        address
+        verified
+      }
+      totpEnabled
+    }
+  }
+`
+
+/**
+ * __useEmailQuery__
+ *
+ * To run a query within a React component, call `useEmailQuery` and pass it any options that fit your needs.
+ * When your component renders, `useEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useEmailQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useEmailQuery(
+  baseOptions?: Apollo.QueryHookOptions<EmailQuery, EmailQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<EmailQuery, EmailQueryVariables>(EmailDocument, options)
+}
+export function useEmailLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<EmailQuery, EmailQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<EmailQuery, EmailQueryVariables>(EmailDocument, options)
+}
+export type EmailQueryHookResult = ReturnType<typeof useEmailQuery>
+export type EmailLazyQueryHookResult = ReturnType<typeof useEmailLazyQuery>
+export type EmailQueryResult = Apollo.QueryResult<EmailQuery, EmailQueryVariables>
 export const MainDocument = gql`
   query main($isAuthenticated: Boolean!, $recentTransactions: Int) {
     globals {

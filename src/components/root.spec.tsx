@@ -114,4 +114,13 @@ describe("Root authRoutes", () => {
     )
     expect(asFragment()).toMatchSnapshot()
   })
+
+  it("renders Login Email and matches snapshot", () => {
+    const { asFragment } = render(
+      <MockedProvider>
+        <RootComponent path="/login-email-code" />
+      </MockedProvider>,
+    )
+    expect(asFragment()).toMatchSnapshot()
+  })
 })

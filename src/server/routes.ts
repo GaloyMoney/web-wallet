@@ -49,6 +49,10 @@ const appRoutesDef = {
     component: Settings,
     title: "Settings",
   },
+  "/login-email-code": {
+    component: LoginEmailCode,
+    title: "Login Email Code",
+  },
 }
 
 // Allow SMS login without kratos

@@ -122,9 +122,9 @@ const EmailSetting: FCT = ({ guestView }) => {
   }
 
   const deleteEmail = async () => {
+    setErrorMessage("")
+    setLoading(true)
     try {
-      setErrorMessage("")
-      setLoading(true)
       await emailDeleteMutation()
       setEmailAddress("")
       setStep("enterEmail")
@@ -173,17 +173,15 @@ const EmailSetting: FCT = ({ guestView }) => {
       }
       case "enterCode": {
         const code = event.currentTarget.code.value
+        setLoading(true)
         try {
-          setLoading(true)
           const res = await emailVerify({
             variables: { input: { code, emailRegistrationId } },
           })
-
           if (res.data?.userEmailRegistrationValidate.errors) {
             const error = res.data.userEmailRegistrationValidate.errors[0]?.message
             setErrorMessage(error)
           }
-
           if (res.data?.userEmailRegistrationValidate.me?.email?.verified) {
             setStep("emailComplete")
           }

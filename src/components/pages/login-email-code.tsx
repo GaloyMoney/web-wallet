@@ -31,21 +31,16 @@ const LoginEmailCode: FCT = () => {
         const emailInput = event.currentTarget.email.value
         setEmailAddress(emailInput)
         setLoading(true)
-        try {
-          const res = await ajax.post(config.galoyAuthEndpoint + "/email/code", {
-            email: emailInput,
-          })
-          if (res.error) {
-            setErrorMessage(res.error)
-            return
-          }
-          setEmailLoginId(res.result)
-          setStep("enterCode")
-        } catch (err) {
-          console.error(err)
-        } finally {
-          setLoading(false)
+        const res = await ajax.post(config.galoyAuthEndpoint + "/email/code", {
+          email: emailInput,
+        })
+        if (res.error) {
+          setErrorMessage(res.error)
+          return
         }
+        setEmailLoginId(res.result)
+        setStep("enterCode")
+        setLoading(false)
         break
       }
       case "enterCode": {

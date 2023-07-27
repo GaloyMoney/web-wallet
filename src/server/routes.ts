@@ -55,18 +55,15 @@ const appRoutesDef = {
   },
 }
 
-// Allow SMS login without kratos
-if (!config.kratosFeatureFlag) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ;(appRoutesDef as any)["/login"] = {
-    component: LoginPhone,
-    title: `Login to ${config.walletName} Web Wallet`,
-  }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ;(appRoutesDef as any)["/login-email-code"] = {
-    component: LoginEmailCode,
-    title: `Login to ${config.walletName} Web Wallet`,
-  }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+;(appRoutesDef as any)["/login"] = {
+  component: LoginPhone,
+  title: `Login to ${config.walletName} Web Wallet`,
+}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+;(appRoutesDef as any)["/login-email-code"] = {
+  component: LoginEmailCode,
+  title: `Login to ${config.walletName} Web Wallet`,
 }
 
 export type SupportedRoutes = keyof typeof appRoutesDef

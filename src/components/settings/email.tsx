@@ -61,9 +61,6 @@ gql`
       }
     }
   }
-`
-
-gql`
   query email {
     me {
       email {

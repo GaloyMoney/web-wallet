@@ -44,9 +44,6 @@ gql`
       }
     }
   }
-`
-
-gql`
   mutation userEmailDelete {
     userEmailDelete {
       errors {

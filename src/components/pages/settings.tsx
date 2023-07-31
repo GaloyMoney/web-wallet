@@ -151,7 +151,7 @@ const SettingsMainScreen: NoPropsFCT = () => {
   return (
     <SettingsLayout>
       <div className="list">
-        {config.kratosFeatureFlag && <EmailSetting guestView={!isAuthenticated} />}
+        <EmailSetting guestView={!isAuthenticated} />
         <UsernameSetting guestView={!isAuthenticated} />
         <LanguageSetting guestView={!isAuthenticated} />
         <ColorThemeSetting />

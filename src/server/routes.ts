@@ -4,6 +4,7 @@ import { KratosFlowData } from "kratos/index"
 import Contacts from "components/pages/contacts"
 import Home from "components/pages/home"
 import LoginEmail from "components/pages/login-email"
+import LoginEmailCode from "components/pages/login-email-code"
 import LoginPhone from "components/pages/login-phone"
 import Receive from "components/pages/receive"
 import Recovery from "components/pages/recovery"
@@ -48,15 +49,21 @@ const appRoutesDef = {
     component: Settings,
     title: "Settings",
   },
+  "/login-email-code": {
+    component: LoginEmailCode,
+    title: "Login Email Code",
+  },
 }
 
-// Allow SMS login without kratos
-if (!config.kratosFeatureFlag) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ;(appRoutesDef as any)["/login"] = {
-    component: LoginPhone,
-    title: `Login to ${config.walletName} Web Wallet`,
-  }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+;(appRoutesDef as any)["/login"] = {
+  component: LoginPhone,
+  title: `Login to ${config.walletName} Web Wallet`,
+}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+;(appRoutesDef as any)["/login-email-code"] = {
+  component: LoginEmailCode,
+  title: `Login to ${config.walletName} Web Wallet`,
 }
 
 export type SupportedRoutes = keyof typeof appRoutesDef

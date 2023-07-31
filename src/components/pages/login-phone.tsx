@@ -26,6 +26,9 @@ const LoginPhone: FCT = () => {
         onSuccess={setPhoneNumber}
         onInvalidNumber={handleInvalidNumber}
       />
+      <div className="intro" style={{ marginTop: 20 }}>
+        or login with <a href="/login-email-code">email</a>
+      </div>
       {errorMessage && <div className="error">{errorMessage}</div>}
     </div>
   )

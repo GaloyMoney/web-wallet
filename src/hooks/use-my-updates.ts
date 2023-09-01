@@ -1,7 +1,9 @@
-import { GaloyGQL, PriceCacheStore, useSubscription } from "@galoymoney/client"
+import { GaloyGQL, PriceCacheStore } from "@galoymoney/client"
 import { useMemo, useRef } from "react"
 
 import useMainQuery from "hooks/use-main-query"
+import { gql } from "@apollo/client"
+import { LnUpdate, useMyUpdatesSubscription } from "graphql/generated"
 
 export type PriceData = {
   formattedAmount: string
@@ -24,13 +26,146 @@ type UseMyUpdates = {
   usdToSats: ((usd: number) => number) | null
   currentBalance: number | null
   intraLedgerUpdate: Partial<GaloyGQL.IntraLedgerUpdate> | null
-  lnUpdate: Partial<GaloyGQL.LnUpdate> | null
+  lnUpdate: Partial<LnUpdate> | null
   onChainUpdate: Partial<GaloyGQL.OnChainUpdate> | null
 }
 
+gql`
+  subscription myUpdates($recentTransactions: Int = 5) {
+    myUpdates {
+      errors {
+        message
+        __typename
+      }
+      me {
+        ...Me
+        __typename
+      }
+      update {
+        type: __typename
+        ... on Price {
+          base
+          offset
+          currencyUnit
+          formattedAmount
+          __typename
+        }
+        ... on LnUpdate {
+          walletId
+          paymentHash
+          status
+          __typename
+        }
+        ... on OnChainUpdate {
+          walletId
+          txNotificationType
+          txHash
+          amount
+          displayCurrencyPerSat
+          __typename
+        }
+        ... on IntraLedgerUpdate {
+          walletId
+          txNotificationType
+          amount
+          displayCurrencyPerSat
+          __typename
+        }
+      }
+      __typename
+    }
+  }
+  fragment Me on User {
+    id
+    language
+    username
+    phone
+    defaultAccount {
+      id
+      defaultWalletId
+      transactions(first: $recentTransactions) {
+        ...TransactionList
+        __typename
+      }
+      wallets {
+        id
+        balance
+        walletCurrency
+        __typename
+      }
+      __typename
+    }
+    __typename
+  }
+  fragment TransactionList on TransactionConnection {
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+      __typename
+    }
+    edges {
+      cursor
+      node {
+        __typename
+        id
+        status
+        direction
+        memo
+        createdAt
+        settlementAmount
+        settlementFee
+        settlementCurrency
+        settlementPrice {
+          base
+          offset
+          currencyUnit
+          formattedAmount
+          __typename
+        }
+        initiationVia {
+          __typename
+          ... on InitiationViaIntraLedger {
+            counterPartyWalletId
+            counterPartyUsername
+            __typename
+          }
+          ... on InitiationViaLn {
+            paymentHash
+            __typename
+          }
+          ... on InitiationViaOnChain {
+            address
+            __typename
+          }
+        }
+        settlementVia {
+          __typename
+          ... on SettlementViaIntraLedger {
+            counterPartyWalletId
+            counterPartyUsername
+            __typename
+          }
+          ... on SettlementViaLn {
+            paymentSecret
+            __typename
+          }
+          ... on SettlementViaOnChain {
+            transactionHash
+            __typename
+          }
+        }
+      }
+      __typename
+    }
+    __typename
+  }
+`
+
 const useMyUpdates = (): UseMyUpdates => {
   const intraLedgerUpdate = useRef<Partial<GaloyGQL.IntraLedgerUpdate> | null>(null)
-  const lnUpdate = useRef<Partial<GaloyGQL.LnUpdate> | null>(null)
+  const lnUpdate = useRef<Partial<LnUpdate> | null>(null)
   const onChainUpdate = useRef<Partial<GaloyGQL.OnChainUpdate> | null>(null)
 
   const priceCacheStore = PriceCacheStore()
@@ -45,7 +180,11 @@ const useMyUpdates = (): UseMyUpdates => {
     }
   }
 
-  const { data } = useSubscription.myUpdates()
+  const { data } = useMyUpdatesSubscription({
+    variables: {
+      recentTransactions: 5,
+    },
+  })
 
   if (Number.isNaN(cachedPrice.current) && btcPrice) {
     updatePriceCache(satPriceInCents(btcPrice))
